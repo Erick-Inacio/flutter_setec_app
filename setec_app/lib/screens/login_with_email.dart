@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:setec_app/models/user_app_model.dart';
+import 'package:setec_app/screens/create_account_screen.dart';
 import 'package:setec_app/screens/home_page.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
 
@@ -50,10 +51,46 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                     labelText: 'Password',
                   ),
                 ),
-                const SizedBox(height: 16.0),
+                SizedBox(height: 10),
+                Row(
+                  children: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CreateAccount(),
+                          )
+                        );
+                      },
+                      child: const Text(
+                        'Criar Conta',
+                        style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    ),
+                    const Spacer(),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Esqueci minha senha',
+                        style: TextStyle(
+                          color: Colors.deepPurple,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 40,
+                ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
+                    minimumSize: Size(double.infinity, 45),
                   ),
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {

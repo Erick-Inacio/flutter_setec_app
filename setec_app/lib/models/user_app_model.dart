@@ -1,3 +1,4 @@
+import 'package:setec_app/utils/enums/relationship.dart';
 import 'package:setec_app/utils/enums/roles.dart';
 
 class UserApp {
@@ -5,6 +6,7 @@ class UserApp {
   late String uid;
   late String name;
   late String email;
+  late Relationship relationship;
   late Roles role;
   late String ra;
 
@@ -15,21 +17,20 @@ class UserApp {
     required this.uid,
     required this.name,
     required this.email,
+    required this.relationship,
     required this.role,
     required this.ra,
   });
 
   factory UserApp.fromJson(Map<String, dynamic> json) {
-    int roleIndex =
-        Roles.values.indexWhere((role) => role.toString() == "Roles.${json['role']}");
-
     return UserApp(
       id: json['id'],
       uid: json['uid'],
       name: json['name'],
       email: json['email'],
-      role: Roles.values[roleIndex],
+      role: Roles.fromString(json['role']),
       ra: json['ra'],
+      relationship: Relationship.fromString(json['relationship']),
     );
   }
 
@@ -39,13 +40,15 @@ class UserApp {
       'uid': uid,
       'name': name,
       'email': email,
-      'role': role.index,
+      'role': role.name.toUpperCase(),
       'ra': ra,
+      'relationship': relationship.name.toUpperCase(),
     };
   }
 
   @override
   String toString() {
-    return 'UserApp{id: $id, uid: $uid, name: $name, email: $email, role: $role, ra: $ra}';
+    return 'UserApp{id: $id, uid: $uid, name: $name, email: $email, '
+        'role: $role, ra: $ra, relationship: $relationship}';
   }
 }

@@ -4,6 +4,7 @@ import 'package:setec_app/models/auth_provider_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/services/backend/user_service.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
+import 'package:setec_app/utils/enums/relationship.dart';
 import 'package:setec_app/utils/enums/roles.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -20,7 +21,31 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _ra = TextEditingController();
   late String _role;
+  List<String> _roles = [];
+  late String _relationship;
+  List<String> _relationships = [];
   final Logger logger = Logger();
+
+  @override
+  void initState() {
+    super.initState();
+    _roles = Roles.rolesName
+        .where(
+          (e) =>
+              e != Roles.admin.displayName && e != Roles.comission.displayName,
+        )
+        .toList();
+    _relationships = Relationship.rolesName;
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _nameController.dispose();
+    _ra.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,14 +120,38 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
                 },
               ),
               DropdownButtonFormField(
-                  items: Roles.values
-                      .map((role) => DropdownMenuItem(
-                          value: role.index, child: Text(role.name)))
-                      .toList(),
-                  onChanged: (value) {
-                    _role = value.toString();
-                  },
-                  decoration: const InputDecoration(labelText: 'Role')),
+                style: const TextStyle(
+                  fontWeight: FontWeight.normal,
+                  color: Colors.deepPurple,
+                ),
+                items: _roles
+                    .map((role) => DropdownMenuItem(
+                          value: role,
+                          child: Text(role),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  _role = value.toString();
+                },
+                decoration:
+                    const InputDecoration(labelText: 'Tipo de Cadastro'),
+              ),
+              DropdownButtonFormField(
+                focusColor: Colors.deepPurple,
+                style: const TextStyle(
+                    fontWeight: FontWeight.normal, color: Colors.deepPurple),
+                items: _relationships
+                    .map((relationship) => DropdownMenuItem(
+                          value: relationship,
+                          child: Text(relationship),
+                        ))
+                    .toList(),
+                onChanged: (value) {
+                  _relationship = value.toString();
+                },
+                decoration:
+                    const InputDecoration(labelText: 'Relação com a FATEC'),
+              ),
               SizedBox(height: 16.0),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -113,20 +162,25 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
+                    AuthProvider authProvider = AuthProvider();
+
                     try {
-                      AuthProvider authProvider = AuthProvider();
                       AuthService authService = AuthService();
                       UserApp? userApp = await authService.registerWithEmail(
                           _emailController.text, _passwordController.text);
 
                       if (userApp != null) {
                         userApp.name = _nameController.text;
-                        userApp.role = Roles.values[int.parse(_role)];
+                        userApp.role = Roles.fromNameEnum(_role) as Roles;
+                        userApp.relationship =
+                            Relationship.fromNameEnum(_relationship)
+                                as Relationship;
                         userApp.ra = _ra.text;
+                        userApp = await UserServices.createUser(userApp);
                         authProvider.setUserApp(userApp);
-                        UserServices.createUser(userApp);
                       }
                     } on Exception catch (e) {
+                      authProvider.signOut();
                       logger.e(e);
                     }
                   }

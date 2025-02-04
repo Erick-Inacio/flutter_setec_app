@@ -15,13 +15,21 @@ class AuthService {
 
   //Realiza o login com email e senha
   Future<UserApp?> login(String email, String password) async {
+    UserApp? userApp;
     try {
       User? user = await _authEmail.login(email, password);
 
       if (user != null) {
         //Busca os dados no Backend
         logger.i("Usuário logado com sucesso");
-        return await UserServices.getUser(user.uid);
+        try {
+          userApp = await UserServices.getUser(user.uid);
+          if (userApp != null) {
+            return userApp;
+          }
+        } on Exception catch (e, stacktrace) {
+          logger.e("Erro ao buscar dados do usuário: $e", stackTrace: stacktrace);
+        }
       }
       return null;
     } on FirebaseAuthException catch (e, stackTrace) {

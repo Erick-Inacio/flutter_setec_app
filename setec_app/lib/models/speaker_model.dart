@@ -1,21 +1,16 @@
 // ignore_for_file: dead_code
 
 import 'package:setec_app/models/user_app_model.dart';
-import 'package:setec_app/utils/enums/roles.dart';
 
-class Speaker extends UserApp {
+class Speaker {
+  late UserApp userApp;
   late String socialMedia;
   late String company;
   late String position;
   late String bio;
 
   Speaker({
-    required super.id,
-    required super.uid,
-    required super.name,
-    required super.email,
-    required super.role,
-    required super.ra,
+    required this.userApp,
     required this.socialMedia,
     required this.company,
     required this.position,
@@ -24,12 +19,7 @@ class Speaker extends UserApp {
 
   factory Speaker.fromJson(Map<String, dynamic> json) {
     return Speaker(
-      id: json['id'],
-      uid: json['uid'],
-      name: json['name'],
-      email: json['email'],
-      role: Roles.values[json['role']],
-      ra: json['ra'],
+      userApp: UserApp.fromJson(json),
       socialMedia: json['socialMedia'],
       company: json['company'],
       position: json['position'],
@@ -37,19 +27,19 @@ class Speaker extends UserApp {
     );
   }
 
-  @override
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'uid': uid,
-      'name': name,
-      'email': email,
-      'role': role.index,
-      'ra': ra,
+      'userApp': userApp.toJson(),
       'socialMedia': socialMedia,
       'company': company,
       'position': position,
       'bio': bio,
     };
+  }
+
+  @override
+  String toString() {
+    return 'Speaker{userApp: ${userApp.toString()}, socialMedia: $socialMedia, '
+        'company: $company, position: $position, bio: $bio}';
   }
 }

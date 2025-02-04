@@ -45,6 +45,7 @@ class MainApp extends StatefulWidget {
 class _MainAppState extends State<MainApp> {
   final AuthService _authService = AuthService();
   bool _isLoading = true;
+  Logger logger = Logger();
 
   @override
   void initState() {
@@ -61,11 +62,16 @@ class _MainAppState extends State<MainApp> {
       });
     }
 
-    final user = _authService.currentUser;
-    if (user != null) {
-      UserApp? userApp = await UserServices.getUser(user.uid);
+    try {
+      final user = _authService.currentUser;
+      if (user != null) {
+        UserApp? userApp = await UserServices.getUser(user.uid);
 
-      authProvider.setUserApp(userApp);
+        authProvider.setUserApp(userApp);
+      }
+    } on Exception catch (e, stacktrace) {
+      authProvider.signOut();
+      logger.e("Erro ao buscar dados do usuário: $e", stackTrace: stacktrace);
     }
 
     setState(() {
@@ -86,9 +92,11 @@ class _MainAppState extends State<MainApp> {
     }
 
     if (authProvider.isAuthenticated) {
-      return const MaterialApp(home: HomePage());
+      return const MaterialApp(
+          debugShowCheckedModeBanner: false, home: HomePage());
     } else {
-      return const MaterialApp(home: LoginOptions());
+      return const MaterialApp(
+          debugShowCheckedModeBanner: false, home: LoginOptions());
     }
   }
 }
