@@ -22,7 +22,7 @@ class UserCard extends StatelessWidget {
         subtitle: Text(userApp!.email),
         trailing: Chip(
           label: Text(userApp!.role.name),
-          backgroundColor: Colors.deepPurple.withValues(),
+          backgroundColor: Colors.deepPurple,
         ),
       ),
     );
