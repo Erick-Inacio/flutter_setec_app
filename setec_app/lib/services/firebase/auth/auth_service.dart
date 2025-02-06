@@ -21,19 +21,19 @@ class AuthService {
 
       if (user != null) {
         //Busca os dados no Backend
-        logger.i("Usuário logado com sucesso");
+        logger.i("AuthServices: Usuário logado com sucesso");
         try {
           userApp = await UserServices.getUser(user.uid);
           if (userApp != null) {
             return userApp;
           }
         } on Exception catch (e, stacktrace) {
-          logger.e("Erro ao buscar dados do usuário: $e", stackTrace: stacktrace);
+          logger.e("AuthServices: Erro ao buscar dados do usuário: $e", stackTrace: stacktrace);
         }
       }
       return null;
     } on FirebaseAuthException catch (e, stackTrace) {
-      logger.e("Erro ao logar: $e", stackTrace: stackTrace);
+      logger.e("AuthServices: Erro ao logar: $e", stackTrace: stackTrace);
       return null;
     }
   }
@@ -44,7 +44,7 @@ class AuthService {
 
     if (userApp != null && userApp.uid.isNotEmpty) {
       //Busca os dados no Backend
-      logger.i("Usuário cadastrado com sucesso");
+      logger.i("AuthServices: Usuário cadastrado com sucesso");
       return userApp; //await fetchUserData(user.uid);
     }
     return null;

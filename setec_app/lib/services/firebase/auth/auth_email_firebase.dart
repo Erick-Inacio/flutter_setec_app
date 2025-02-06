@@ -13,7 +13,7 @@ class AuthEmailFirebase {
           email: email, password: password);
       return userCredential.user;
     } on FirebaseAuthException catch (e, stackTrace) {
-      logger.d("Erro: $e", stackTrace: stackTrace);
+      logger.e("AuthEmailFirebase: $e", stackTrace: stackTrace);
       return null;
     }
   }
@@ -28,7 +28,7 @@ class AuthEmailFirebase {
           userApp.email = email;
       return userApp;
     } on FirebaseAuthException catch (e, stackTrace) {
-      logger.d("Erro: $e", stackTrace: stackTrace);
+      logger.d("AuthEmailFirebase: $e", stackTrace: stackTrace);
       return null;
     }
   }

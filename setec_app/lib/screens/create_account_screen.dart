@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'package:setec_app/models/auth_provider_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/services/backend/user_service.dart';
@@ -49,14 +51,10 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Criar Conta",
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.deepPurple,
+        title: const Text("Criar Conta"),
       ),
       body: Center(
           child: SingleChildScrollView(
@@ -160,9 +158,8 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
-                onPressed: () async {
+                onPressed: () async {                    
                   if (_formKey.currentState!.validate()) {
-                    AuthProvider authProvider = AuthProvider();
 
                     try {
                       AuthService authService = AuthService();
@@ -176,12 +173,21 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
                             Relationship.fromNameEnum(_relationship)
                                 as Relationship;
                         userApp.ra = _ra.text;
-                        userApp = await UserServices.createUser(userApp);
-                        authProvider.setUserApp(userApp);
+                        try {
+                          userApp = await UserServices.createUser(userApp);
+                          authProvider.setUserApp(userApp);
+
+                          if (context.mounted) {
+                            context.go('/home');
+                          }
+                        } on Exception catch (e) {
+                          authProvider.signOut();
+                          logger.e('CreateAccount : $e');
+                        }
                       }
                     } on Exception catch (e) {
                       authProvider.signOut();
-                      logger.e(e);
+                      logger.e('CreateAccount : $e');
                     }
                   }
                 },

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:setec_app/screens/login_with_email.dart';
+import 'package:go_router/go_router.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 
 class LoginOptions extends StatelessWidget {
@@ -10,9 +10,7 @@ class LoginOptions extends StatelessWidget {
     return Scaffold(
       // backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        title: const Text('Login', style: TextStyle(color: Colors.white)),
-        centerTitle: true,
+        title: const Text('Login'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -29,13 +27,7 @@ class LoginOptions extends StatelessWidget {
                 color: Colors.transparent,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const LoginWithEmail(),
-                      ),
-                    );
+                    context.push('/loginWithEmail');
                   },
                   child: SizedBox(
                     width: 228,

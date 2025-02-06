@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
+import 'package:setec_app/models/auth_provider_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
-import 'package:setec_app/screens/create_account_screen.dart';
-import 'package:setec_app/screens/home_page.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
 
 class LoginWithEmail extends StatefulWidget {
@@ -24,11 +25,10 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
 
   @override
   Widget build(BuildContext context) {
+    final authProvider = context.watch<AuthProvider>();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        title: const Text('Login', style: TextStyle(color: Colors.white)),
-        centerTitle: true,
+        title: const Text('Login'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -43,6 +43,12 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                   decoration: const InputDecoration(
                     labelText: 'Email',
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira um email válido';
+                    }
+                    return null;
+                  },
                 ),
                 TextFormField(
                   controller: _passwordController,
@@ -50,18 +56,19 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                   decoration: const InputDecoration(
                     labelText: 'Password',
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Por favor, insira uma senha válida';
+                    }
+                    return null;
+                  },
                 ),
                 SizedBox(height: 10),
                 Row(
                   children: <Widget>[
                     TextButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CreateAccount(),
-                          )
-                        );
+                        context.push('/criarConta');
                       },
                       child: const Text(
                         'Criar Conta',
@@ -99,18 +106,18 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                         _passwordController.text,
                       );
 
+                      authProvider.setUserApp(userApp);
+
                       if (userApp != null && context.mounted) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
+                        logger.i('LoginWithEmail: ${authProvider.userApp.toString()}');
+                        context.go('/home');
                       }
                     }
                   },
-                  child: const Text('Login',
-                      style: TextStyle(color: Colors.white)),
+                  child: Text(
+                    'Login',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),

@@ -4,7 +4,7 @@ import 'package:logger/logger.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
-import 'package:setec_app/services/routes/user_route.dart';
+import 'package:setec_app/services/routes/api/user_route.dart';
 
 class UserServices {
   static Future<UserApp?> createUser(UserApp userApp) async {
@@ -42,9 +42,9 @@ class UserServices {
     try {
       final authService = AuthService();
       final token = await authService.getUserToken();
-      logger.i(token);
+      logger.i('UserServices: $token');
       if (token == null) {
-        throw Exception("Failed to retrieve user token");
+        throw Exception("AuthService:Failed to retrieve user token");
       }
 
       final response = await http.get(
