@@ -21,15 +21,17 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text("Home Page"),
         actions: [
-          authProvider.userApp != null &&
-                  authProvider.userApp!.role == Roles.admin
-              ? IconButton(
-                  icon: Icon(Icons.admin_panel_settings),
-                  onPressed: () {
-                    context.push('/adminUser');
-                  },
-                )
-              : Container(),
+          typeButtom(authProvider),
+
+          // authProvider.userApp != null &&
+          //         authProvider.userApp!.role == Roles.admin
+          //     ? IconButton(
+          //         icon: Icon(Icons.admin_panel_settings),
+          //         onPressed: () {
+          //           context.push('/adminUser');
+          //         },
+          //       )
+          //     : Container(),
           authProvider.userApp != null
               ? SignOutIconButton(
                   parentContext: context,
@@ -46,5 +48,26 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+
+  Widget typeButtom(AuthProvider authProvider) {
+    if (authProvider.userApp != null) {
+      if (authProvider.userApp!.role == Roles.admin) {
+        return IconButton(
+          icon: Icon(Icons.admin_panel_settings),
+          onPressed: () {
+            context.push('/adminUser');
+          },
+        );
+      } else if (authProvider.userApp!.role == Roles.speaker) {
+        return IconButton(
+          icon: Icon(Icons.person),
+          onPressed: () {
+            context.push('/createSpeaker', extra: authProvider.userApp);
+          },
+        );
+      }
+    }
+    return Container();
   }
 }

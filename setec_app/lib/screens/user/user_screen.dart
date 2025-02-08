@@ -5,7 +5,7 @@ import 'package:setec_app/widgets/Text/Field/info_text_field.dart';
 class UserScreen extends StatefulWidget {
   final UserApp user;
 
-  UserScreen({super.key, required this.user});
+  const UserScreen({super.key, required this.user});
 
   @override
   State<UserScreen> createState() => _UserScreenState();
