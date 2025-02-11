@@ -1,5 +1,3 @@
-// ignore_for_file: dead_code
-
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/utils/enums/social_media_enum.dart';
 
@@ -8,8 +6,7 @@ class Speaker {
   late String company;
   late String position;
   late String bio;
-
-  late Map<SocialMedia, String> socialMedia = {};
+  late Map<SocialMedia, String> socialMedia;
 
   Speaker({
     required this.userApp,
@@ -19,24 +16,33 @@ class Speaker {
     required this.bio,
   });
 
+  /// 🔹 Converte JSON em um `Speaker`
   factory Speaker.fromJson(Map<String, dynamic> json) {
     return Speaker(
-      userApp: UserApp.fromJson(json),
-      socialMedia: json['socialMedia'],
-      company: json['company'],
-      position: json['position'],
-      bio: json['bio'],
+      userApp: UserApp.fromJson(json['userApp']), // Acessando corretamente
+      socialMedia: (json['socialMedia'] as Map<String, dynamic>).map(
+        (key, value) => MapEntry(SocialMedia.fromString(key)!, value.toString()),
+      ),
+      company: json['company'] ?? '',
+      position: json['position'] ?? '',
+      bio: json['bio'] ?? '',
     );
   }
 
+  /// 🔹 Converte `Speaker` em JSON
   Map<String, dynamic> toJson() {
     return {
       'userApp': userApp.toJson(),
-      'socialMedia': socialMedia,
+      'socialMedia': socialMedia.map((key, value) => MapEntry(key.name, value)),
       'company': company,
       'position': position,
       'bio': bio,
     };
+  }
+
+  /// 🔹 Adiciona um novo link de mídia social
+  void addSocialMedia(SocialMedia socialMedia, String link) {
+    this.socialMedia[socialMedia] = link;
   }
 
   @override
