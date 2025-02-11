@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
+import 'package:setec_app/services/backend/speaker_service.dart';
 import 'package:setec_app/widgets/Text/FormField/speaker_form_field.dart';
 import 'package:setec_app/widgets/iconButton/save.dart';
 
@@ -43,7 +46,18 @@ class _CreateSpeakerState extends State<CreateSpeaker> {
         _isTextChanged
             ? SaveButtom(
                 parentContext: context,
-              )
+                onPressed: () async {
+                  if (formKey.currentState!.validate()) {
+                    try {
+                      await createSpeaker(true);
+                      if (context.mounted) {
+                        Navigator.pop(context);
+                      }
+                    } on Exception catch (e) {
+                      Logger().e('CreateSpeaker: $e');
+                    }
+                  }
+                })
             : Container(),
       ]),
       body: Center(
@@ -57,5 +71,17 @@ class _CreateSpeakerState extends State<CreateSpeaker> {
         ),
       ),
     );
+  }
+
+  Future<void> createSpeaker(createSpeaker) async {
+    Speaker speaker = Speaker(
+      userApp: widget.userApp.id as int,
+      company: companyController.text,
+      position: positionController.text,
+      bio: bioController.text,
+      socialMedia: {},
+    );
+
+    await SpeakerService.createSpeaker(speaker);
   }
 }

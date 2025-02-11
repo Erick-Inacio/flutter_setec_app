@@ -52,6 +52,7 @@ class SpeakerService {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json'
         },
+        body: jsonEncode(speaker.toJson()),
       );
 
       if (response.statusCode == 200) {

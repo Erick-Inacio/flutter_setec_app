@@ -1,8 +1,7 @@
-import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/utils/enums/social_media_enum.dart';
 
 class Speaker {
-  late UserApp userApp;
+  late int userApp;
   late String company;
   late String position;
   late String bio;
@@ -19,10 +18,10 @@ class Speaker {
   /// 🔹 Converte JSON em um `Speaker`
   factory Speaker.fromJson(Map<String, dynamic> json) {
     return Speaker(
-      userApp: UserApp.fromJson(json['userApp']), // Acessando corretamente
       socialMedia: (json['socialMedia'] as Map<String, dynamic>).map(
         (key, value) => MapEntry(SocialMedia.fromString(key)!, value.toString()),
       ),
+      userApp: json['user'], // Acessando corretamente
       company: json['company'] ?? '',
       position: json['position'] ?? '',
       bio: json['bio'] ?? '',
@@ -32,7 +31,7 @@ class Speaker {
   /// 🔹 Converte `Speaker` em JSON
   Map<String, dynamic> toJson() {
     return {
-      'userApp': userApp.toJson(),
+      'user': userApp,
       'socialMedia': socialMedia.map((key, value) => MapEntry(key.name, value)),
       'company': company,
       'position': position,
