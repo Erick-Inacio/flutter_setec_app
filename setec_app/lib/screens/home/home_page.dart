@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
         return IconButton(
           icon: Icon(Icons.person),
           onPressed: () {
-            context.push('/createSpeaker', extra: authProvider.userApp);
+            context.push('/infoSpeaker', extra: authProvider.userApp);
           },
         );
       }

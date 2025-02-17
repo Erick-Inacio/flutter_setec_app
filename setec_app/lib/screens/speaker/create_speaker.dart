@@ -6,16 +6,16 @@ import 'package:setec_app/services/backend/speaker_service.dart';
 import 'package:setec_app/widgets/Text/FormField/speaker_form_field.dart';
 import 'package:setec_app/widgets/iconButton/save.dart';
 
-class CreateSpeaker extends StatefulWidget {
+class InfoSpeaker extends StatefulWidget {
   final UserApp userApp;
 
-  const CreateSpeaker({super.key, required this.userApp});
+  const InfoSpeaker({super.key, required this.userApp});
 
   @override
-  State<CreateSpeaker> createState() => _CreateSpeakerState();
+  State<InfoSpeaker> createState() => _InfoSpeakerState();
 }
 
-class _CreateSpeakerState extends State<CreateSpeaker> {
+class _InfoSpeakerState extends State<InfoSpeaker> {
   final formKey = GlobalKey<FormState>();
 
   final companyController = TextEditingController();
@@ -54,7 +54,7 @@ class _CreateSpeakerState extends State<CreateSpeaker> {
                         Navigator.pop(context);
                       }
                     } on Exception catch (e) {
-                      Logger().e('CreateSpeaker: $e');
+                      Logger().e('InfoSpeaker: $e');
                     }
                   }
                 })

@@ -13,28 +13,16 @@ class AppRouter {
   static final GoRouter _router = GoRouter(
     routes: <GoRoute>[
       GoRoute(
-        path: '/home',
-        builder: (context, state) => const HomePage(),
-      ),
-      GoRoute(
         path: '/loginOptions',
         builder: (context, state) => const LoginOptions(),
       ),
       GoRoute(
-        path: '/user',
+        path: '/infoSpeaker',
         builder: (context, state) {
           final userApp = state.extra as UserApp;
-          return UserScreen(user: userApp);
+          return InfoSpeaker(userApp: userApp);
         },
       ),
-      GoRoute(
-        path: '/createSpeaker',
-        builder: (context, state) {
-          final userApp = state.extra as UserApp;
-          return CreateSpeaker(userApp: userApp);
-        },
-      ),
-      
       GoRoute(
         path: '/adminUser',
         builder: (context, state) => const AdminUserMenager(),
@@ -76,5 +64,20 @@ class AppRouter {
     // return '/home';
     // },
   );
+
+  final List<GoRoute> _homeRoutes = [
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => const HomePage(),
+    )
+  ];
+
+  final List<GoRoute> _settingsRoute = [
+    GoRoute(
+      path: '/settings',
+      builder: (context, state) => const UserScreen(),
+    )
+  ];
+
   static GoRouter get router => _router;
 }
