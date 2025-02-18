@@ -1,5 +1,7 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:logger/logger.dart';
 
+@JsonEnum(alwaysCreate: true)
 enum Roles {
   admin("Administrador"),
   student("Estudante"),

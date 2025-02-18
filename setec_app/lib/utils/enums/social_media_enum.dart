@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+@JsonEnum(alwaysCreate: true)
 enum SocialMedia {
   facebook("Facebook"),
   linkedin('Linkedin'),

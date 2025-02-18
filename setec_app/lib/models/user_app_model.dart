@@ -1,14 +1,22 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:setec_app/utils/enums/relationship.dart';
 import 'package:setec_app/utils/enums/roles.dart';
 
+part 'generated/user_app_model.g.dart';
+
+@JsonSerializable()
 class UserApp {
   int? id;
   late String uid;
   late String name;
   late String email;
-  late Relationship relationship;
-  late Roles role;
   late String ra;
+
+  @JsonKey(defaultValue: {})
+  late Roles role;
+
+  @JsonKey(defaultValue: {})
+  late Relationship relationship;
 
   UserApp.empty();
 
@@ -22,29 +30,8 @@ class UserApp {
     required this.ra,
   });
 
-  factory UserApp.fromJson(Map<String, dynamic> json) {
-    return UserApp(
-      id: json['id'],
-      uid: json['uid'],
-      name: json['name'],
-      email: json['email'],
-      role: Roles.fromString(json['role']),
-      ra: json['ra'],
-      relationship: Relationship.fromString(json['relationship']),
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'uid': uid,
-      'name': name,
-      'email': email,
-      'role': role.name.toUpperCase(),
-      'ra': ra,
-      'relationship': relationship.name.toUpperCase(),
-    };
-  }
+  factory UserApp.fromJson(Map<String, dynamic> json) => _$UserAppFromJson(json);
+  Map<String, dynamic> toJson() => _$UserAppToJson(this);
 
   @override
   String toString() {

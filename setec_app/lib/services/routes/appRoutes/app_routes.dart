@@ -75,8 +75,10 @@ class AppRouter {
   final List<GoRoute> _settingsRoute = [
     GoRoute(
       path: '/settings',
-      
-      builder: (context, state) => const UserScreen(user: ,),
+      builder: (context, state) {
+        final userApp = state.extra as UserApp;
+        return UserScreen(user: userApp);
+      }
     )
   ];
 

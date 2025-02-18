@@ -10,7 +10,7 @@
 // }
 
 class UserRoutes{
-  static const String _baseUrl = "http://192.168.31.20:8080";
+  static const String _baseUrl = "http://192.168.1.110:8080";
   static const String post = "$_baseUrl/api/user";
 
   static String getById(String id) => "$_baseUrl/api/user/$id";

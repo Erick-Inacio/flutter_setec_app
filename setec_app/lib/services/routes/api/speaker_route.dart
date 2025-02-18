@@ -10,7 +10,7 @@
 // }
 
 class SpeakerRoutes{
-  static const String _baseUrl = "http://192.168.31.20:8080";
+  static const String _baseUrl = "http://192.168.1.110:8080";
 
   //Rest Verbs
   static const String post = "$_baseUrl/api/speaker";
