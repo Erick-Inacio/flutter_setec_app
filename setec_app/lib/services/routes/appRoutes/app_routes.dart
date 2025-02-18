@@ -75,7 +75,8 @@ class AppRouter {
   final List<GoRoute> _settingsRoute = [
     GoRoute(
       path: '/settings',
-      builder: (context, state) => const UserScreen(),
+      
+      builder: (context, state) => const UserScreen(user: ,),
     )
   ];
 

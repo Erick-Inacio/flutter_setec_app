@@ -1,5 +1,9 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:setec_app/utils/enums/social_media_enum.dart';
 
+part 'speaker_model.g.dart';
+
+@JsonSerializable()
 class Speaker {
   late int userApp;
   late String company;
@@ -15,29 +19,9 @@ class Speaker {
     required this.bio,
   });
 
-  /// 🔹 Converte JSON em um `Speaker`
-  factory Speaker.fromJson(Map<String, dynamic> json) {
-    return Speaker(
-      socialMedia: (json['socialMedia'] as Map<String, dynamic>).map(
-        (key, value) => MapEntry(SocialMedia.fromString(key)!, value.toString()),
-      ),
-      userApp: json['user'], // Acessando corretamente
-      company: json['company'] ?? '',
-      position: json['position'] ?? '',
-      bio: json['bio'] ?? '',
-    );
-  }
+ factory Speaker.fromJson(Map<String, dynamic> json) => _$SpeakerFromJson(json);
 
-  /// 🔹 Converte `Speaker` em JSON
-  Map<String, dynamic> toJson() {
-    return {
-      'user': userApp,
-      'socialMedia': socialMedia.map((key, value) => MapEntry(key.name, value)),
-      'company': company,
-      'position': position,
-      'bio': bio,
-    };
-  }
+  Map<String, dynamic> toJson() => _$SpeakerToJson(this);
 
   /// 🔹 Adiciona um novo link de mídia social
   void addSocialMedia(SocialMedia socialMedia, String link) {
