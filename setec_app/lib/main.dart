@@ -29,10 +29,13 @@ Future<void> main() async {
     logger.e('Main: Failed to load user from preferences: $e');
   }
 
-  runApp(ChangeNotifierProvider(
-    create: (context) => authProvider,
-    child: const MainApp(),
-  ));
+  // await dotenv.load(fileName: "A:/flutter_setec_app/setec_app/lib/assets/.env");
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => authProvider,
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatefulWidget {

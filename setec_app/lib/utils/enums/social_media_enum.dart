@@ -1,34 +1,28 @@
-import 'package:collection/collection.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-@JsonEnum(alwaysCreate: true)
+@JsonEnum()
 enum SocialMedia {
+  @JsonValue("FACEBOOK")
   facebook("Facebook"),
-  linkedin('Linkedin'),
-  instagram('Instagram'),
-  twitter('Twitter'),
-  whatsapp('WhatsApp'),
-  youtube('Youtube'),
-  telegram('Telegram'),
-  github('Github'),
-  tiktok('Tiktok'),
-  website('WebSite');
+  @JsonValue("LINKEDIN")
+  linkedin("Linkedin"),
+  @JsonValue("INSTAGRAM")
+  instagram("Instagram"),
+  @JsonValue("TWITTER")
+  twitter("Twitter"),
+  @JsonValue("WHATSAPP")
+  whatsapp("WhatsApp"),
+  @JsonValue("YOUTUBE")
+  youtube("Youtube"),
+  @JsonValue("TELEGRAM")
+  telegram("Telegram"),
+  @JsonValue("GITHUB")
+  github("Github"),
+  @JsonValue("TIKTOK")
+  tiktok("Tiktok"),
+  @JsonValue("WEBSITE")
+  website("WebSite");
 
   final String displayName;
   const SocialMedia(this.displayName);
-
-  static List<String> socialMediaName =
-      SocialMedia.values.map((role) => role.displayName).toList();
-
-  static SocialMedia? fromString(String role) {
-    return SocialMedia.values.firstWhereOrNull(
-      (e) => e.name.toLowerCase() == role.toLowerCase(),
-    );
-  }
-
-  static SocialMedia? fromNameEnum(String name) {
-    return SocialMedia.values.firstWhereOrNull(
-      (e) => e.displayName.toLowerCase() == name.toLowerCase(),
-    );
-  }
 }

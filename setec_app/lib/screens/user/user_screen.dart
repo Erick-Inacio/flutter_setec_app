@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/widgets/Text/Field/info_text_field.dart';
+import 'package:setec_app/widgets/navBar/bottom_nav_bar.dart';
 
 class UserScreen extends StatefulWidget {
   final UserApp user;
@@ -33,6 +34,7 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomNavBar(currentIndex: 1),
       appBar: AppBar(
         title: Text(userApp != null ? userApp!.name : "Usuário"),
       ),

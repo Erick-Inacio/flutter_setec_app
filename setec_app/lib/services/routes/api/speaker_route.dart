@@ -1,20 +1,9 @@
-// class SpeakerRoutes{
-//   static const String _baseUrl = "http://192.168.31.109:8080";
-//   static const String post = "$_baseUrl/api/user";
-
-//   static String getById(String id) => "$_baseUrl/api/user/$id";
-//   static String getAllUsers() => "$_baseUrl/api/user";
-
-//   static String getIdByUid(String uid) => "$_baseUrl/api/user/firebase/$uid";
-
-// }
-
 class SpeakerRoutes{
-  static const String _baseUrl = "http://192.168.1.110:8080";
+  static final String _baseUrl = 'http://172.31.160.1:8080';
 
   //Rest Verbs
-  static const String post = "$_baseUrl/api/speaker";
-  static const String put = "$_baseUrl/api/speaker";
+  static final String post = "$_baseUrl/api/speaker";
+  static final String put = "$_baseUrl/api/speaker";
 
   static String getById(String id) => "$_baseUrl/api/speaker/$id";
   static String getAllUsers() => "$_baseUrl/api/speaker";

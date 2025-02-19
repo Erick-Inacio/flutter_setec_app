@@ -1,12 +1,21 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logger/logger.dart';
 
-@JsonEnum(alwaysCreate: true)
+@JsonEnum()
 enum Relationship {
+  @JsonValue('EXALUNO')
   exaluno('Ex-aluno'),
+
+  @JsonValue('ALUNO')
   aluno('Aluno'),
+
+  @JsonValue('PROFESSOR')
   professor('Professor'),
+
+  @JsonValue('COORDENADOR')
   coordenador('Coordenador'),
+
+  @JsonValue('SEMRELACAO')
   semrelacao('Sem relação');
 
   final String displayName;

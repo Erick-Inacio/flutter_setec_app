@@ -5,6 +5,7 @@ import 'package:setec_app/models/auth_provider_model.dart';
 import 'package:setec_app/utils/enums/roles.dart';
 import 'package:setec_app/widgets/iconButton/sign_in_icon_button.dart';
 import 'package:setec_app/widgets/iconButton/sign_out_icon_button.dart';
+import 'package:setec_app/widgets/navBar/bottom_nav_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +19,9 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
     return Scaffold(
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: 0,
+      ),
       appBar: AppBar(
         title: const Text("Home Page"),
         actions: [

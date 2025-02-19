@@ -2,7 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:setec_app/utils/enums/relationship.dart';
 import 'package:setec_app/utils/enums/roles.dart';
 
-part 'generated/user_app_model.g.dart';
+part 'user_app_model.g.dart';
 
 @JsonSerializable()
 class UserApp {
@@ -12,16 +12,14 @@ class UserApp {
   late String email;
   late String ra;
 
-  @JsonKey(defaultValue: {})
   late Roles role;
-
-  @JsonKey(defaultValue: {})
+  
   late Relationship relationship;
 
   UserApp.empty();
 
   UserApp({
-    required this.id,
+    this.id,
     required this.uid,
     required this.name,
     required this.email,

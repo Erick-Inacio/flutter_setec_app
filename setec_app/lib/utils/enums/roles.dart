@@ -1,11 +1,18 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:logger/logger.dart';
 
-@JsonEnum(alwaysCreate: true)
+@JsonEnum()
 enum Roles {
+  @JsonValue('ADMIN')
   admin("Administrador"),
+
+  @JsonValue('STUDENT')
   student("Estudante"),
+
+  @JsonValue('COMMISSION')
   comission("Comissão"),
+
+  @JsonValue('SPEAKER')
   speaker("Palestrante");
 
   final String displayName;
