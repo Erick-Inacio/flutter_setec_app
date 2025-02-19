@@ -6,6 +6,7 @@ import 'package:setec_app/screens/auth/create_account_screen.dart';
 import 'package:setec_app/screens/home/home_page.dart';
 import 'package:setec_app/screens/auth/login_options.dart';
 import 'package:setec_app/screens/auth/login_with_email.dart';
+import 'package:setec_app/screens/speaker/create_speaker.dart';
 import 'package:setec_app/screens/user/user_screen.dart';
 
 class AppRouter {
@@ -37,6 +38,13 @@ class AppRouter {
       GoRoute(
         path: '/criarConta',
         builder: (context, state) => CreateAccount(),
+      ),
+      GoRoute(
+        path: '/infoSpeaker',
+        builder: (context, state) {
+          final userApp = state.extra as UserApp;
+          return InfoSpeaker(userApp: userApp);
+        },
       ),
     ],
     initialLocation: '/home',
