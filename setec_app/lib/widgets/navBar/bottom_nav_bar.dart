@@ -14,6 +14,8 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      selectedItemColor: Colors.deepPurple,
+      backgroundColor: Colors.deepPurple.shade50,
       currentIndex: currentIndex,
       onTap: (index) {
         final authProvider = context.read<AuthProvider>();
@@ -38,6 +40,7 @@ class BottomNavBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Perfil',
+          backgroundColor: Colors.deepPurple,
         ),
       ],
     );
