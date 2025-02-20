@@ -1,5 +1,7 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class UserRoutes{
-  static final String _baseUrl = 'http://192.168.54.79:8080';
+  static final String? _baseUrl = dotenv.env['BASE_URL'];
   static final String post = "$_baseUrl/api/user";
 
   static String getById(String id) => "$_baseUrl/api/user/$id";

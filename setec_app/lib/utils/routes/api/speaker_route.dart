@@ -1,5 +1,7 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class SpeakerRoutes{
-  static final String _baseUrl = 'http://192.168.54.79:8080';
+  static final String? _baseUrl = dotenv.env['BASE_URL'];
 
   //Rest Verbs
   static final String post = "$_baseUrl/api/speaker";
@@ -7,5 +9,6 @@ class SpeakerRoutes{
 
   static String getById(String id) => "$_baseUrl/api/speaker/$id";
   static String getAllUsers() => "$_baseUrl/api/speaker";
+  static String getSpeakerByUserId(int userId) => "$_baseUrl/api/speaker/findUser/$userId";
 
 }

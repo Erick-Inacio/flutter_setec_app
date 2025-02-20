@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:setec_app/models/speaker_model.dart';
+import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:setec_app/services/routes/api/speaker_route.dart';
+import 'package:setec_app/utils/routes/api/speaker_route.dart';
 
 class SpeakerService {
   static Future<List<Speaker>?> getAllSpeakers() async {
@@ -38,6 +38,34 @@ class SpeakerService {
     return null;
   }
 
+  static Future<Speaker?> getSpeakerByUserId(int userId) async {
+    try {
+      final authService = AuthService();
+      final token = await authService.getUserToken();
+      if (token == null) {
+        throw Exception("Failed to retrieve user token");
+      }
+
+      final response = await http.get(
+        Uri.parse(SpeakerRoutes.getSpeakerByUserId(userId)),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if(response.statusCode == 200) {
+        UserApp userApp = UserApp.fromJson(jsonDecode(response.body)['user']);
+        Speaker speaker = Speaker.fromJson(jsonDecode(response.body));
+        speaker.user = userApp;
+        return speaker;
+      }
+    } catch (e) {
+      throw Exception("Ocorreu um erro: $e");
+    }
+    return null;
+  }
+
   static Future<Speaker?> createSpeaker(Speaker speaker) async {
     try {
       final authService = AuthService();
@@ -54,6 +82,8 @@ class SpeakerService {
         },
         body: jsonEncode(speaker.toJson()),
       );
+
+      //
 
       if (response.statusCode == 200) {
         return Speaker.fromJson(jsonDecode(response.body));

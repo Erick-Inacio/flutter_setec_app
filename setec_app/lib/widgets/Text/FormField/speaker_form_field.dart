@@ -39,6 +39,7 @@ class _FormSpeakerFieldState extends State<FormSpeakerField> {
             child: Column(
               children: <Widget>[
                 TextFormField(
+                  controller: widget.company,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'Empresa aonde trabalha (opcional)',

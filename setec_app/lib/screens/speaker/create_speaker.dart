@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
@@ -49,9 +50,9 @@ class _InfoSpeakerState extends State<InfoSpeaker> {
                 onPressed: () async {
                   if (formKey.currentState!.validate()) {
                     try {
-                      await createSpeaker(true);
+                      await createSpeaker();
                       if (context.mounted) {
-                        Navigator.pop(context);
+                        context.go('/home');
                       }
                     } on Exception catch (e) {
                       Logger().e('InfoSpeaker: $e');
@@ -73,14 +74,16 @@ class _InfoSpeakerState extends State<InfoSpeaker> {
     );
   }
 
-  Future<void> createSpeaker(createSpeaker) async {
+  Future<void> createSpeaker() async {
     Speaker speaker = Speaker(
-      userApp: widget.userApp.id as int,
+      user: widget.userApp,
       company: companyController.text,
       position: positionController.text,
       bio: bioController.text,
       socialMedia: {},
     );
+
+    Logger().i('InfoSpeaker: $createSpeaker');
 
     await SpeakerService.createSpeaker(speaker);
   }

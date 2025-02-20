@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:setec_app/firebase_options.dart';
@@ -7,7 +8,7 @@ import 'package:setec_app/models/auth_provider_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/services/backend/user_service.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
-import 'package:setec_app/services/routes/appRoutes/app_routes.dart';
+import 'package:setec_app/utils/routes/appRoutes/app_routes.dart';
 import 'package:setec_app/themes/light_theme.dart';
 
 Future<void> main() async {
@@ -29,7 +30,7 @@ Future<void> main() async {
     logger.e('Main: Failed to load user from preferences: $e');
   }
 
-  // await dotenv.load(fileName: "A:/flutter_setec_app/setec_app/lib/assets/.env");
+  await dotenv.load(fileName: ".env");
   runApp(
     ChangeNotifierProvider(
       create: (context) => authProvider,

@@ -28,7 +28,7 @@ final ThemeData lightTheme = ThemeData(
   // )
   inputDecorationTheme: const InputDecorationTheme(
     border: InputBorder.none,
-    focusedBorder: UnderlineInputBorder(
+    focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Colors.deepPurple),
     ),
     enabledBorder: OutlineInputBorder(

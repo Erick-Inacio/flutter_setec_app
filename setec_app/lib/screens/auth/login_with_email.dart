@@ -3,8 +3,11 @@ import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:setec_app/models/auth_provider_model.dart';
+import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
+import 'package:setec_app/services/backend/speaker_service.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
+import 'package:setec_app/utils/enums/roles.dart';
 
 class LoginWithEmail extends StatefulWidget {
   const LoginWithEmail({super.key});
@@ -50,6 +53,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                     return null;
                   },
                 ),
+                SizedBox(height: 10),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
@@ -108,8 +112,21 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
 
                       authProvider.setUserApp(userApp);
 
+                      if (userApp != null &&
+                          userApp.role == Roles.speaker &&
+                          context.mounted) {
+                        Speaker? speaker =
+                            await SpeakerService.getSpeakerByUserId(
+                                userApp.id as int);
+                        if (speaker != null && context.mounted) {
+                          authProvider.turningIntoASpeaker(speaker.socialMedia,
+                              speaker.company, speaker.position, speaker.bio);
+                          context.go('/home');
+                        }
+                      }
                       if (userApp != null && context.mounted) {
-                        logger.i('LoginWithEmail: ${authProvider.userApp.toString()}');
+                        logger.i(
+                            'LoginWithEmail: ${authProvider.userApp.toString()}');
                         context.go('/home');
                       }
                     }
