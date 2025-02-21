@@ -7,7 +7,8 @@ part of 'speaker_model.dart';
 // **************************************************************************
 
 Speaker _$SpeakerFromJson(Map<String, dynamic> json) => Speaker(
-      user: const UserAppConverter().fromJson((json['user'] as num).toInt()),
+      user: const UserAppConverter()
+          .fromJson(json['user'] as Map<String, dynamic>),
       socialMedia: (json['socialMedia'] as Map<String, dynamic>).map(
         (k, e) => MapEntry($enumDecode(_$SocialMediaEnumMap, k), e as String),
       ),

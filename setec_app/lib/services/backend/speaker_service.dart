@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:setec_app/models/speaker_model.dart';
-import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
 
 import 'package:http/http.dart' as http;
@@ -55,9 +54,9 @@ class SpeakerService {
       );
 
       if(response.statusCode == 200) {
-        UserApp userApp = UserApp.fromJson(jsonDecode(response.body)['user']);
+        // UserApp userApp = UserApp.fromJson(jsonDecode(response.body)['user']);
         Speaker speaker = Speaker.fromJson(jsonDecode(response.body));
-        speaker.user = userApp;
+        // speaker.user = userApp;
         return speaker;
       }
     } catch (e) {

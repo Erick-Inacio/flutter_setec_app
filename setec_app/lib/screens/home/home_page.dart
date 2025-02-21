@@ -15,6 +15,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  CarouselController carouselController = CarouselController(
+    initialItem: 1,
+  );
+
   @override
   Widget build(BuildContext context) {
     final authProvider = context.watch<AuthProvider>();
@@ -45,11 +49,27 @@ class _HomePageState extends State<HomePage> {
                 )
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[],
-        ),
+      body: Column(
+        children: <Widget>[
+          CarouselView(
+            controller: carouselController,
+            itemExtent: 200.0,
+            children: [
+              Card(
+                color: Colors.black,
+              ),
+              Card(
+                color: Colors.red,
+              ),
+              Card(
+                color: Colors.blue,
+              ),
+              Card(
+                color: Colors.purple,
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

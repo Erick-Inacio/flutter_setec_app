@@ -104,32 +104,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                     minimumSize: Size(double.infinity, 45),
                   ),
                   onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      UserApp? userApp = await _authService.login(
-                        _emailController.text,
-                        _passwordController.text,
-                      );
-
-                      authProvider.setUserApp(userApp);
-
-                      if (userApp != null &&
-                          userApp.role == Roles.speaker &&
-                          context.mounted) {
-                        Speaker? speaker =
-                            await SpeakerService.getSpeakerByUserId(
-                                userApp.id as int);
-                        if (speaker != null && context.mounted) {
-                          authProvider.turningIntoASpeaker(speaker.socialMedia,
-                              speaker.company, speaker.position, speaker.bio);
-                          context.go('/home');
-                        }
-                      }
-                      if (userApp != null && context.mounted) {
-                        logger.i(
-                            'LoginWithEmail: ${authProvider.userApp.toString()}');
-                        context.go('/home');
-                      }
-                    }
+                    _navigationTo(context, authProvider);
                   },
                   child: Text(
                     'Login',
@@ -142,5 +117,42 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
         ),
       ),
     );
+  }
+
+  void _navigationTo(BuildContext context, AuthProvider authProvider) async {
+    if (_formKey.currentState!.validate()) {
+      UserApp? userApp;
+
+      try {
+        userApp = await _authService.login(
+          _emailController.text,
+          _passwordController.text,
+        );
+        authProvider.setUserApp(userApp);
+      } catch (e) {
+        authProvider.signOut();
+        logger.e('LoginWithEmail: $e');
+      }
+
+      if (userApp != null && userApp.role == Roles.speaker && context.mounted) {
+        Speaker? speaker;
+        try {
+          speaker = await SpeakerService.getSpeakerByUserId(userApp.id as int);
+        } on Exception catch (e) {
+          authProvider.signOut();
+          logger.e('LoginWithEmail: $e');
+        }
+        if (speaker != null && context.mounted) {
+          authProvider.turningIntoASpeaker(speaker.socialMedia, speaker.company,
+              speaker.position, speaker.bio);
+
+          context.go('/home');
+        }
+      }
+      if (userApp != null && context.mounted) {
+        logger.i('LoginWithEmail: ${authProvider.userApp.toString()}');
+        context.go('/home');
+      }
+    }
   }
 }

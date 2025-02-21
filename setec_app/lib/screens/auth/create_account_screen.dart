@@ -117,6 +117,7 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
                   return null;
                 },
               ),
+              SizedBox(height: 16.0),
               DropdownButtonFormField(
                 style: const TextStyle(
                   fontWeight: FontWeight.normal,
@@ -134,6 +135,7 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
                 decoration:
                     const InputDecoration(labelText: 'Tipo de Cadastro'),
               ),
+              SizedBox(height: 16.0),
               DropdownButtonFormField(
                 focusColor: Colors.deepPurple,
                 style: const TextStyle(

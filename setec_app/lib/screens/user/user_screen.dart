@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:setec_app/models/auth_provider_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
+import 'package:setec_app/utils/enums/roles.dart';
 import 'package:setec_app/widgets/Text/Field/info_text_field.dart';
 import 'package:setec_app/widgets/navBar/bottom_nav_bar.dart';
 
@@ -33,11 +37,25 @@ class _UserScreenState extends State<UserScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AuthProvider authProvider = context.watch<AuthProvider>();
+
     return Scaffold(
       bottomNavigationBar: BottomNavBar(currentIndex: 1),
       appBar: AppBar(
-        title: Text(userApp != null ? userApp!.name : "Usuário"),
-      ),
+          title: Text(userApp != null ? userApp!.name : "Usuário"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                if(authProvider.userApp != null && authProvider.userApp!.role != Roles.speaker) {
+                  context.push('/infoSpeaker', extra: authProvider.userApp);
+                }
+              },
+              child: Text(
+                'Deseja palestrar?',
+                style: TextStyle(fontSize: 12),
+              ),
+            ),
+          ]),
       resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: 16.0),
