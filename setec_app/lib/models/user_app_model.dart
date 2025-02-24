@@ -10,7 +10,7 @@ class UserApp {
   late String uid;
   late String name;
   late String email;
-  late String ra;
+  late String? ra;
 
   late Roles role;
   

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
-import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/services/backend/user_service.dart';
 import 'package:setec_app/widgets/cards/user_card.dart';
 import 'package:setec_app/widgets/iconButton/sign_out_icon_button.dart';
@@ -14,7 +13,7 @@ class AdminUserMenager extends StatefulWidget {
 }
 
 class _AdminUserMenagerState extends State<AdminUserMenager> {
-  List<UserApp?>? users;
+  List<dynamic>? users;
   bool _isLoading = true;
 
   @override
@@ -29,22 +28,26 @@ class _AdminUserMenagerState extends State<AdminUserMenager> {
       appBar: AppBar(
         title: const Text("Admin"),
         actions: <Widget>[
-          // IconButton(
-          //   icon: const Icon(Icons.home_filled),
-          //   onPressed: () => context.go('/home'),
-          // ),
           SignOutIconButton(parentContext: context),
         ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
           : ListView.builder(
               itemCount: users?.length ?? 0,
               itemBuilder: (context, index) {
                 return UserCard(
                   userApp: users![index],
                   onTap: () {
-                    context.push('/user', extra: users![index]);
+                    context.push(
+                      '/user',
+                      extra: {
+                        'user': users![index],
+                        'context': null,
+                      },
+                    );
                   },
                 );
               },
@@ -57,11 +60,13 @@ class _AdminUserMenagerState extends State<AdminUserMenager> {
     Logger logger = Logger();
     try {
       users = await userServices.getAllUsers();
+      logger.i('AdminPage: Usuários buscados com sucesso: ${users?.length}');
       setState(() {
         _isLoading = false;
       });
     } on Exception catch (e, stacktrace) {
-      logger.e('AdminPage: Erro ao buscar os usu arios: $e', stackTrace: stacktrace);
+      logger.e('AdminPage: Erro ao buscar os usuários: $e',
+          stackTrace: stacktrace);
     }
   }
 }

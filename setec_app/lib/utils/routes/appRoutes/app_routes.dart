@@ -1,20 +1,29 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 import 'package:setec_app/models/auth_provider_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/screens/admin/admin_user_menager_screen.dart';
-import 'package:setec_app/screens/auth/create_account_screen.dart';
+import 'package:setec_app/screens/auth/emailAndPassword/createAccount/create_account_screen.dart';
+import 'package:setec_app/screens/auth/emailAndPassword/createAccount/create_user.dart';
 import 'package:setec_app/screens/home/home_page.dart';
 import 'package:setec_app/screens/auth/login_options.dart';
-import 'package:setec_app/screens/auth/login_with_email.dart';
-import 'package:setec_app/screens/speaker/create_speaker.dart';
+import 'package:setec_app/screens/auth/emailAndPassword/login_with_email.dart';
 import 'package:setec_app/screens/user/user_screen.dart';
 
 class AppRouter {
+  static GoRouter get router => _router;
+
   static final GoRouter _router = GoRouter(
+    initialLocation: '/home',
+    refreshListenable: AuthProvider(),
+    debugLogDiagnostics: true,
     routes: <GoRoute>[
       GoRoute(
         path: '/home',
-        builder: (context, state) => const HomePage(),
+        builder: (context, state) {
+          return HomePage();
+        },
       ),
       GoRoute(
         path: '/loginOptions',
@@ -23,8 +32,11 @@ class AppRouter {
       GoRoute(
         path: '/user',
         builder: (context, state) {
-          final userApp = state.extra as UserApp;
-          return UserScreen(user: userApp);
+          final map = state.extra as Map<String, dynamic>;
+          Logger().i(map);
+          BuildContext? context = map['context'] as BuildContext?;
+          dynamic user = map['user'] as dynamic;
+          return UserScreen(user: user, parentContext: context);
         },
       ),
       GoRoute(
@@ -40,16 +52,23 @@ class AppRouter {
         builder: (context, state) => CreateAccount(),
       ),
       GoRoute(
-        path: '/infoSpeaker',
+        path: '/createUser',
         builder: (context, state) {
-          final userApp = state.extra as UserApp;
-          return InfoSpeaker(userApp: userApp);
+          final map = state.extra as Map<String, dynamic>;
+          final userApp = map['user'] as UserApp;
+          final password = map['password'] as String;
+          return CreateUser(userApp: userApp, password: password);
         },
       ),
+      // GoRoute(
+      //   path: '/infoSpeaker',
+      //   builder: (context, state) {
+      //     final context = state.extra as BuildContext;
+      //     return InfoSpeaker(
+      //       parentContext: context,
+      //     );
+      //   },
+      // ),
     ],
-    initialLocation: '/home',
-    refreshListenable: AuthProvider(),
-    debugLogDiagnostics: true,
   );
-  static GoRouter get router => _router;
 }

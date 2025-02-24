@@ -43,6 +43,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
               children: <Widget>[
                 TextFormField(
                   controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
                     labelText: 'Email',
                   ),
@@ -56,6 +57,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                 SizedBox(height: 10),
                 TextFormField(
                   controller: _passwordController,
+                  keyboardType: TextInputType.visiblePassword,
                   obscureText: true,
                   decoration: const InputDecoration(
                     labelText: 'Password',
@@ -128,29 +130,32 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
           _emailController.text,
           _passwordController.text,
         );
-        authProvider.setUserApp(userApp);
+
+        if (userApp != null) {
+          authProvider.setUserApp(userApp);
+        }
       } catch (e) {
         authProvider.signOut();
         logger.e('LoginWithEmail: $e');
       }
 
+      //TODO: tentar otimizar a consulta no banco para ver se o usuário é speaker e já retornar tudo em uma unica consulta
       if (userApp != null && userApp.role == Roles.speaker && context.mounted) {
         Speaker? speaker;
         try {
-          speaker = await SpeakerService.getSpeakerByUserId(userApp.id as int);
+          speaker = await SpeakerServices.getSpeakerByUserId(userApp.id as int);
         } on Exception catch (e) {
           authProvider.signOut();
           logger.e('LoginWithEmail: $e');
         }
         if (speaker != null && context.mounted) {
-          authProvider.turningIntoASpeaker(speaker.socialMedia, speaker.company,
-              speaker.position, speaker.bio);
+          authProvider.setSpeaker(speaker);
 
           context.go('/home');
         }
       }
       if (userApp != null && context.mounted) {
-        logger.i('LoginWithEmail: ${authProvider.userApp.toString()}');
+        logger.i('LoginWithEmail: ${authProvider.actualUser.toString()}');
         context.go('/home');
       }
     }

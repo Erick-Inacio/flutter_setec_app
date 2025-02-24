@@ -1,18 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:logger/logger.dart';
 import 'package:setec_app/models/speaker_model.dart';
+import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:setec_app/utils/routes/api/speaker_route.dart';
 
-class SpeakerService {
+class SpeakerServices {
   static Future<List<Speaker>?> getAllSpeakers() async {
+    Logger logger = Logger();
     try {
       final authService = AuthService();
       final token = await authService.getUserToken();
       if (token == null) {
-        throw Exception("Failed to retrieve user token");
+        logger.e("Failed to retrieve user token");
       }
 
       final response = await http.get(Uri.parse(SpeakerRoutes.getAllUsers()),
@@ -26,23 +29,24 @@ class SpeakerService {
         return responseData.map((json) => Speaker.fromJson(json)).toList();
       }
     } on SocketException catch (e) {
-      throw Exception("Erro ao conectar-se ao servidor: $e");
+      logger.e("Erro ao conectar-se ao servidor: $e");
     } on HttpException catch (e) {
-      throw Exception("Erro na solicitação HTTP: $e");
+      logger.e("Erro na solicitação HTTP: $e");
     } on FormatException catch (e) {
-      throw Exception("Formato de dados inválido: $e");
+      logger.e("Formato de dados inválido: $e");
     } on Exception catch (e) {
-      throw Exception("Ocorreu um erro: $e");
+      logger.e("Ocorreu um erro: $e");
     }
     return null;
   }
 
   static Future<Speaker?> getSpeakerByUserId(int userId) async {
+    Logger logger = Logger();
     try {
       final authService = AuthService();
       final token = await authService.getUserToken();
       if (token == null) {
-        throw Exception("Failed to retrieve user token");
+        logger.e("Failed to retrieve user token");
       }
 
       final response = await http.get(
@@ -53,24 +57,25 @@ class SpeakerService {
         },
       );
 
-      if(response.statusCode == 200) {
-        // UserApp userApp = UserApp.fromJson(jsonDecode(response.body)['user']);
+      if (response.statusCode == 200) {
+        UserApp userApp = UserApp.fromJson(jsonDecode(response.body)['user']);
         Speaker speaker = Speaker.fromJson(jsonDecode(response.body));
-        // speaker.user = userApp;
+        speaker.user = userApp;
         return speaker;
       }
     } catch (e) {
-      throw Exception("Ocorreu um erro: $e");
+      logger.e("Ocorreu um erro: $e");
     }
     return null;
   }
 
   static Future<Speaker?> createSpeaker(Speaker speaker) async {
+    Logger logger = Logger();
     try {
       final authService = AuthService();
       final token = await authService.getUserToken();
       if (token == null) {
-        throw Exception("Failed to retrieve user token");
+        logger.e("Failed to retrieve user token");
       }
 
       final response = await http.post(
@@ -82,30 +87,30 @@ class SpeakerService {
         body: jsonEncode(speaker.toJson()),
       );
 
-      //
-
       if (response.statusCode == 200) {
         return Speaker.fromJson(jsonDecode(response.body));
       } else {
         return null;
       }
     } on SocketException catch (e) {
-      throw Exception("Erro ao conectar-se ao servidor: $e");
+      logger.e("Erro ao conectar-se ao servidor: $e");
     } on HttpException catch (e) {
-      throw Exception("Erro na solicitação HTTP: $e");
+      logger.e("Erro na solicitação HTTP: $e");
     } on FormatException catch (e) {
-      throw Exception("Formato de dados inválido: $e");
+      logger.e("Formato de dados inválido: $e");
     } on Exception catch (e) {
-      throw Exception("Ocorreu um erro: $e");
+      logger.e("Ocorreu um erro: $e");
     }
+    return null;
   }
 
   static Future<Speaker?> updateSpeaker(Speaker speaker) async {
+    Logger logger = Logger();
     try {
       final authService = AuthService();
       final token = await authService.getUserToken();
       if (token == null) {
-        throw Exception("Failed to retrieve user token");
+        logger.e("Failed to retrieve user token");
       }
 
       final response = await http.put(Uri.parse(SpeakerRoutes.put), headers: {
@@ -119,13 +124,14 @@ class SpeakerService {
         return null;
       }
     } on SocketException catch (e) {
-      throw Exception("Erro ao conectar-se ao servidor: $e");
+      logger.e("Erro ao conectar-se ao servidor: $e");
     } on HttpException catch (e) {
-      throw Exception("Erro na solicitação HTTP: $e");
+      logger.e("Erro na solicitação HTTP: $e");
     } on FormatException catch (e) {
-      throw Exception("Formato de dados inválido: $e");
+      logger.e("Formato de dados inválido: $e");
     } on Exception catch (e) {
-      throw Exception("Ocorreu um erro: $e");
+      logger.e("Ocorreu um erro: $e");
     }
+    return null;
   }
 }

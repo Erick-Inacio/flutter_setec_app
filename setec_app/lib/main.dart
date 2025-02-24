@@ -5,14 +5,14 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:setec_app/firebase_options.dart';
 import 'package:setec_app/models/auth_provider_model.dart';
-import 'package:setec_app/models/user_app_model.dart';
-import 'package:setec_app/services/backend/user_service.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
 import 'package:setec_app/utils/routes/appRoutes/app_routes.dart';
 import 'package:setec_app/themes/light_theme.dart';
 
 Future<void> main() async {
   Logger logger = Logger();
+
+  // Inicializa o firebase
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp(
@@ -23,6 +23,7 @@ Future<void> main() async {
     return;
   }
 
+  // Carrega o usuario local autenticado
   final authProvider = AuthProvider();
   try {
     await authProvider.loadUserFromPreferences();
@@ -30,8 +31,10 @@ Future<void> main() async {
     logger.e('Main: Failed to load user from preferences: $e');
   }
 
+  //Carrega o arquivo .env
   await dotenv.load(fileName: ".env");
   runApp(
+    //Carrega o gerenciador de estado e inicia a aplicação
     ChangeNotifierProvider(
       create: (context) => authProvider,
       child: const MainApp(),
@@ -69,9 +72,6 @@ class _MainAppState extends State<MainApp> {
     try {
       final user = _authService.currentUser;
       if (user != null) {
-        UserApp? userApp = await UserServices.getUser(user.uid);
-
-        authProvider.setUserApp(userApp);
         await authProvider.loadUserFromPreferences();
       }
     } on Exception catch (e, stacktrace) {
@@ -87,11 +87,6 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
-    // Logger logger = Logger();
-    // ignore: unused_local_variable
-    final authProvider = context.watch<AuthProvider>();
-    // logger.e('Main: Testando na Main: ${authProvider.userApp}');
-
     return _isLoading
         ? const Center(child: CircularProgressIndicator())
         : MaterialApp.router(

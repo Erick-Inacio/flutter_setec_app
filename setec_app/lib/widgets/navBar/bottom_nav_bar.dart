@@ -25,11 +25,11 @@ class BottomNavBar extends StatelessWidget {
               context.go('/home');
               break;
             case 1:
-              context.go('/user', extra: authProvider.userApp);
+              context.push('/user', extra: {'context': context});
               break;
           }
         } else {
-          context.go('/loginOptions');
+          context.push('/loginOptions');
         }
       },
       items: const <BottomNavigationBarItem>[

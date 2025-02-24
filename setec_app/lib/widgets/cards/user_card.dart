@@ -13,7 +13,6 @@ class UserCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Card(
-        elevation: 4,
         margin: const EdgeInsets.all(8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: ListTile(

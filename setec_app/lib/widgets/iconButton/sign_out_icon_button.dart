@@ -17,8 +17,8 @@ class SignOutIconButton extends StatelessWidget {
         try {
           await authProvider.signOut();
           Logger().i(
-              "SignOutButtom: Rebuild da tela. Usuário atual: ${authProvider.userApp}");
-          Logger().i('SignOutButtom: $authProvider.userApp.toString()');
+              "SignOutButtom: Rebuild da tela. Usuário atual: ${authProvider.actualUser}");
+          Logger().i('SignOutButtom: $authProvider.actualUser.toString()');
 
           if (context.mounted) {
             context.go('/loginOptions');

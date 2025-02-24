@@ -3,24 +3,26 @@ import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/utils/enums/relationship.dart';
 import 'package:setec_app/utils/enums/roles.dart';
 
-class UserAppConverter implements JsonConverter<UserApp, Map<String, dynamic>> {
+class UserAppConverter implements JsonConverter<UserApp, dynamic> {
   const UserAppConverter();
 
   @override
-  UserApp fromJson(Map<String, dynamic> json) {
-    final user = json['user'];
+  UserApp fromJson(dynamic json) {
+    if (json is Map<String, dynamic>) {
 
-    return UserApp(
-      id: user['id'],
-      uid: user['uid'],
-      name: user['name'],
-      email: user['email'],
-      role: Roles.fromString(user['role']),
-      ra: user['ra'],
-      relationship: Relationship.fromString(
-        user['relationship'],
-      ),
-    );
+      return UserApp(
+        id: json['id'],
+        uid: json['uid'],
+        name: json['name'],
+        email: json['email'],
+        role: Roles.fromString(json['role']),
+        ra: json['ra'],
+        relationship: Relationship.fromString(
+          json['relationship'],
+        ),
+      );
+    }
+    throw Exception('Invalid JSON format');
   }
 
   @override

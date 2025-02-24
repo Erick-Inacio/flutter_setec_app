@@ -1,101 +1,175 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:setec_app/models/auth_provider_model.dart';
+import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
+import 'package:setec_app/utils/enums/relationship.dart';
 import 'package:setec_app/utils/enums/roles.dart';
-import 'package:setec_app/widgets/Text/Field/info_text_field.dart';
+import 'package:setec_app/widgets/Text/FormField/speaker_form_field.dart';
 import 'package:setec_app/widgets/navBar/bottom_nav_bar.dart';
 
 class UserScreen extends StatefulWidget {
-  final UserApp user;
+  final BuildContext? parentContext;
+  final dynamic user;
 
-  const UserScreen({super.key, required this.user});
-
+  const UserScreen({super.key, this.user, this.parentContext});
   @override
   State<UserScreen> createState() => _UserScreenState();
 }
 
 class _UserScreenState extends State<UserScreen> {
+  final _formKey = GlobalKey<FormState>();
+
   late TextEditingController raController = TextEditingController();
   late TextEditingController emailController = TextEditingController();
   late TextEditingController roleController = TextEditingController();
   late TextEditingController relationshipController = TextEditingController();
-  UserApp? userApp;
+
+  //Speaker fields
+  late TextEditingController bioController = TextEditingController();
+  late TextEditingController companyController = TextEditingController();
+  late TextEditingController positionController = TextEditingController();
+
+  UserApp userApp = UserApp.empty();
+
+  late dynamic _user;
+  late bool isStudent;
+  late bool isSpeaker;
 
   @override
   void initState() {
-    userApp = widget.user;
-    if (userApp != null) {
-      raController.text = userApp!.ra;
-      emailController.text = userApp!.email;
-      roleController.text = userApp!.role.displayName;
-      relationshipController.text = userApp!.relationship.displayName;
-    }
+    _initValues();
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
-    AuthProvider authProvider = context.watch<AuthProvider>();
+  void dispose() {
+    raController.dispose();
+    emailController.dispose();
+    roleController.dispose();
+    relationshipController.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavBar(currentIndex: 1),
       appBar: AppBar(
-          title: Text(userApp != null ? userApp!.name : "Usuário"),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () async {
-                if(authProvider.userApp != null && authProvider.userApp!.role != Roles.speaker) {
-                  context.push('/infoSpeaker', extra: authProvider.userApp);
-                }
-              },
-              child: Text(
-                'Deseja palestrar?',
-                style: TextStyle(fontSize: 12),
-              ),
-            ),
-          ]),
+        title: Text(userApp.name),
+        actions: <Widget>[
+          !(userApp.role == Roles.admin) // sim
+              ? !isSpeaker
+                  ? TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Deseja Palestrar?',
+                        style: GoogleFonts.lato(
+                          color: Colors.deepPurple,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : Container()
+              : Container(),
+        ],
+      ),
       resizeToAvoidBottomInset: true,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              height: MediaQuery.of(context).size.height * 0.3,
-              child: CircleAvatar(
-                backgroundColor: Colors.deepPurple,
-                radius: 60,
-                child: Icon(
-                  Icons.person,
-                  size: 80,
-                  color: Colors.white,
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.all(16.0),
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.deepPurple,
+                          radius: 60,
+                          child: Icon(
+                            Icons.person,
+                            size: 80,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      TextFormField(
+                        decoration: InputDecoration(labelText: 'Email'),
+                        controller: emailController,
+                      ),
+                      SizedBox(height: 16),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Permissão',
+                        ),
+                        controller: roleController,
+                      ),
+                      SizedBox(height: 16),
+                      TextFormField(
+                        decoration:
+                            InputDecoration(labelText: 'Relação com a FATEC'),
+                        controller: relationshipController,
+                      ),
+                      SizedBox(height: 16),
+                      isStudent
+                          ? TextFormField(
+                              decoration: InputDecoration(labelText: 'RA'),
+                              controller: raController,
+                            )
+                          : Container(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            InfoTextField(
-              info: 'RA',
-              controller: raController,
-            ),
-            SizedBox(height: 16),
-            InfoTextField(
-              info: 'Email',
-              controller: emailController,
-            ),
-            SizedBox(height: 16),
-            InfoTextField(
-              info: 'Permissão',
-              controller: roleController,
-            ),
-            SizedBox(height: 16),
-            InfoTextField(
-              info: 'Relação com a FATEC',
-              controller: relationshipController,
-            ),
-          ],
+              isSpeaker
+                  ? FormSpeakerField(
+                      parentContext: context,
+                      company: companyController,
+                      position: positionController,
+                      bio: bioController,
+                    )
+                  : Container(),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  void _initValues() {
+    _user = widget.user ?? widget.parentContext!.watch<AuthProvider>();
+
+    if (widget.user == null) {
+      if (_user.actualUser is Speaker) {
+        isSpeaker = true;
+
+        bioController.text = _user.actualUser!.bio as String;
+        companyController.text = _user.actualUser!.company as String;
+        positionController.text = _user.actualUser!.position as String;
+
+        userApp = _user.actualUser!.user;
+      } else {
+        isSpeaker = false;
+
+        userApp = _user.actualUser!;
+      }
+    } else if (widget.user is! Speaker) {
+      isSpeaker = false;
+      userApp = widget.user;
+    }
+    isStudent = userApp.relationship == Relationship.aluno ? true : false;
+    raController.text = isStudent ? userApp.ra as String : '';
+    emailController.text = userApp.email;
+    roleController.text = userApp.role.displayName;
+    relationshipController.text = userApp.relationship.displayName;
   }
 }

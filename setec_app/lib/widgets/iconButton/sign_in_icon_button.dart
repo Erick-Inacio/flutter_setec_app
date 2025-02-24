@@ -15,7 +15,7 @@ class SignInIconButton extends StatelessWidget {
       onPressed: () async {
         final authProvider =
             Provider.of<AuthProvider>(parentContext, listen: false);
-        Logger().i('SignInButtom: $authProvider.userApp.toString()');
+        Logger().i('SignInButtom: $authProvider.actualUser.toString()');
 
         if (context.mounted) {
           context.push('/loginOptions');

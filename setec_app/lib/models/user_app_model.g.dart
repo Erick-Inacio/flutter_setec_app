@@ -13,7 +13,7 @@ UserApp _$UserAppFromJson(Map<String, dynamic> json) => UserApp(
       email: json['email'] as String,
       relationship: $enumDecode(_$RelationshipEnumMap, json['relationship']),
       role: $enumDecode(_$RolesEnumMap, json['role']),
-      ra: json['ra'] as String,
+      ra: json['ra'] as String?,
     );
 
 Map<String, dynamic> _$UserAppToJson(UserApp instance) => <String, dynamic>{

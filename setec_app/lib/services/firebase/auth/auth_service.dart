@@ -28,7 +28,8 @@ class AuthService {
             return userApp;
           }
         } on Exception catch (e, stacktrace) {
-          logger.e("AuthServices: Erro ao buscar dados do usuário: $e", stackTrace: stacktrace);
+          logger.e("AuthServices: Erro ao buscar dados do usuário: $e",
+              stackTrace: stacktrace);
         }
       }
       return null;
@@ -59,5 +60,14 @@ class AuthService {
   //Desloga o usuário
   Future<void> logout() async {
     await _authEmail.logout();
+  }
+
+  //Deleta o usuario do firebase
+  Future<void> deleteUser() async {
+    try {
+      FirebaseAuth.instance.currentUser!.delete;
+    } on Exception catch (e) {
+      logger.e("AuthServices: Erro ao deletar usuário: $e");
+    }
   }
 }

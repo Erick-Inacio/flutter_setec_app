@@ -14,11 +14,11 @@ class UserServices {
       if (token != null) {
         final response = await http.post(
           Uri.parse(UserRoutes.post),
-          body: jsonEncode(userApp.toJson()),
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer $token'
           },
+          body: jsonEncode(userApp.toJson()),
         );
 
         if (response.statusCode == 200) {
@@ -107,5 +107,37 @@ class UserServices {
       throw Exception("Erro ao buscar o usuario: $e");
     }
     return null;
+  }
+
+  static Future<String?> deleteUser(UserApp userApp) async {
+    try {
+      if (userApp.id == null) {
+        throw Exception("User id is null");
+      }
+
+      final authService = AuthService();
+      final token = await authService.getUserToken();
+      if (token == null) {
+        throw Exception("AuthService: Failed to retrieve user token");
+      }
+
+      final response = await http.delete(
+        Uri.parse(UserRoutes.delete(userApp.id as int)),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json'
+        },
+      );
+
+      if (response.statusCode == 204) {
+        return "User deleted successfully";
+      } else {
+        throw Exception(
+            "Failed to delete user: ${response.statusCode} ${response.reasonPhrase}");
+      }
+
+    } on Exception catch (e) {
+      throw Exception("Failed to delete user: $e");
+    }
   }
 }

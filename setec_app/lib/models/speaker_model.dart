@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:setec_app/models/user_app_model.dart';
+import 'package:setec_app/utils/converters/social_media_converter.dart';
 import 'package:setec_app/utils/converters/user_app_converter.dart';
 import 'package:setec_app/utils/enums/social_media_enum.dart';
 
@@ -10,6 +11,8 @@ class Speaker {
   String company;
   String position;
   String bio;
+
+  @SocialMediaConverter()
   Map<SocialMedia, String> socialMedia;
 
   @UserAppConverter()
