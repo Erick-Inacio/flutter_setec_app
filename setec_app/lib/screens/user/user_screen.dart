@@ -103,11 +103,13 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                       SizedBox(height: 16),
                       TextFormField(
+                        enabled: false,
                         decoration: InputDecoration(labelText: 'Email'),
                         controller: emailController,
                       ),
                       SizedBox(height: 16),
                       TextFormField(
+                        enabled: false,
                         decoration: InputDecoration(
                           labelText: 'Permissão',
                         ),
@@ -115,6 +117,7 @@ class _UserScreenState extends State<UserScreen> {
                       ),
                       SizedBox(height: 16),
                       TextFormField(
+                        enabled: false,
                         decoration:
                             InputDecoration(labelText: 'Relação com a FATEC'),
                         controller: relationshipController,
@@ -122,6 +125,7 @@ class _UserScreenState extends State<UserScreen> {
                       SizedBox(height: 16),
                       isStudent
                           ? TextFormField(
+                            enabled: false,
                               decoration: InputDecoration(labelText: 'RA'),
                               controller: raController,
                             )
