@@ -1,0 +1,36 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "setec-front",
+          "appId": "1:1017299149035:android:359f77c6ad9024796f1eae",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "setec-front",
+          "configurations": {
+            "android": "1:1017299149035:android:359f77c6ad9024796f1eae",
+            "ios": "1:1017299149035:ios:3a2de73935dea29b6f1eae",
+            "web": "1:1017299149035:web:9be88d4de060d4fa6f1eae"
+          }
+        }
+      }
+    }
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 9098
+    },
+    "ui": {
+      "enabled": true,
+      "port": 9097
+    },
+    "singleProjectMode": true
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1017299149035",
+    "project_id": "setec-front",
+    "storage_bucket": "setec-front.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1017299149035:android:359f77c6ad9024796f1eae",
+        "android_client_info": {
+          "package_name": "com.example.setec_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1017299149035-j0l8h62ha1ca2u1jvp04tn90ubqucfk4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFPr2oKagDSvI24Xxq_OBlzihJEaX8pjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1017299149035-j0l8h62ha1ca2u1jvp04tn90ubqucfk4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
