@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart' hide AuthProvider;
 
 import 'package:logger/logger.dart';
 import 'package:setec_app/models/user_app_model.dart';
-import 'package:setec_app/services/backend/user_service.dart';
+import 'package:setec_app/services/backend/user_services.dart';
 import 'package:setec_app/services/firebase/auth/auth_email_firebase.dart';
 
 class AuthService {

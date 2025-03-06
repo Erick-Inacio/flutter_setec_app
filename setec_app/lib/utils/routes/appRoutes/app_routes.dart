@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
-import 'package:setec_app/models/auth_provider_model.dart';
-import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/screens/admin/admin_user_menager_screen.dart';
+import 'package:setec_app/screens/event/manage_event.dart';
+import 'package:setec_app/utils/provider/auth_provider_model.dart';
+import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/screens/auth/emailAndPassword/createAccount/create_account_screen.dart';
 import 'package:setec_app/screens/auth/emailAndPassword/createAccount/create_user.dart';
+import 'package:setec_app/screens/event/event_screen.dart';
 import 'package:setec_app/screens/home/home_page.dart';
 import 'package:setec_app/screens/auth/login_options.dart';
 import 'package:setec_app/screens/auth/emailAndPassword/login_with_email.dart';
+import 'package:setec_app/screens/main/main_screen.dart';
 import 'package:setec_app/screens/user/user_screen.dart';
 
 class AppRouter {
@@ -18,30 +21,14 @@ class AppRouter {
     initialLocation: '/home',
     refreshListenable: AuthProvider(),
     debugLogDiagnostics: true,
-    routes: <GoRoute>[
-      GoRoute(
-        path: '/home',
-        builder: (context, state) {
-          return HomePage();
-        },
-      ),
+    routes: [
       GoRoute(
         path: '/loginOptions',
         builder: (context, state) => const LoginOptions(),
       ),
       GoRoute(
-        path: '/user',
-        builder: (context, state) {
-          final map = state.extra as Map<String, dynamic>;
-          Logger().i(map);
-          BuildContext? context = map['context'] as BuildContext?;
-          dynamic user = map['user'] as dynamic;
-          return UserScreen(user: user, parentContext: context);
-        },
-      ),
-      GoRoute(
         path: '/adminUser',
-        builder: (context, state) => const AdminUserMenager(),
+        builder: (context, state) => const AdminUserManager(),
       ),
       GoRoute(
         path: '/loginWithEmail',
@@ -60,15 +47,50 @@ class AppRouter {
           return CreateUser(userApp: userApp, password: password);
         },
       ),
-      // GoRoute(
-      //   path: '/infoSpeaker',
-      //   builder: (context, state) {
-      //     final context = state.extra as BuildContext;
-      //     return InfoSpeaker(
-      //       parentContext: context,
-      //     );
-      //   },
-      // ),
+      GoRoute(
+        path: '/manageEvents',
+        builder: (context, child) {
+          return ManageEvents();
+        },
+      ),
+      ShellRoute(
+        builder: (context, state, child) {
+          return HomePageNavBar(child: child);
+        },
+        routes: <GoRoute>[
+          GoRoute(
+            path: '/home',
+            builder: (context, state) {
+              return MainScreen();
+            },
+          ),
+          GoRoute(
+              path: '/events',
+              builder: (context, state) {
+                return EventsScreen();
+              }),
+          GoRoute(
+            path: '/user',
+            builder: (context, state) {
+              final map = state.extra as Map<String, dynamic>;
+              Logger().i(map);
+              BuildContext? context = map['context'] as BuildContext?;
+              dynamic user = map['user'] as dynamic;
+              return UserScreen(
+                user: user,
+                parentContext: context,
+              );
+            },
+          ),
+
+          // GoRoute(
+          //   path: '/adminMenu',
+          //   builder: (context, state) {
+          //     return const AdminUserManager();
+          //   },
+          // )
+        ],
+      ),
     ],
   );
 }

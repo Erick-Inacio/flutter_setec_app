@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
-import 'package:setec_app/services/backend/user_service.dart';
+import 'package:setec_app/services/backend/user_services.dart';
 import 'package:setec_app/widgets/cards/user_card.dart';
 import 'package:setec_app/widgets/iconButton/sign_out_icon_button.dart';
 
-class AdminUserMenager extends StatefulWidget {
-  const AdminUserMenager({super.key});
+class AdminUserManager extends StatefulWidget {
+  const AdminUserManager({super.key});
 
   @override
-  State<AdminUserMenager> createState() => _AdminUserMenagerState();
+  State<AdminUserManager> createState() => _AdminUserManagerState();
 }
 
-class _AdminUserMenagerState extends State<AdminUserMenager> {
+class _AdminUserManagerState extends State<AdminUserManager> {
   List<dynamic>? users;
   bool _isLoading = true;
 

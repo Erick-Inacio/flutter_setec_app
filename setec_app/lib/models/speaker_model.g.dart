@@ -7,7 +7,8 @@ part of 'speaker_model.dart';
 // **************************************************************************
 
 Speaker _$SpeakerFromJson(Map<String, dynamic> json) => Speaker(
-      user: const UserAppConverter().fromJson(json['user']),
+      id: (json['id'] as num?)?.toInt(),
+      user: json['user'],
       socialMedia: const SocialMediaConverter().fromJson(json['socialMedia']),
       company: json['company'] as String,
       position: json['position'] as String,
@@ -15,9 +16,10 @@ Speaker _$SpeakerFromJson(Map<String, dynamic> json) => Speaker(
     );
 
 Map<String, dynamic> _$SpeakerToJson(Speaker instance) => <String, dynamic>{
+      'id': instance.id,
       'company': instance.company,
       'position': instance.position,
       'bio': instance.bio,
+      'user': instance.user,
       'socialMedia': const SocialMediaConverter().toJson(instance.socialMedia),
-      'user': const UserAppConverter().toJson(instance.user),
     };

@@ -1,28 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/models/auth_provider_model.dart';
 import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
-import 'package:setec_app/utils/enums/roles.dart';
+import 'package:setec_app/utils/provider/auth_provider_model.dart';
+import 'package:setec_app/widgets/drawer/custom_drawer.dart';
 import 'package:setec_app/widgets/iconButton/sign_in_icon_button.dart';
 import 'package:setec_app/widgets/iconButton/sign_out_icon_button.dart';
 import 'package:setec_app/widgets/navBar/bottom_nav_bar.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePageNavBar extends StatefulWidget {
+  final Widget child;
+  const HomePageNavBar({super.key, required this.child});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePageNavBar> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePageNavBar> {
   //Gerenciador de Estado
   late AuthProvider authProvider;
 
-  CarouselController carouselController = CarouselController(
-    initialItem: 1,
-  );
+  UserApp userApp = UserApp.empty();
+  String name = '';
+
+  //Controlador de index das páginas
+  int _selectedIndex = 0;
+
+  //Lista de títulos correspondente às teças
+  List<String> _titles = [];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   void initState() {
@@ -32,79 +43,51 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     authProvider = context.watch<AuthProvider>();
+    _titles = ['Inicio', 'Eventos', name];
 
     return Scaffold(
+      drawer: authProvider.isAuthenticated
+          ? CustomDrawer(
+              userApp: userApp,
+              parentContext: context,
+            )
+          : null,
       bottomNavigationBar: authProvider.isAuthenticated
           ? BottomNavBar(
-              currentIndex: 0,
+              onTabTapped: _onItemTapped,
+              selectedIndex: _selectedIndex,
             )
           : null,
       appBar: AppBar(
-        title: const Text("Home Page"),
-        actions: typeButtom(authProvider),
-      ),
-      body: Column(
-        children: <Widget>[
-          // SizedBox(
-          //   height: 200,
-          //   child: CarouselView(
-          //     controller: carouselController,
-          //     itemExtent: 200.0,
-          //     elevation: 4,
-          //     children: [
-          //       Card(
-          //         color: Colors.deepPurple,
-          //       ),
-          //       Card(
-          //         color: Colors.deepPurple,
-          //       ),
-          //       Card(
-          //         color: Colors.deepPurple,
-          //       ),
-          //       Card(
-          //         color: Colors.deepPurple,
-          //       ),
-          //     ],
-          //   ),
-          // )
+        title: Text(_titles[_selectedIndex]),
+        actions: <Widget>[
+          _typeButtom(authProvider),
         ],
       ),
+      body: widget.child,
     );
   }
 
-  List<Widget> typeButtom(AuthProvider authProvider) {
-    UserApp userApp = UserApp.empty();
+  Widget _typeButtom(AuthProvider authProvider) {
     if (authProvider.actualUser != null) {
-      userApp = authProvider.actualUser! is Speaker
+      userApp = authProvider.isSpeaker
           ? authProvider.actualUser!.user
           : authProvider.actualUser!;
+
+      name = userApp.name;
     }
 
-    List<Widget> buttons = [];
+    Widget widget;
     if (authProvider.actualUser != null) {
-      if (userApp.role == Roles.admin) {
-        buttons.add(
-          IconButton(
-            icon: Icon(Icons.admin_panel_settings),
-            onPressed: () {
-              context.push('/adminUser');
-            },
-          ),
-        );
-      }
-      buttons.add(
-        SignOutIconButton(
-          parentContext: context,
-        ),
+      widget = SignOutIconButton(
+        parentContext: context,
       );
     } else {
-      buttons.add(
-        SignInIconButton(
-          parentContext: context,
-        ),
+      widget = SignInIconButton(
+        parentContext: context,
       );
     }
 
-    return buttons;
+    return widget;
   }
 }

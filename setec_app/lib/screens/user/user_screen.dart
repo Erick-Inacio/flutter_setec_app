@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/models/auth_provider_model.dart';
+import 'package:setec_app/utils/provider/auth_provider_model.dart';
 import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/utils/enums/relationship.dart';
-import 'package:setec_app/utils/enums/roles.dart';
 import 'package:setec_app/widgets/Text/FormField/speaker_form_field.dart';
-import 'package:setec_app/widgets/navBar/bottom_nav_bar.dart';
 
 class UserScreen extends StatefulWidget {
   final BuildContext? parentContext;
@@ -55,27 +52,6 @@ class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavBar(currentIndex: 1),
-      appBar: AppBar(
-        title: Text(userApp.name),
-        actions: <Widget>[
-          !(userApp.role == Roles.admin) // sim
-              ? !isSpeaker
-                  ? TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Deseja Palestrar?',
-                        style: GoogleFonts.lato(
-                          color: Colors.deepPurple,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                  : Container()
-              : Container(),
-        ],
-      ),
       resizeToAvoidBottomInset: true,
       body: Form(
         key: _formKey,

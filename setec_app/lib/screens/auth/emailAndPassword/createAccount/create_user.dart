@@ -4,11 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/models/auth_provider_model.dart' as auth;
+import 'package:setec_app/utils/provider/auth_provider_model.dart' as auth;
 import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
-import 'package:setec_app/services/backend/speaker_service.dart';
-import 'package:setec_app/services/backend/user_service.dart';
+import 'package:setec_app/services/backend/speaker_services.dart';
+import 'package:setec_app/services/backend/user_services.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
 import 'package:setec_app/utils/enums/relationship.dart';
 import 'package:setec_app/utils/enums/roles.dart';
@@ -158,7 +158,7 @@ class _CreateUserState extends State<CreateUser> {
                                 company: _companyController.text,
                                 position: _positionController.text,
                                 bio: _bioController.text,
-                                user: widget.userApp,
+                                user: widget.userApp.id,
                                 socialMedia: {},
                               );
                               await _buttomFunction(
@@ -230,7 +230,7 @@ class _CreateUserState extends State<CreateUser> {
         }
         //se for um speaker, tenta criar o palestrante no banco
         if (isSpeaker && speaker != null) {
-          speaker.user = savedUserApp;
+          speaker.user = savedUserApp.id as int;
           final savedSpeaker = await SpeakerServices.createSpeaker(speaker);
 
           //se não conseguiu, lança uma exceção
@@ -240,6 +240,9 @@ class _CreateUserState extends State<CreateUser> {
               "Failed to save speaker in database: ${savedSpeaker.toString()}",
             );
           }
+
+          //Seta o savedUserApp no obj de savedSpeaker
+          savedSpeaker.user = savedUserApp;
 
           //se conseguiu, define o usuário como palestrante
           //e salva as informações no provider
