@@ -23,7 +23,8 @@ class AuthService {
         //Busca os dados no Backend
         logger.i("AuthServices: Usuário logado com sucesso");
         try {
-          userApp = await UserServices.getUser(user.uid);
+          UserServices userServices = UserServices();
+          userApp = await userServices.getByUid(user.uid);
           if (userApp != null) {
             return userApp;
           }

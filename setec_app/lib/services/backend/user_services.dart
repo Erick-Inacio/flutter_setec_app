@@ -1,14 +1,23 @@
 import 'dart:convert';
-import 'dart:io';
+
 import 'package:logger/logger.dart';
 import 'package:setec_app/models/user_app_model.dart';
-import 'package:http/http.dart' as http;
+import 'package:setec_app/services/backend/base_service.dart';
+import 'package:setec_app/services/backend/routes/user_routes.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
-import 'package:setec_app/utils/routes/api/user_routes.dart';
 
-class UserServices {
-  static Future<UserApp?> getUser(String uid) async {
-    Logger logger = Logger();
+import 'package:http/http.dart' as http;
+
+class UserServices extends BaseService<UserApp> {
+    UserServices() : super(
+      apiRoute: UserRoutes(),
+      fromJson: (json) => UserApp.fromJson(json),
+      toJson: (user) => user.toJson(),
+    );
+
+    Future<UserApp?> getByUid(String uid) async {
+      UserRoutes routes = UserRoutes();
+      Logger logger = Logger();
     try {
       final authService = AuthService();
       final token = await authService.getUserToken();
@@ -18,7 +27,7 @@ class UserServices {
       }
 
       final response = await http.get(
-        Uri.parse(UserRoutes.getIdByUid(uid)),
+        Uri.parse(routes.getByUid(uid)),
         headers: {
           'Authorization': 'Bearer $token',
           'Content-Type': 'application/json'
@@ -37,14 +46,8 @@ class UserServices {
       } else {
         throw Exception("Failed to fetch user: ${response.statusCode}");
       }
-    } on SocketException catch (e) {
-      throw Exception("Erro ao conectar-se ao servidor: $e");
-    } on HttpException catch (e) {
-      throw Exception("Erro ao realizar a requisicao: $e");
-    } on FormatException catch (e) {
-      throw Exception("Erro ao formatar a resposta: $e");
     } on Exception catch (e) {
-      throw Exception("Erro ao buscar o usuario: $e");
+      throw Exception("Failed to fetch user: $e");
     }
   }
 }

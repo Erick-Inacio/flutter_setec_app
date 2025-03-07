@@ -28,10 +28,11 @@ class _EventsScreenState extends State<EventsScreen> {
         ConstrainedBox(
           
           constraints: BoxConstraints(maxHeight: height / 3),
-          child: CarouselView.weighted(
+          child: CarouselView(
             // itemSnapping: true,
-            flexWeights: const <int>[1, 7, 1],
+            // flexWeights: const <int>[1, 7, 1],
             controller: controller,
+            itemExtent: height / 3,
             
             children: <Widget>[
               Container(

@@ -2,33 +2,31 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:setec_app/services/interfaces/event_routes.dart';
+import 'package:setec_app/services/backend/routes/base_routes.dart';
 
 abstract class BaseService<T> {
-  final String controllerName;
-  late BaseRoutes apiRoute;
+  final BaseRoutes apiRoute;
   final T Function(Map<String, dynamic>) fromJson;
   final Map<String, dynamic> Function(T) toJson;
-  final AuthService _auth = AuthService();
 
-  BaseService(
-      {required this.controllerName,
-      required this.apiRoute,
-      required this.fromJson,
-      required this.toJson}) {
-    apiRoute = BaseRoutes(controllerName: controllerName);
-  }
+  final AuthService auth = AuthService();
+
+  BaseService({
+    required this.apiRoute,
+    required this.fromJson,
+    required this.toJson,
+  });
 
   //Métodos https genéricos
   //Get all
   Future<List<T>> getAll() async {
     try {
-      final token = await _auth.getUserToken();
+      final token = await auth.getUserToken();
       if (token == null) {
         throw Exception("Failed to retrieve user token");
       }
 
-      final response = await _sendRequest(() => http.get(
+      final response = await sendRequest(() => http.get(
             Uri.parse(apiRoute.getAll()),
             headers: {
               'Authorization': 'Bearer $token',
@@ -53,12 +51,12 @@ abstract class BaseService<T> {
   //Get by id
   Future<T> getById(int id) async {
     try {
-      final token = await _auth.getUserToken();
+      final token = await auth.getUserToken();
       if (token == null) {
         throw Exception("Failed to retrieve user token");
       }
 
-      final response = await _sendRequest(() => http.get(
+      final response = await sendRequest(() => http.get(
             Uri.parse(apiRoute.getById(id)),
             headers: {
               'Authorization': 'Bearer $token',
@@ -79,9 +77,9 @@ abstract class BaseService<T> {
   //Post
   Future<T> post(T t) async {
     try {
-      final token = await _auth.getUserToken();
+      final token = await auth.getUserToken();
       if (token != null) {
-        final response = await _sendRequest(() => http.post(
+        final response = await sendRequest(() => http.post(
               Uri.parse(apiRoute.post()),
               headers: {
                 'Content-Type': 'application/json',
@@ -163,7 +161,7 @@ abstract class BaseService<T> {
   }
 
   //Personilized Methods
-  Future<http.Response> _sendRequest(
+  static Future<http.Response> sendRequest(
     Future<http.Response> Function() request,
   ) async {
     try {

@@ -59,7 +59,7 @@ class _AdminUserManagerState extends State<AdminUserManager> {
     UserServices userServices = UserServices();
     Logger logger = Logger();
     try {
-      users = await userServices.getAllUsers();
+      users = await userServices.getAll();
       logger.i('AdminPage: Usuários buscados com sucesso: ${users?.length}');
       setState(() {
         _isLoading = false;

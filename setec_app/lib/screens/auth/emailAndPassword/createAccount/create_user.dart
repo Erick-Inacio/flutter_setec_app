@@ -219,27 +219,14 @@ class _CreateUserState extends State<CreateUser> {
         }
 
         //se conseguiu, tenta criar o usuário no banco
-        final savedUserApp =
-            await UserServices.createUser(authenticatedUserApp);
+        UserServices userServices = UserServices();
+        final savedUserApp = await userServices.post(authenticatedUserApp);
 
-        //se não conseguiu, lança uma exceção
-        if (savedUserApp == null) {
-          createdUser = false;
-          throw Exception(
-              "Failed to save user in database: ${savedUserApp.toString()}");
-        }
         //se for um speaker, tenta criar o palestrante no banco
         if (isSpeaker && speaker != null) {
+          SpeakerServices speakerServices = SpeakerServices();
           speaker.user = savedUserApp.id as int;
-          final savedSpeaker = await SpeakerServices.createSpeaker(speaker);
-
-          //se não conseguiu, lança uma exceção
-          if (savedSpeaker == null) {
-            createdUser = false;
-            throw Exception(
-              "Failed to save speaker in database: ${savedSpeaker.toString()}",
-            );
-          }
+          final savedSpeaker = await speakerServices.post(speaker);
 
           //Seta o savedUserApp no obj de savedSpeaker
           savedSpeaker.user = savedUserApp;

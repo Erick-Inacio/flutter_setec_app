@@ -163,7 +163,8 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
       if (userApp != null && userApp.role == Roles.speaker && context.mounted) {
         Speaker? speaker;
         try {
-          speaker = await SpeakerServices.getSpeakerByUserId(userApp.id as int);
+          SpeakerServices speakerServices = SpeakerServices();
+          speaker = await speakerServices.getByUser(userApp.id as int);
         } on Exception catch (e) {
           authProvider.signOut();
           setState(() {
