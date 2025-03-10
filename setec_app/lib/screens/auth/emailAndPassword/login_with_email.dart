@@ -8,6 +8,7 @@ import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/services/backend/speaker_services.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
 import 'package:setec_app/utils/enums/roles.dart';
+import 'package:setec_app/widgets/buttom/mock_users.dart';
 import 'package:setec_app/widgets/snackBar/exception_snack_bar.dart';
 
 class LoginWithEmail extends StatefulWidget {
@@ -40,88 +41,93 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      TextFormField(
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, insira um email válido';
-                          }
-                          return null;
-                        },
+          : Form(
+              key: _formKey,
+              child: Center(
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(16.0),
+                  children: <Widget>[
+                    TextFormField(
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
                       ),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        controller: _passwordController,
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Password',
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Por favor, insira uma senha válida';
-                          }
-                          return null;
-                        },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira um email válido';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    TextFormField(
+                      controller: _passwordController,
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        labelText: 'Password',
                       ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              context.push('/criarConta');
-                            },
-                            child: const Text(
-                              'Criar Conta',
-                              style: TextStyle(
-                                color: Colors.deepPurple,
-                                fontSize: 12.0,
-                              ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Por favor, insira uma senha válida';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    Row(
+                      children: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            context.push('/criarConta');
+                          },
+                          child: const Text(
+                            'Criar Conta',
+                            style: TextStyle(
+                              color: Colors.deepPurple,
+                              fontSize: 12.0,
                             ),
                           ),
-                          const Spacer(),
-                          TextButton(
-                            onPressed: () {},
-                            child: const Text(
-                              'Esqueci minha senha',
-                              style: TextStyle(
-                                color: Colors.deepPurple,
-                                fontSize: 12.0,
-                              ),
+                        ),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {},
+                          child: const Text(
+                            'Esqueci minha senha',
+                            style: TextStyle(
+                              color: Colors.deepPurple,
+                              fontSize: 12.0,
                             ),
                           ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.deepPurple,
-                          minimumSize: Size(double.infinity, 45),
                         ),
-                        onPressed: () async {
-                          _navigationTo(context, authProvider);
-                        },
-                        child: Text(
-                          'Login',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepPurple,
+                        minimumSize: Size(double.infinity, 45),
                       ),
-                    ],
-                  ),
+                      onPressed: () async {
+                        _navigationTo(context, authProvider);
+                      },
+                      child: Text(
+                        'Login',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    MockUsers(
+                      emailController: _emailController,
+                      passwordController: _passwordController,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -177,7 +183,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
           setState(() {
             _isLoading = false;
           });
-          context.go('/home');
+          context.go('/lectures');
         }
       }
       if (userApp != null && context.mounted) {
@@ -185,7 +191,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
         setState(() {
           _isLoading = false;
         });
-        context.go('/home');
+        context.go('/lectures');
       }
     }
   }

@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:setec_app/models/user_app_model.dart';
+import 'package:setec_app/utils/functions/checkin_user_status.dart';
+import 'package:setec_app/widgets/iconButton/sign_out_icon_button.dart';
 
 class CustomDrawer extends StatelessWidget {
-  final UserApp userApp;
+  // final UserApp userApp;
   final BuildContext parentContext;
   const CustomDrawer({
     super.key,
-    required this.userApp,
     required this.parentContext,
   });
 
   @override
   Widget build(BuildContext context) {
-    bool isSpeaker = userApp.role.displayName == 'Palestrante' ? true : false;
-    bool isAdmin = !isSpeaker
-        ? userApp.role.displayName == 'Administrador'
-            ? true
-            : false
-        : false;
+    double width = MediaQuery.sizeOf(context).width;
+    // bool isSpeaker = CheckingUserStatus().isSpeaker();
+    bool isAdmin = CheckingUserStatus().isAdmin();
 
     double height = MediaQuery.sizeOf(context).height;
     return Drawer(
@@ -29,10 +26,22 @@ class CustomDrawer extends StatelessWidget {
         children: <Widget>[
           SizedBox(
             height: height / 6,
-            child: CircleAvatar(
-              backgroundColor: Colors.deepPurple,
-              radius: 60,
-              child: Icon(Icons.person, size: 80, color: Colors.white),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(width: width / 6),
+                CircleAvatar(
+                  backgroundColor: Colors.deepPurple,
+                  radius: 60,
+                  child: Icon(Icons.person, size: 50, color: Colors.white),
+                ),
+                Spacer(),
+                Align(
+                  alignment: Alignment.topRight,
+                  child: SignOutIconButton(),
+                ),
+              ],
             ),
           ),
           Divider(),

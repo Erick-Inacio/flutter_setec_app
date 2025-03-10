@@ -55,71 +55,70 @@ class _UserScreenState extends State<UserScreen> {
       resizeToAvoidBottomInset: true,
       body: Form(
         key: _formKey,
-        child: SingleChildScrollView(
+        child: ListView(
+          shrinkWrap: true,
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.all(16.0),
-                        height: MediaQuery.of(context).size.height * 0.3,
-                        child: CircleAvatar(
-                          backgroundColor: Colors.deepPurple,
-                          radius: 60,
-                          child: Icon(
-                            Icons.person,
-                            size: 80,
-                            color: Colors.white,
-                          ),
+          children: [
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.all(16.0),
+                      height: MediaQuery.of(context).size.height * 0.3,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.deepPurple,
+                        radius: 60,
+                        child: Icon(
+                          Icons.person,
+                          size: 80,
+                          color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 16),
-                      TextFormField(
-                        enabled: false,
-                        decoration: InputDecoration(labelText: 'Email'),
-                        controller: emailController,
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      enabled: false,
+                      decoration: InputDecoration(labelText: 'Email'),
+                      controller: emailController,
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      enabled: false,
+                      decoration: InputDecoration(
+                        labelText: 'Permissão',
                       ),
-                      SizedBox(height: 16),
-                      TextFormField(
-                        enabled: false,
-                        decoration: InputDecoration(
-                          labelText: 'Permissão',
-                        ),
-                        controller: roleController,
-                      ),
-                      SizedBox(height: 16),
-                      TextFormField(
-                        enabled: false,
-                        decoration:
-                            InputDecoration(labelText: 'Relação com a FATEC'),
-                        controller: relationshipController,
-                      ),
-                      SizedBox(height: 16),
-                      isStudent
-                          ? TextFormField(
+                      controller: roleController,
+                    ),
+                    SizedBox(height: 16),
+                    TextFormField(
+                      enabled: false,
+                      decoration:
+                          InputDecoration(labelText: 'Relação com a FATEC'),
+                      controller: relationshipController,
+                    ),
+                    SizedBox(height: 16),
+                    isStudent
+                        ? TextFormField(
                             enabled: false,
-                              decoration: InputDecoration(labelText: 'RA'),
-                              controller: raController,
-                            )
-                          : Container(),
-                    ],
-                  ),
+                            decoration: InputDecoration(labelText: 'RA'),
+                            controller: raController,
+                          )
+                        : Container(),
+                  ],
                 ),
               ),
-              isSpeaker
-                  ? FormSpeakerField(
-                      parentContext: context,
-                      company: companyController,
-                      position: positionController,
-                      bio: bioController,
-                    )
-                  : Container(),
-            ],
-          ),
+            ),
+            isSpeaker
+                ? FormSpeakerField(
+                    parentContext: context,
+                    company: companyController,
+                    position: positionController,
+                    bio: bioController,
+                  )
+                : Container(),
+          ],
         ),
       ),
     );

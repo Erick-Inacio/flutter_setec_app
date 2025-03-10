@@ -1,0 +1,1 @@
+A:\flutter_setec_app\setec_app\build\app\intermediates\cxx\Debug\5l602c2g\obj\x86_64

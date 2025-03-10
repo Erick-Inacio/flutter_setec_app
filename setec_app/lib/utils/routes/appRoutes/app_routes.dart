@@ -1,24 +1,21 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:logger/logger.dart';
 import 'package:setec_app/screens/admin/admin_user_menager_screen.dart';
-import 'package:setec_app/screens/event/manage_event.dart';
+import 'package:setec_app/screens/bottomNavBar/miniCourse/mini_course.dart';
+import 'package:setec_app/screens/home/home_page.dart';
 import 'package:setec_app/utils/provider/auth_provider_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/screens/auth/emailAndPassword/createAccount/create_account_screen.dart';
 import 'package:setec_app/screens/auth/emailAndPassword/createAccount/create_user.dart';
-import 'package:setec_app/screens/event/event_screen.dart';
-import 'package:setec_app/screens/home/home_page.dart';
+import 'package:setec_app/screens/bottomNavBar/event/event_screen.dart';
 import 'package:setec_app/screens/auth/login_options.dart';
 import 'package:setec_app/screens/auth/emailAndPassword/login_with_email.dart';
-import 'package:setec_app/screens/main/main_screen.dart';
-import 'package:setec_app/screens/user/user_screen.dart';
+import 'package:setec_app/screens/bottomNavBar/lecture/lectures_screen.dart';
 
 class AppRouter {
   static GoRouter get router => _router;
 
   static final GoRouter _router = GoRouter(
-    initialLocation: '/home',
+    initialLocation: '/lectures',
     refreshListenable: AuthProvider(),
     debugLogDiagnostics: true,
     routes: [
@@ -47,41 +44,43 @@ class AppRouter {
           return CreateUser(userApp: userApp, password: password);
         },
       ),
-      GoRoute(
-        path: '/manageEvents',
-        builder: (context, child) {
-          return ManageEvents();
-        },
-      ),
       ShellRoute(
         builder: (context, state, child) {
           return HomePageNavBar(child: child);
         },
         routes: <GoRoute>[
           GoRoute(
-            path: '/home',
+            path: '/lectures',
             builder: (context, state) {
-              return MainScreen();
+              return const LectureScreen();
             },
           ),
           GoRoute(
-              path: '/events',
-              builder: (context, state) {
-                return EventsScreen();
-              }),
-          GoRoute(
-            path: '/user',
+            path: '/miniCourses',
             builder: (context, state) {
-              final map = state.extra as Map<String, dynamic>;
-              Logger().i(map);
-              BuildContext? context = map['context'] as BuildContext?;
-              dynamic user = map['user'] as dynamic;
-              return UserScreen(
-                user: user,
-                parentContext: context,
-              );
+              return const MiniCourse();
             },
           ),
+          GoRoute(
+            path: '/events',
+            builder: (context, child) {
+              return ManageEvents();
+            },
+          ),
+
+          // GoRoute(
+          //   path: '/user',
+          //   builder: (context, state) {
+          //     final map = state.extra as Map<String, dynamic>;
+          //     Logger().i(map);
+          //     BuildContext? context = map['context'] as BuildContext?;
+          //     dynamic user = map['user'] as dynamic;
+          //     return UserScreen(
+          //       user: user,
+          //       parentContext: context,
+          //     );
+          //   },
+          // ),
 
           // GoRoute(
           //   path: '/adminMenu',

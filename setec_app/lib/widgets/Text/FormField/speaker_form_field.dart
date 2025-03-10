@@ -26,68 +26,66 @@ class _FormSpeakerFieldState extends State<FormSpeakerField> {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: SingleChildScrollView(
+      child: ListView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            //Empresa
-            TextFormField(
-              controller: widget.company,
-              decoration: InputDecoration(
-                labelText: 'Empresa aonde trabalha (opcional)',
-                labelStyle: const TextStyle(color: Colors.deepPurple),
-              ),
-              onChanged: (value) {
-                if (widget.onChanged != null) {
-                  widget.onChanged!(value.isNotEmpty);
-                }
-              },
+        children: <Widget>[
+          //Empresa
+          TextFormField(
+            controller: widget.company,
+            decoration: InputDecoration(
+              labelText: 'Empresa aonde trabalha (opcional)',
+              labelStyle: const TextStyle(color: Colors.deepPurple),
             ),
-            const SizedBox(height: 16.0),
+            onChanged: (value) {
+              if (widget.onChanged != null) {
+                widget.onChanged!(value.isNotEmpty);
+              }
+            },
+          ),
+          const SizedBox(height: 16.0),
 
-            //Cargo
-            TextFormField(
-              controller: widget.position,
-              decoration: InputDecoration(
-                labelText: 'Cargo',
-                labelStyle: const TextStyle(color: Colors.deepPurple),
-              ),
-              onChanged: (value) {
-                if (widget.onChanged != null) {
-                  widget.onChanged!(value.isNotEmpty);
-                }
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, insira um cargo válido';
-                }
-                return null;
-              },
+          //Cargo
+          TextFormField(
+            controller: widget.position,
+            decoration: InputDecoration(
+              labelText: 'Cargo',
+              labelStyle: const TextStyle(color: Colors.deepPurple),
             ),
-            const SizedBox(height: 16.0),
+            onChanged: (value) {
+              if (widget.onChanged != null) {
+                widget.onChanged!(value.isNotEmpty);
+              }
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Por favor, insira um cargo válido';
+              }
+              return null;
+            },
+          ),
+          const SizedBox(height: 16.0),
 
-            //Biografia
-            TextFormField(
-              controller: widget.bio,
-              maxLines: null,
-              decoration: InputDecoration(
-                labelText: 'Biografia',
-                labelStyle: const TextStyle(color: Colors.deepPurple),
-              ),
-              onChanged: (value) {
-                if (widget.onChanged != null) {
-                  widget.onChanged!(value.isNotEmpty);
-                }
-              },
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Por favor, insira uma biografia válida';
-                }
-                return null;
-              },
-            )
-          ],
-        ),
+          //Biografia
+          TextFormField(
+            controller: widget.bio,
+            maxLines: null,
+            decoration: InputDecoration(
+              labelText: 'Biografia',
+              labelStyle: const TextStyle(color: Colors.deepPurple),
+            ),
+            onChanged: (value) {
+              if (widget.onChanged != null) {
+                widget.onChanged!(value.isNotEmpty);
+              }
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Por favor, insira uma biografia válida';
+              }
+              return null;
+            },
+          )
+        ],
       ),
     );
   }

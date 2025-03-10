@@ -61,7 +61,7 @@
 //                     try {
 //                       await createSpeaker();
 //                       if (context.mounted) {
-//                         context.go('/home');
+//                         context.go('/lectures');
 //                       }
 //                     } on Exception catch (e) {
 //                       Logger().e('InfoSpeaker: $e');

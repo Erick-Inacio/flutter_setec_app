@@ -5,8 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:setec_app/utils/provider/auth_provider_model.dart';
 
 class SignOutIconButton extends StatelessWidget {
-  final BuildContext parentContext;
-  const SignOutIconButton({super.key, required this.parentContext});
+  const SignOutIconButton({super.key});
 
   @override
   Widget build(BuildContext context) {

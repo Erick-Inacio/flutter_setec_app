@@ -28,7 +28,7 @@ class _AdminUserManagerState extends State<AdminUserManager> {
       appBar: AppBar(
         title: const Text("Admin"),
         actions: <Widget>[
-          SignOutIconButton(parentContext: context),
+          SignOutIconButton(),
         ],
       ),
       body: _isLoading
@@ -36,6 +36,7 @@ class _AdminUserManagerState extends State<AdminUserManager> {
               child: CircularProgressIndicator(),
             )
           : ListView.builder(
+            shrinkWrap: true,
               itemCount: users?.length ?? 0,
               itemBuilder: (context, index) {
                 return UserCard(

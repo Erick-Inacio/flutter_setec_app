@@ -63,119 +63,116 @@ class _CreateUserState extends State<CreateUser> {
           ? const Center(child: CircularProgressIndicator())
           : Form(
               key: _formKey,
-              child: Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    children: <Widget>[
-                      Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              // Ra se aluno
-                              widget.userApp.relationship == Relationship.aluno
-                                  ? TextFormField(
-                                      controller: _ra,
-                                      keyboardType: TextInputType.number,
-                                      maxLength: 13,
-                                      decoration: const InputDecoration(
-                                        labelText: 'RA',
-                                      ),
-                                      style: GoogleFonts.lato(
-                                        color: Colors.deepPurple,
-                                        fontSize: 15,
-                                      ),
-                                    )
-                                  : Container(),
-                              //Role
-                              Container(
-                                height: 56,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(4.0),
-                                  border: Border.all(
+              child: ListView(
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(16.0),
+                children: <Widget>[
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          // Ra se aluno
+                          widget.userApp.relationship == Relationship.aluno
+                              ? TextFormField(
+                                  controller: _ra,
+                                  keyboardType: TextInputType.number,
+                                  maxLength: 13,
+                                  decoration: const InputDecoration(
+                                    labelText: 'RA',
+                                  ),
+                                  style: GoogleFonts.lato(
                                     color: Colors.deepPurple,
-                                    width: 1.0,
+                                    fontSize: 15,
                                   ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        'Irá palestrar?',
-                                        style: GoogleFonts.lato(
-                                          color: Colors.deepPurple,
-                                          fontSize: 20,
-                                        ),
-                                      ),
-                                      Spacer(),
-                                      Switch(
-                                        inactiveThumbColor: Colors.deepPurple,
-                                        activeColor: Colors.deepPurple,
-                                        inactiveTrackColor:
-                                            Colors.deepPurple.shade50,
-                                        value: isSpeaker,
-                                        onChanged: (bool value) {
-                                          setState(() {
-                                            isSpeaker = value;
-                                          });
-                                          if (value) {
-                                            _role = Roles.speaker;
-                                          }
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                )
+                              : Container(),
+                          //Role
+                          Container(
+                            height: 56,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(4.0),
+                              border: Border.all(
+                                color: Colors.deepPurple,
+                                width: 1.0,
                               ),
-                            ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Irá palestrar?',
+                                    style: GoogleFonts.lato(
+                                      color: Colors.deepPurple,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Switch(
+                                    inactiveThumbColor: Colors.deepPurple,
+                                    activeColor: Colors.deepPurple,
+                                    inactiveTrackColor:
+                                        Colors.deepPurple.shade50,
+                                    value: isSpeaker,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        isSpeaker = value;
+                                      });
+                                      if (value) {
+                                        _role = Roles.speaker;
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                      isSpeaker
-                          ? FormSpeakerField(
-                              company: _companyController,
-                              position: _positionController,
-                              bio: _bioController,
-                              parentContext: context,
-                            )
-                          : Container(),
-                      CustomButtom(
-                        text: "Salvar",
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            setState(() {
-                              _isLoading = true;
-                            });
-                            widget.userApp.role = _role;
-                            widget.userApp.ra = _ra.text;
-
-                            if (isSpeaker) {
-                              Speaker speaker = Speaker(
-                                company: _companyController.text,
-                                position: _positionController.text,
-                                bio: _bioController.text,
-                                user: widget.userApp.id,
-                                socialMedia: {},
-                              );
-                              await _buttomFunction(
-                                context: context,
-                                speaker: speaker,
-                              );
-                            } else {
-                              await _buttomFunction(
-                                context: context,
-                              );
-                            }
-                          }
-                        },
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  isSpeaker
+                      ? FormSpeakerField(
+                          company: _companyController,
+                          position: _positionController,
+                          bio: _bioController,
+                          parentContext: context,
+                        )
+                      : Container(),
+                  CustomButtom(
+                    text: "Salvar",
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        widget.userApp.role = _role;
+                        widget.userApp.ra = _ra.text;
+
+                        if (isSpeaker) {
+                          Speaker speaker = Speaker(
+                            company: _companyController.text,
+                            position: _positionController.text,
+                            bio: _bioController.text,
+                            user: widget.userApp.id,
+                            socialMedia: {},
+                          );
+                          await _buttomFunction(
+                            context: context,
+                            speaker: speaker,
+                          );
+                        } else {
+                          await _buttomFunction(
+                            context: context,
+                          );
+                        }
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
     );
@@ -237,7 +234,7 @@ class _CreateUserState extends State<CreateUser> {
           authProvider.setSpeaker(savedSpeaker);
 
           if (authProvider.actualUser != null && context.mounted) {
-            context.go('/home');
+            context.go('/lectures');
           } else {
             authProvider.signOut();
             setState(() {
@@ -251,7 +248,7 @@ class _CreateUserState extends State<CreateUser> {
           authProvider.setUserApp(savedUserApp);
 
           if (authProvider.actualUser != null && context.mounted) {
-            context.go('/home');
+            context.go('/lectures');
           }
         }
       } on Exception catch (e, stackTrace) {
