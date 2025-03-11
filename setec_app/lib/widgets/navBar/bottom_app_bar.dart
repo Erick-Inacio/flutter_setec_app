@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:setec_app/utils/functions/checkin_user_status.dart';
 import 'package:setec_app/widgets/iconButton/icon_text_buttom.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
