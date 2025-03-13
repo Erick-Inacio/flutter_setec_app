@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:setec_app/utils/functions/checkin_user_status.dart';
 import 'package:setec_app/widgets/iconButton/icon_text_buttom.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
-
   const CustomBottomAppBar({super.key});
 
   @override
@@ -37,7 +37,8 @@ class CustomBottomAppBar extends StatelessWidget {
               text: 'Setecs',
               route: '/events',
             ),
-            SizedBox(width: width * 0.02),
+            if (!CheckingUserStatus().isStudent())
+              SizedBox(width: width * 0.02),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:setec_app/models/speaker_model.dart';
@@ -77,8 +78,8 @@ class AuthProvider with ChangeNotifier {
       //   //Codigo para limpar user local
       //   if (userRestored != null) {
       //     _isFirstCheck = true;
-      //     //..descomentar essa linha e ...
       //     prefs.clear();
+      //     FirebaseAuth.instance.signOut();
       //     notifyListeners();
       //     return;
       //   }

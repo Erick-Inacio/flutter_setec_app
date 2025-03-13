@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:setec_app/utils/functions/checkin_user_status.dart';
 import 'package:setec_app/utils/provider/auth_provider_model.dart';
 import 'package:setec_app/widgets/drawer/custom_drawer.dart';
+import 'package:setec_app/widgets/iconButton/sign_out_icon_button.dart';
 import 'package:setec_app/widgets/navBar/bottom_app_bar.dart';
 
 class HomePageNavBar extends StatefulWidget {
@@ -42,6 +43,11 @@ class _HomePageState extends State<HomePageNavBar> {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
+        actions: <Widget>[
+          authProvider.actualUser == null
+              ? SignOutIconButton()
+              : Container(),
+        ]
       ),
       drawer: authProvider.isAuthenticated
           ? CustomDrawer(

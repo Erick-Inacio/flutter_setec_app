@@ -116,7 +116,7 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
           
                       // Relationship
                       DropdownButtonFormField(
-                        focusColor: Colors.deepPurple,
+                        // focusColor: Colors.deepPurple,
                         style: GoogleFonts.lato(
                           fontWeight: FontWeight.normal,
                           color: Colors.deepPurple,

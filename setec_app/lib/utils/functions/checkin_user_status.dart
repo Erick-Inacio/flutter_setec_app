@@ -20,17 +20,32 @@ class CheckingUserStatus {
     return Provider.of<AuthProvider>(context, listen: false);
   }
 
-  UserApp getUserApp() {
+  UserApp? getUserApp() {
     final user = _getAuthProvider()?.actualUser;
-    if (user == null) return UserApp.empty();
-    return user is Speaker ? user.user : user as UserApp;
+    if (user == null) {
+      return null;
+
+    }
+
+    if (user is Speaker) {
+      if (user.user == null) {
+        throw Exception("UserApp inside Speaker is null");
+      }
+      return user.user;
+    }
+
+    if (user is UserApp) {
+      return user;
+    }
+
+    throw Exception("User is not a UserApp or Speaker");
   }
 
-  Roles? getRole() => getUserApp().role;
+  Roles? getRole() => getUserApp()?.role;
 
-  bool isSpeaker() => getUserApp().role == Roles.speaker;
-  bool isAdmin() => getUserApp().role == Roles.admin;
-  bool isStudent() => getUserApp().role == Roles.student;
+  bool isSpeaker() => getUserApp()?.role == Roles.speaker;
+  bool isAdmin() => getUserApp()?.role == Roles.admin;
+  bool isStudent() => getUserApp()?.role == Roles.student;
 
   bool isAuthenticated() => _getAuthProvider()?.isAuthenticated ?? false;
 }
