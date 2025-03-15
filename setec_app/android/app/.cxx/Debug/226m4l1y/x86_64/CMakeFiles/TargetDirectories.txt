@@ -1,0 +1,2 @@
+F:/Faculdade/flutter_setec_app/setec_app/android/app/.cxx/Debug/226m4l1y/x86_64/CMakeFiles/edit_cache.dir
+F:/Faculdade/flutter_setec_app/setec_app/android/app/.cxx/Debug/226m4l1y/x86_64/CMakeFiles/rebuild_cache.dir

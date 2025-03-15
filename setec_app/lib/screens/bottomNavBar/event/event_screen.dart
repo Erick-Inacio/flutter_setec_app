@@ -14,7 +14,9 @@ class _ManageEventsState extends State<ManageEvents> {
     return Scaffold(
       body: ListView.builder(
         // itemCount: ,
-        itemBuilder: (build, index) {},
+        itemBuilder: (build, index) {
+          return null;
+        },
       ),
     );
   }
