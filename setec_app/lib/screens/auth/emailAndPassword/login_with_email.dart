@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/utils/provider/auth_provider_model.dart';
+import 'package:setec_app/providers/auth_provider_model.dart';
 import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/services/backend/speaker_services.dart';
@@ -165,7 +165,6 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
         logger.e('LoginWithEmail: $e');
       }
 
-      //TODO: tentar otimizar a consulta no banco para ver se o usuário é speaker e já retornar tudo em uma unica consulta
       if (userApp != null && userApp.role == Roles.speaker && context.mounted) {
         Speaker? speaker;
         try {

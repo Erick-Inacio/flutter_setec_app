@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:setec_app/utils/functions/checkin_user_status.dart';
-import 'package:setec_app/utils/provider/auth_provider_model.dart';
+import 'package:setec_app/providers/auth_provider_model.dart';
 import 'package:setec_app/services/firebase/auth/auth_service.dart';
 import 'package:setec_app/themes/light_theme.dart';
 import 'package:setec_app/utils/routes/appRoutes/app_routes.dart';

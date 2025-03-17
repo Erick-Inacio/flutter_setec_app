@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/utils/provider/auth_provider_model.dart';
+import 'package:setec_app/providers/auth_provider_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/utils/enums/relationship.dart';
 

@@ -1,182 +1,97 @@
 import 'package:flutter/material.dart';
 
-/// Flutter code sample for [NavigationDrawer].
+/// Flutter code sample for [showDatePicker].
 
-void main() => runApp(const NavigationDrawerApp());
+void main() => runApp(const DatePickerApp());
 
-class ExampleDestination {
-  const ExampleDestination(this.label, this.icon, this.selectedIcon);
-
-  final String label;
-  final Widget icon;
-  final Widget selectedIcon;
-}
-
-const List<ExampleDestination> destinations = <ExampleDestination>[
-  ExampleDestination(
-    'Messages',
-    Icon(Icons.widgets_outlined),
-    Icon(Icons.widgets),
-  ),
-  ExampleDestination(
-    'Profile',
-    Icon(Icons.format_paint_outlined),
-    Icon(Icons.format_paint),
-  ),
-  ExampleDestination(
-    'Settings',
-    Icon(Icons.settings_outlined),
-    Icon(Icons.settings),
-  ),
-];
-
-class NavigationDrawerApp extends StatelessWidget {
-  const NavigationDrawerApp({super.key});
+class DatePickerApp extends StatelessWidget {
+  const DatePickerApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(useMaterial3: true),
-      home: const NavigationDrawerExample(),
+    return const MaterialApp(
+      restorationScopeId: 'app',
+      home: DatePickerExample(restorationId: 'main'),
     );
   }
 }
 
-class NavigationDrawerExample extends StatefulWidget {
-  const NavigationDrawerExample({super.key});
+class DatePickerExample extends StatefulWidget {
+  const DatePickerExample({super.key, this.restorationId});
+
+  final String? restorationId;
 
   @override
-  State<NavigationDrawerExample> createState() =>
-      _NavigationDrawerExampleState();
+  State<DatePickerExample> createState() => _DatePickerExampleState();
 }
 
-class _NavigationDrawerExampleState extends State<NavigationDrawerExample> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+/// RestorationProperty objects can be used because of RestorationMixin.
+class _DatePickerExampleState extends State<DatePickerExample> with RestorationMixin {
+  // In this example, the restoration ID for the mixin is passed in through
+  // the [StatefulWidget]'s constructor.
+  @override
+  String? get restorationId => widget.restorationId;
 
-  int screenIndex = 0;
-  late bool showNavigationDrawer;
+  final RestorableDateTime _selectedDate = RestorableDateTime(DateTime(2021, 7, 25));
+  late final RestorableRouteFuture<DateTime?> _restorableDatePickerRouteFuture =
+      RestorableRouteFuture<DateTime?>(
+        onComplete: _selectDate,
+        onPresent: (NavigatorState navigator, Object? arguments) {
+          return navigator.restorablePush(
+            _datePickerRoute,
+            arguments: _selectedDate.value.millisecondsSinceEpoch,
+          );
+        },
+      );
 
-  void handleScreenChanged(int selectedScreen) {
-    setState(() {
-      screenIndex = selectedScreen;
-    });
+  @pragma('vm:entry-point')
+  static Route<DateTime> _datePickerRoute(BuildContext context, Object? arguments) {
+    return DialogRoute<DateTime>(
+      context: context,
+      builder: (BuildContext context) {
+        return DatePickerDialog(
+          restorationId: 'date_picker_dialog',
+          initialEntryMode: DatePickerEntryMode.calendarOnly,
+          initialDate: DateTime.fromMillisecondsSinceEpoch(arguments! as int),
+          firstDate: DateTime(2021),
+          lastDate: DateTime(2022),
+        );
+      },
+    );
   }
 
-  void openDrawer() {
-    scaffoldKey.currentState!.openEndDrawer();
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    registerForRestoration(_selectedDate, 'selected_date');
+    registerForRestoration(_restorableDatePickerRouteFuture, 'date_picker_route_future');
   }
 
-  Widget buildBottomBarScaffold() {
+  void _selectDate(DateTime? newSelectedDate) {
+    if (newSelectedDate != null) {
+      setState(() {
+        _selectedDate.value = newSelectedDate;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Selected: ${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}',
+            ),
+          ),
+        );
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[Text('Page Index = $screenIndex')],
+        child: OutlinedButton(
+          onPressed: () {
+            _restorableDatePickerRouteFuture.present();
+          },
+          child: const Text('Open Date Picker'),
         ),
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: screenIndex,
-        onDestinationSelected: (int index) {
-          setState(() {
-            screenIndex = index;
-          });
-        },
-        destinations:
-            destinations.map((ExampleDestination destination) {
-              return NavigationDestination(
-                label: destination.label,
-                icon: destination.icon,
-                selectedIcon: destination.selectedIcon,
-                tooltip: destination.label,
-              );
-            }).toList(),
-      ),
     );
-  }
-
-  Widget buildDrawerScaffold(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      body: SafeArea(
-        bottom: false,
-        top: false,
-        child: Row(
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: NavigationRail(
-                minWidth: 50,
-                destinations:
-                    destinations.map((ExampleDestination destination) {
-                      return NavigationRailDestination(
-                        label: Text(destination.label),
-                        icon: destination.icon,
-                        selectedIcon: destination.selectedIcon,
-                      );
-                    }).toList(),
-                selectedIndex: screenIndex,
-                useIndicator: true,
-                onDestinationSelected: (int index) {
-                  setState(() {
-                    screenIndex = index;
-                  });
-                },
-              ),
-            ),
-            const VerticalDivider(thickness: 1, width: 1),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Text('Page Index = $screenIndex'),
-                  ElevatedButton(
-                    onPressed: openDrawer,
-                    child: const Text('Open Drawer'),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      endDrawer: NavigationDrawer(
-        onDestinationSelected: handleScreenChanged,
-        selectedIndex: screenIndex,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(28, 16, 16, 10),
-            child: Text(
-              'Header',
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
-          ),
-          ...destinations.map((ExampleDestination destination) {
-            return NavigationDrawerDestination(
-              label: Text(destination.label),
-              icon: destination.icon,
-              selectedIcon: destination.selectedIcon,
-            );
-          }),
-          const Padding(
-            padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
-            child: Divider(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    showNavigationDrawer = MediaQuery.of(context).size.width >= 450;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return showNavigationDrawer
-        ? buildDrawerScaffold(context)
-        : buildBottomBarScaffold();
   }
 }

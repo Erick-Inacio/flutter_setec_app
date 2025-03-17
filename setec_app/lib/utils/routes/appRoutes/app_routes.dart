@@ -1,8 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:setec_app/screens/admin/admin_user_menager_screen.dart';
+import 'package:setec_app/screens/bottomNavBar/event/create_event_screen.dart';
 import 'package:setec_app/screens/bottomNavBar/miniCourse/mini_course.dart';
 import 'package:setec_app/screens/home/home_page.dart';
-import 'package:setec_app/utils/provider/auth_provider_model.dart';
+import 'package:setec_app/providers/auth_provider_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/screens/auth/emailAndPassword/createAccount/create_account_screen.dart';
 import 'package:setec_app/screens/auth/emailAndPassword/createAccount/create_user.dart';
@@ -43,6 +44,10 @@ class AppRouter {
           final password = map['password'] as String;
           return CreateUser(userApp: userApp, password: password);
         },
+      ),
+      GoRoute(
+        path: '/createEvent',
+        builder: (context, state) => const CreateEvent(),
       ),
       ShellRoute(
         builder: (context, state, child) {

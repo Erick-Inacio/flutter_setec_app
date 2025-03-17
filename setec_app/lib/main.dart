@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:setec_app/firebase_options.dart';
-import 'package:setec_app/utils/provider/auth_provider_model.dart';
+import 'package:setec_app/providers/auth_provider_model.dart';
 import 'package:setec_app/utils/functions/main_app.dart';
 
 Future<void> main() async {

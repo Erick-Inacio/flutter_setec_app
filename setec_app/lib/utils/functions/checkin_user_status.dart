@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/utils/enums/roles.dart';
-import 'package:setec_app/utils/provider/auth_provider_model.dart';
+import 'package:setec_app/providers/auth_provider_model.dart';
 
 class CheckingUserStatus {
   static final CheckingUserStatus _instance = CheckingUserStatus._internal();
