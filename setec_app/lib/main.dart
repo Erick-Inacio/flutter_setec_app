@@ -13,6 +13,9 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
+    //Carrega o arquivo .env
+    await dotenv.load(fileName: ".env");
+
     await Future.wait(
       [
         // Inicializa o firebase
@@ -22,11 +25,23 @@ Future<void> main() async {
 
         //procura e/ou tenta recuperar o user local
         authProvider.loadUserFromPreferences(),
-
-        //Carrega o arquivo .env
-        dotenv.load(fileName: ".env"),
       ],
     );
+
+    // await Future.wait(
+    //   [
+    //     // Inicializa o firebase
+    //     Firebase.initializeApp(
+    //       options: DefaultFirebaseOptions.currentPlatform,
+    //     ),
+
+    //     //procura e/ou tenta recuperar o user local
+    //     authProvider.loadUserFromPreferences(),
+
+    //     //Carrega o arquivo .env
+    //     dotenv.load(fileName: ".env"),
+    //   ],
+    // );
   } on Exception {
     rethrow;
   }
