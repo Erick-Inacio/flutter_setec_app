@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/providers/auth_provider_model.dart';
+import 'package:setec_app/providers/main_provider.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int selectedIndex;
@@ -15,15 +15,15 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = context.read<AuthProvider>();
+    final mainProvider = context.read<MainProvider>();
 
     // bool isAdmin = false;
 
     // UserApp userApp = UserApp.empty();
-    // if (authProvider.actualUser != null) {
-    //   userApp = authProvider.actualUser! is Speaker
-    //       ? authProvider.actualUser!.user
-    //       : authProvider.actualUser!;
+    // if (mainProvider.actualUser != null) {
+    //   userApp = mainProvider.actualUser! is Speaker
+    //       ? mainProvider.actualUser!.user
+    //       : mainProvider.actualUser!;
 
     //   isAdmin = userApp.role == Roles.admin;
     // }
@@ -33,7 +33,7 @@ class BottomNavBar extends StatelessWidget {
       currentIndex: selectedIndex,
       onTap: (index) {
         onTabTapped(index);
-        if (authProvider.isAuthenticated) {
+        if (mainProvider.isAuthenticated) {
           switch (index) {
             case 0:
               context.go('/lectures');

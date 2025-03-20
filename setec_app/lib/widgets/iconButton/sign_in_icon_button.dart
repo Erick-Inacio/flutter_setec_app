@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/providers/auth_provider_model.dart';
+import 'package:setec_app/providers/main_provider.dart';
 
 class SignInIconButton extends StatelessWidget {
   final BuildContext parentContext;
@@ -13,9 +13,9 @@ class SignInIconButton extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.login_rounded, color: Colors.deepPurple),
       onPressed: () async {
-        final authProvider =
-            Provider.of<AuthProvider>(parentContext, listen: false);
-        Logger().i('SignInButtom: $authProvider.actualUser.toString()');
+        final mainProvider =
+            Provider.of<MainProvider>(parentContext, listen: false);
+        Logger().i('SignInButtom: $mainProvider.actualUser.toString()');
 
         if (context.mounted) {
           context.push('/loginOptions');

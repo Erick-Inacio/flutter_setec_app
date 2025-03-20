@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:setec_app/utils/functions/checkin_user_status.dart';
-import 'package:setec_app/providers/auth_provider_model.dart';
+import 'package:setec_app/providers/main_provider.dart';
 import 'package:setec_app/widgets/drawer/custom_drawer.dart';
 import 'package:setec_app/widgets/iconButton/sign_out_icon_button.dart';
 import 'package:setec_app/widgets/navBar/bottom_app_bar.dart';
@@ -17,7 +17,7 @@ class HomePageNavBar extends StatefulWidget {
 
 class _HomePageState extends State<HomePageNavBar> {
   //Gerenciador de Estado
-  late AuthProvider authProvider;
+  late MainProvider mainProvider;
   // UserApp userApp = UserApp.empty();
 
   @override
@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePageNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    authProvider = context.watch<AuthProvider>();
+    mainProvider = context.watch<MainProvider>();
     String currentRoute = GoRouterState.of(context).uri.toString();
 
     String title = '';
@@ -44,18 +44,18 @@ class _HomePageState extends State<HomePageNavBar> {
       appBar: AppBar(
         title: Text(title),
         actions: <Widget>[
-          authProvider.actualUser == null
+          mainProvider.actualUser == null
               ? SignOutIconButton()
               : Container(),
         ]
       ),
-      drawer: authProvider.isAuthenticated
+      drawer: mainProvider.isAuthenticated
           ? CustomDrawer(
               parentContext: context,
             )
           : null,
       bottomNavigationBar:
-          authProvider.isAuthenticated ? CustomBottomAppBar() : null,
+          mainProvider.isAuthenticated ? CustomBottomAppBar() : null,
       floatingActionButton: _isVisible(currentRoute, context),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
       body: widget.child,

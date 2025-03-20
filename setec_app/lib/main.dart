@@ -1,57 +1,30 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:provider/provider.dart';
 import 'package:setec_app/firebase_options.dart';
-import 'package:setec_app/providers/auth_provider_model.dart';
+import 'package:setec_app/providers/all_providers.dart';
+import 'package:setec_app/providers/main_provider.dart';
 import 'package:setec_app/utils/functions/main_app.dart';
 
 Future<void> main() async {
-  //Para usuário local
-  final authProvider = AuthProvider();
 
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
-    //Carrega o arquivo .env
-    await dotenv.load(fileName: ".env");
-
-    await Future.wait(
-      [
-        // Inicializa o firebase
-        Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
-
-        //procura e/ou tenta recuperar o user local
-        authProvider.loadUserFromPreferences(),
-      ],
+    // Inicializa o firebase
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
     );
 
-    // await Future.wait(
-    //   [
-    //     // Inicializa o firebase
-    //     Firebase.initializeApp(
-    //       options: DefaultFirebaseOptions.currentPlatform,
-    //     ),
-
-    //     //procura e/ou tenta recuperar o user local
-    //     authProvider.loadUserFromPreferences(),
-
-    //     //Carrega o arquivo .env
-    //     dotenv.load(fileName: ".env"),
-    //   ],
-    // );
+    //Carrega o arquivo .env
+    await dotenv.load(fileName: ".env");
   } on Exception {
     rethrow;
   }
 
   runApp(
-    //Carrega o gerenciador de estado e
-    //inicia a aplicação
-    ChangeNotifierProvider(
-      create: (context) => authProvider,
-      child: const MainApp(),
+    AllProviders(
+      child: MainApp(),
     ),
   );
 }

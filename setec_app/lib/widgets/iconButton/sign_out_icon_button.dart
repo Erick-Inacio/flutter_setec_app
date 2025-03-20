@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/providers/auth_provider_model.dart';
+import 'package:setec_app/providers/main_provider.dart';
 
 class SignOutIconButton extends StatelessWidget {
   const SignOutIconButton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = context.watch<AuthProvider>();
+    final mainProvider = context.watch<MainProvider>();
     return IconButton(
       icon: Icon(Icons.logout, color: Colors.deepPurple),
       onPressed: () async {
         try {
-          await authProvider.signOut();
+          await mainProvider.signOut();
           Logger().i(
-              "SignOutButtom: Rebuild da tela. Usuário atual: ${authProvider.actualUser}");
-          Logger().i('SignOutButtom: $authProvider.actualUser.toString()');
+              "SignOutButtom: Rebuild da tela. Usuário atual: ${mainProvider.actualUser}");
+          Logger().i('SignOutButtom: ${mainProvider.actualUser.toString()}');
 
           if (context.mounted) {
             context.go('/loginOptions');

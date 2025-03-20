@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 import 'package:setec_app/models/event_model.dart';
-import 'package:setec_app/services/backend/event_services.dart';
+import 'package:setec_app/providers/event_provider.dart';
 import 'package:setec_app/widgets/cards/event_card.dart';
 
 class ManageEvents extends StatefulWidget {
@@ -12,19 +12,11 @@ class ManageEvents extends StatefulWidget {
 }
 
 class _ManageEventsState extends State<ManageEvents> {
-  bool isLoading = false;
-
-  List<Event> events = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    _getEvents();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final eventProvider = context.watch<EventProvider>();
+    final events = eventProvider.events;
+
     return Scaffold(
       body: events.isEmpty
           ? const Center(child: CircularProgressIndicator())
@@ -32,27 +24,11 @@ class _ManageEventsState extends State<ManageEvents> {
               shrinkWrap: true,
               itemCount: events.length,
               itemBuilder: (context, index) {
-                if (events.isNotEmpty) {
-                  isLoading = false;
-                  !(index == events.length - 1)
-                      ? EventCard(event: events[index])
-                      : EventCard(
-                          event: events[index],
-                          isFinalEvent: true,
-                        );
-                }
+                return (index == events.length - 1)
+                    ? EventCard(event: events[index], isFinalEvent: true)
+                    : EventCard(event: events[index]);
               },
             ),
     );
-  }
-
-  Future<void> _getEvents() async {
-    try {
-      final eventService = EventServices();
-
-      events = await eventService.getAll();
-    } on Exception catch (e) {
-      Logger().e('ManageEvents: $e');
-    }
   }
 }

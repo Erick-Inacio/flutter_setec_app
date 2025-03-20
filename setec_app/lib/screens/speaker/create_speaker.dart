@@ -19,7 +19,7 @@
 // }
 
 // class _InfoSpeakerState extends State<InfoSpeaker> {
-//   late AuthProvider authProvider;
+//   late MainProvider mainProvider;
 //   final formKey = GlobalKey<FormState>();
 
 
@@ -38,7 +38,7 @@
 //   @override
 //   void initState() {
 //     super.initState();
-//     authProvider = widget.parentContext.watch<AuthProvider>();
+//     mainProvider = widget.parentContext.watch<MainProvider>();
 //   }
 
 //   @override
@@ -88,7 +88,7 @@
 
 //   Future<void> createSpeaker() async {
 //     Speaker speaker = Speaker(
-//       user: authProvider.actualUser!.user,
+//       user: mainProvider.actualUser!.user,
 //       company: companyController.text,
 //       position: positionController.text,
 //       bio: bioController.text,

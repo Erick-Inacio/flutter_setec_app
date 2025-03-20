@@ -3,7 +3,7 @@ import 'package:setec_app/screens/admin/admin_user_menager_screen.dart';
 import 'package:setec_app/screens/bottomNavBar/event/create_event_screen.dart';
 import 'package:setec_app/screens/bottomNavBar/miniCourse/mini_course.dart';
 import 'package:setec_app/screens/home/home_page.dart';
-import 'package:setec_app/providers/auth_provider_model.dart';
+import 'package:setec_app/providers/main_provider.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/screens/auth/emailAndPassword/createAccount/create_account_screen.dart';
 import 'package:setec_app/screens/auth/emailAndPassword/createAccount/create_user.dart';
@@ -17,7 +17,7 @@ class AppRouter {
 
   static final GoRouter _router = GoRouter(
     initialLocation: '/lectures',
-    refreshListenable: AuthProvider(),
+    refreshListenable: MainProvider(),
     debugLogDiagnostics: true,
     routes: [
       GoRoute(

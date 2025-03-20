@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/providers/auth_provider_model.dart';
+import 'package:setec_app/providers/main_provider.dart';
 import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/services/backend/speaker_services.dart';
@@ -32,7 +32,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = context.watch<AuthProvider>();
+    final mainProvider = context.watch<MainProvider>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
@@ -113,7 +113,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                         minimumSize: Size(double.infinity, 45),
                       ),
                       onPressed: () async {
-                        _navigationTo(context, authProvider);
+                        _navigationTo(context, mainProvider);
                       },
                       child: Text(
                         'Login',
@@ -134,7 +134,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
     );
   }
 
-  void _navigationTo(BuildContext context, AuthProvider authProvider) async {
+  void _navigationTo(BuildContext context, MainProvider mainProvider) async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
@@ -147,11 +147,11 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
           _passwordController.text,
         );
 
-        if (userApp != null) {
-          authProvider.setUserApp(userApp);
+        if (userApp != null && context.mounted) {
+          mainProvider.setUserApp(context, userApp);
         }
       } catch (e) {
-        authProvider.signOut();
+        mainProvider.signOut();
         setState(() {
           _isLoading = false;
         });
@@ -171,14 +171,14 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
           SpeakerServices speakerServices = SpeakerServices();
           speaker = await speakerServices.getByUser(userApp.id as int);
         } on Exception catch (e) {
-          authProvider.signOut();
+          mainProvider.signOut();
           setState(() {
             _isLoading = false;
           });
           logger.e('LoginWithEmail: $e');
         }
         if (speaker != null && context.mounted) {
-          authProvider.setSpeaker(speaker);
+          mainProvider.setSpeaker(context, speaker);
           setState(() {
             _isLoading = false;
           });
@@ -186,7 +186,7 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
         }
       }
       if (userApp != null && context.mounted) {
-        logger.i('LoginWithEmail: ${authProvider.actualUser.toString()}');
+        logger.i('LoginWithEmail: ${mainProvider.actualUser.toString()}');
         setState(() {
           _isLoading = false;
         });

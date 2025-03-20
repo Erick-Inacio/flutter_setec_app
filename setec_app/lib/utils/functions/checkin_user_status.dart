@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/utils/enums/roles.dart';
-import 'package:setec_app/providers/auth_provider_model.dart';
+import 'package:setec_app/providers/main_provider.dart';
 
 class CheckingUserStatus {
   static final CheckingUserStatus _instance = CheckingUserStatus._internal();
@@ -14,14 +14,14 @@ class CheckingUserStatus {
 
   void setContext(BuildContext value) => _context = value;
 
-  AuthProvider? _getAuthProvider() {
+  MainProvider? _getMainProvider() {
     final context = _context;
     if (context == null) return null;
-    return Provider.of<AuthProvider>(context, listen: false);
+    return Provider.of<MainProvider>(context, listen: false);
   }
 
   UserApp? getUserApp() {
-    final user = _getAuthProvider()?.actualUser;
+    final user = _getMainProvider()?.actualUser;
     if (user == null) {
       return null;
 
@@ -47,5 +47,5 @@ class CheckingUserStatus {
   bool isAdmin() => getUserApp()?.role == Roles.admin;
   bool isStudent() => getUserApp()?.role == Roles.student;
 
-  bool isAuthenticated() => _getAuthProvider()?.isAuthenticated ?? false;
+  bool isAuthenticated() => _getMainProvider()?.isAuthenticated ?? false;
 }

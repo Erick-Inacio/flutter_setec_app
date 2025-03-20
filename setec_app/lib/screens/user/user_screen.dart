@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/providers/auth_provider_model.dart';
+import 'package:setec_app/providers/main_provider.dart';
 import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/utils/enums/relationship.dart';
@@ -125,7 +125,7 @@ class _UserScreenState extends State<UserScreen> {
   }
 
   void _initValues() {
-    _user = widget.user ?? widget.parentContext!.watch<AuthProvider>();
+    _user = widget.user ?? widget.parentContext!.watch<MainProvider>();
 
     if (widget.user == null) {
       if (_user.actualUser is Speaker) {

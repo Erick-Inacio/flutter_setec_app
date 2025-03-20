@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/providers/auth_provider_model.dart' as auth;
+import 'package:setec_app/providers/main_provider.dart' as auth;
 import 'package:setec_app/models/speaker_model.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/services/backend/speaker_services.dart';
@@ -188,8 +188,8 @@ class _CreateUserState extends State<CreateUser> {
     if (context.mounted) {
       try {
         final authService = AuthService();
-        final authProvider =
-            Provider.of<auth.AuthProvider>(context, listen: false);
+        final mainProvider =
+            Provider.of<auth.MainProvider>(context, listen: false);
 
         //tenta criar conta no firebase
         UserApp? authenticatedUserApp = await authService.registerWithEmail(
@@ -223,7 +223,7 @@ class _CreateUserState extends State<CreateUser> {
         //se for um speaker, tenta criar o palestrante no banco
         if (isSpeaker && speaker != null) {
           SpeakerServices speakerServices = SpeakerServices();
-          speaker.user = savedUserApp.id as int;
+          speaker.user = savedUserApp;
           final savedSpeaker = await speakerServices.post(speaker);
 
           //Seta o savedUserApp no obj de savedSpeaker
@@ -231,24 +231,26 @@ class _CreateUserState extends State<CreateUser> {
 
           //se conseguiu, define o usuário como palestrante
           //e salva as informações no provider
-          authProvider.setUserApp(savedUserApp);
-          authProvider.setSpeaker(savedSpeaker);
+          if (context.mounted) {
+            mainProvider.setUserApp(context, savedUserApp);
+            mainProvider.setSpeaker(context, savedSpeaker);
+          }
 
-          if (authProvider.actualUser != null && context.mounted) {
+          if (mainProvider.actualUser != null && context.mounted) {
             context.go('/lectures');
           } else {
-            authProvider.signOut();
+            mainProvider.signOut();
             setState(() {
               _isLoading = false;
             });
             throw Exception("Failed to get user from provider");
           }
-        } else {
+        } else if (context.mounted) {
           //se não for um palestrante, salva as informações no provider
           //como usuario comum
-          authProvider.setUserApp(savedUserApp);
+          mainProvider.setUserApp(context, savedUserApp);
 
-          if (authProvider.actualUser != null && context.mounted) {
+          if (mainProvider.actualUser != null && context.mounted) {
             context.go('/lectures');
           }
         }

@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
-import 'package:setec_app/providers/auth_provider_model.dart';
+import 'package:setec_app/providers/main_provider.dart';
 import 'package:setec_app/models/user_app_model.dart';
 import 'package:setec_app/utils/enums/relationship.dart';
 
@@ -21,6 +21,9 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+
+  //mocks
+  final TextEditingController _relationshipController = TextEditingController();
 
   late String _relationship;
   List<String> _relationships = [];
@@ -48,7 +51,7 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
 
   @override
   Widget build(BuildContext context) {
-    final authProvider = context.watch<AuthProvider>();
+    final mainProvider = context.watch<MainProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -135,6 +138,7 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
                             labelText: 'Relação com a FATEC'),
                       ),
                       SizedBox(height: 16.0),
+
                     ],
                   ),
                 ),
@@ -145,10 +149,51 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
                 padding: const EdgeInsets.fromLTRB(0, 16, 0, 40),
                 child: ElevatedButton(
                   onPressed: () async {
-                    _buttomFunction(context, authProvider);
+                    _buttomFunction(context, mainProvider);
                   },
                   child: Text(
                     'Próximo',
+                    style: GoogleFonts.lato(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+          
+              //Mock Student
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _nameController.text = 'Teste Student';
+                    _emailController.text = 'student@mock.com';
+                    _passwordController.text = '123456';
+                    _relationship = Relationship.exaluno.displayName;
+                  },
+                  child: Text(
+                    'Teste Student',
+                    style: GoogleFonts.lato(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              //Mock Student
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                child: ElevatedButton(
+                  onPressed: () {
+                    _nameController.text = 'Teste Speaker';
+                    _emailController.text = 'speaker@mock.com';
+                    _passwordController.text = '123456';
+                    _relationship = Relationship.exaluno.displayName;
+                  },
+                  child: Text(
+                    'Teste Speaker',
                     style: GoogleFonts.lato(
                       color: Colors.white,
                       fontSize: 15,
@@ -166,7 +211,7 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
 
   void _buttomFunction(
     BuildContext context,
-    AuthProvider authProvider,
+    MainProvider mainProvider,
   ) async {
     if (_formKey.currentState!.validate()) {
       try {
