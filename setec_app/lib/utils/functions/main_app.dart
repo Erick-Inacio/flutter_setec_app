@@ -48,7 +48,7 @@ class _MainAppState extends State<MainApp> {
         await mainProvider.loadDataFromPreferences(context);
       }
     } catch (error, stackTrace) {
-      mainProvider.signOut();
+      // mainProvider.signOut();
       logger.e('Erro ao buscar dados do usuário: $error, $stackTrace');
     } finally {
       setState(() => _isLoading = false);

@@ -14,6 +14,7 @@ import 'package:setec_app/utils/enums/relationship.dart';
 import 'package:setec_app/utils/enums/roles.dart';
 import 'package:setec_app/widgets/Text/FormField/speaker_form_field.dart';
 import 'package:setec_app/widgets/buttom/custom_buttom.dart';
+import 'package:setec_app/widgets/snackBar/exception_snack_bar.dart';
 
 class CreateUser extends StatefulWidget {
   final UserApp userApp;
@@ -200,6 +201,14 @@ class _CreateUserState extends State<CreateUser> {
         //se não conseguiu, lança uma exceção
         if (authenticatedUserApp == null) {
           createdUser = false;
+          setState(() => _isLoading = false);
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              ExceptionSnackBar(
+                message: "Failed to create user in firebase",
+              ),
+            );
+          }
           throw Exception(
             "Failed to create user in firebase: ${authenticatedUserApp.toString()}",
           );

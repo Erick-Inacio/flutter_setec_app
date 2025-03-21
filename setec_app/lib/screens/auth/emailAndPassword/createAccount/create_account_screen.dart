@@ -163,45 +163,45 @@ class _CreateAccountWithEmailScreenState extends State<CreateAccount> {
               ),
           
               //Mock Student
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _nameController.text = 'Teste Student';
-                    _emailController.text = 'student@mock.com';
-                    _passwordController.text = '123456';
-                    _relationship = Relationship.exaluno.displayName;
-                  },
-                  child: Text(
-                    'Teste Student',
-                    style: GoogleFonts.lato(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-              //Mock Student
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
-                child: ElevatedButton(
-                  onPressed: () {
-                    _nameController.text = 'Teste Speaker';
-                    _emailController.text = 'speaker@mock.com';
-                    _passwordController.text = '123456';
-                    _relationship = Relationship.exaluno.displayName;
-                  },
-                  child: Text(
-                    'Teste Speaker',
-                    style: GoogleFonts.lato(
-                      color: Colors.white,
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+              //   child: ElevatedButton(
+              //     onPressed: () {
+              //       _nameController.text = 'Teste Student';
+              //       _emailController.text = 'student@mock.com';
+              //       _passwordController.text = '123456';
+              //       _relationship = Relationship.exaluno.displayName;
+              //     },
+              //     child: Text(
+              //       'Teste Student',
+              //       style: GoogleFonts.lato(
+              //         color: Colors.white,
+              //         fontSize: 15,
+              //         fontWeight: FontWeight.bold,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // //Mock Student
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+              //   child: ElevatedButton(
+              //     onPressed: () {
+              //       _nameController.text = 'Teste Speaker';
+              //       _emailController.text = 'speaker@mock.com';
+              //       _passwordController.text = '123456';
+              //       _relationship = Relationship.exaluno.displayName;
+              //     },
+              //     child: Text(
+              //       'Teste Speaker',
+              //       style: GoogleFonts.lato(
+              //         color: Colors.white,
+              //         fontSize: 15,
+              //         fontWeight: FontWeight.bold,
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

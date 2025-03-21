@@ -41,6 +41,7 @@ class BaseProvider<T> extends ChangeNotifier {
       prefs = await SharedPreferences.getInstance();
       await prefs.setString(field, jsonEncode(toJson(t)));
       await prefs.setString('dataType', field);
+      notifyListeners();
     } on Exception catch (e) {
       logger.e('Erro ao salvar os dados: $e');
       prefs.remove(field);
@@ -56,7 +57,9 @@ class BaseProvider<T> extends ChangeNotifier {
       final restoredData = prefs.getString(field);
 
       if (restoredData != null) {
-        return jsonDecode(restoredData);
+        final aux = jsonDecode(restoredData);
+        notifyListeners();
+        return aux;
       }
       return null;
     } on Exception catch (e) {

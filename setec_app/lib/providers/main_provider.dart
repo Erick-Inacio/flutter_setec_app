@@ -28,7 +28,8 @@ class MainProvider with ChangeNotifier {
           Provider.of<UserAppProvider>(context, listen: false);
       await userAppProvider.saveDataToLocal(userApp);
 
-      logger.i('Usuário logado com sucesso: ${userAppProvider.data}');
+      logger
+          .i('Usuário logado com sucesso: ${userAppProvider.data.toString()}');
       _user = userApp;
       notifyListeners();
     } catch (e) {
@@ -94,9 +95,7 @@ class MainProvider with ChangeNotifier {
       logger.i("🔍 Carregando eventos do armazenamento local...");
       final eventsData = await eventProvider.loadDataFromLocal();
 
-      if (eventsData != null &&
-          eventsData is Map<String, dynamic> &&
-          eventsData.containsKey('events')) {
+      if (eventsData != null && eventsData.containsKey('events')) {
         logger.i("✅ Eventos encontrados: ${eventsData['events'].length}");
         _events = eventsData['events']
             .map<Event>((eventJson) => Event.fromJson(eventJson))
