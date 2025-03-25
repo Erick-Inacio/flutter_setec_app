@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:setec_app/models/event_model.dart';
 import 'package:setec_app/providers/event_provider.dart';
+import 'package:setec_app/providers/main_provider.dart';
 import 'package:setec_app/widgets/cards/event_card.dart';
 
 class ManageEvents extends StatefulWidget {
@@ -14,8 +15,8 @@ class ManageEvents extends StatefulWidget {
 class _ManageEventsState extends State<ManageEvents> {
   @override
   Widget build(BuildContext context) {
-    final eventProvider = context.watch<EventProvider>();
-    final events = eventProvider.events;
+    final mainProvider = context.watch<MainProvider>();
+    final events = mainProvider.events;
 
     return Scaffold(
       body: events.isEmpty

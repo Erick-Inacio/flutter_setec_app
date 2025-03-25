@@ -123,10 +123,10 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
                     SizedBox(
                       height: 40,
                     ),
-                    // MockUsers(
-                    //   emailController: _emailController,
-                    //   passwordController: _passwordController,
-                    // ),
+                    MockUsers(
+                      emailController: _emailController,
+                      passwordController: _passwordController,
+                    ),
                   ],
                 ),
               ),

@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:setec_app/providers/main_provider.dart';
 
 class SignOutIconButton extends StatelessWidget {
-  const SignOutIconButton({super.key});
+  SignOutIconButton({super.key});
+
+  final Logger logger = Logger();
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +17,6 @@ class SignOutIconButton extends StatelessWidget {
       onPressed: () async {
         try {
           await mainProvider.signOut();
-          Logger().i(
-              "SignOutButtom: Rebuild da tela. Usuário atual: ${mainProvider.actualUser}");
-          Logger().i('SignOutButtom: ${mainProvider.actualUser.toString()}');
-
           if (context.mounted) {
             context.go('/loginOptions');
           }

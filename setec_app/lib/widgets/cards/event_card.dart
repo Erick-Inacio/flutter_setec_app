@@ -24,6 +24,53 @@ class _EventCardState extends State<EventCard> {
       children: [
         InkWell(
           onTap: () {},
+          onLongPress: () {
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text(
+                  'Opções para Evento',
+                  style: GoogleFonts.lato(),
+                ),
+                actions: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    spacing: double.minPositive,
+                    children: <Widget>[
+                      ListTile(
+                        minTileHeight: MediaQuery.sizeOf(context).height / 30,
+                        leading: const Icon(
+                          Icons.edit,
+                          color: Colors.deepPurple,
+                        ),
+                        title: const Text('Editar'),
+                        onTap: () => Navigator.pop(context),
+                      ),
+                      ListTile(
+                        minTileHeight: MediaQuery.sizeOf(context).height / 30,
+                        leading: const Icon(
+                          Icons.delete,
+                          color: Colors.deepPurple,
+                        ),
+                        title: const Text('Excluir'),
+                        onTap: () => Navigator.pop(context),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      TextButton(
+                        child: const Text(
+                          'Fechar',
+                          style: TextStyle(color: Colors.deepPurple),
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
           child: Card(
             margin: const EdgeInsets.all(8),
             child: Column(

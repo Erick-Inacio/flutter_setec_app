@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:setec_app/firebase_options.dart';
 import 'package:setec_app/providers/all_providers.dart';
-import 'package:setec_app/providers/main_provider.dart';
-import 'package:setec_app/utils/functions/main_app.dart';
+import 'package:setec_app/app.dart';
 
 Future<void> main() async {
 
@@ -24,7 +23,7 @@ Future<void> main() async {
 
   runApp(
     AllProviders(
-      child: MainApp(),
+      child: App(),
     ),
   );
 }

@@ -7,14 +7,14 @@ import 'package:setec_app/services/firebase/auth/auth_service.dart';
 import 'package:setec_app/themes/light_theme.dart';
 import 'package:setec_app/utils/routes/appRoutes/app_routes.dart';
 
-class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+class App extends StatefulWidget {
+  const App({super.key});
 
   @override
-  State<MainApp> createState() => _MainAppState();
+  State<App> createState() => _MainAppState();
 }
 
-class _MainAppState extends State<MainApp> {
+class _MainAppState extends State<App> {
   final AuthService _authService = AuthService();
   bool _isLoading = true;
   final Logger logger = Logger();
@@ -33,22 +33,18 @@ class _MainAppState extends State<MainApp> {
     final mainProvider = Provider.of<MainProvider>(context, listen: false);
 
     try {
-      // ✅ Configura o contexto no Singleton CheckingUserStatus
       CheckingUserStatus().setContext(context);
 
-      // ✅ Se já está autenticado, não precisa verificar novamente
       if (mainProvider.isAuthenticated) {
         setState(() => _isLoading = false);
         return;
       }
 
-      // ✅ Verifica se há um usuário logado no Firebase
       final currentUser = _authService.currentUser;
       if (currentUser != null) {
         await mainProvider.loadDataFromPreferences(context);
       }
-    } catch (error, stackTrace) {
-      // mainProvider.signOut();
+    } on Exception catch (error, stackTrace) {
       logger.e('Erro ao buscar dados do usuário: $error, $stackTrace');
     } finally {
       setState(() => _isLoading = false);

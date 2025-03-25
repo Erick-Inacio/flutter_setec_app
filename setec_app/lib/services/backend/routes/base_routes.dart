@@ -2,8 +2,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class BaseRoutes {
   late String controllerName;
-  final _url = 'http://${dotenv.env['BASE_URL']}'
-      ':${dotenv.env['PORT']}/api';
+  // final _url = 'http://${dotenv.env['BASE_URL']}'
+  //     ':${dotenv.env['PORT']}/api';
+  final _url = '${dotenv.env['BASE_URL']}/api';
 
   BaseRoutes({required this.controllerName});
 

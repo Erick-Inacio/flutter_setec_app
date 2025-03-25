@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:setec_app/models/event_model.dart';
+import 'package:setec_app/providers/main_provider.dart';
 import 'package:setec_app/services/backend/event_services.dart';
 import 'package:setec_app/widgets/Text/Field/date_text_field.dart';
 import 'package:setec_app/widgets/snackBar/exception_snack_bar.dart';
@@ -126,12 +128,18 @@ class _CreateEventState extends State<CreateEvent> {
 
     try {
       final eventServices = EventServices();
+      final mainProvider = Provider.of<MainProvider>(context, listen: false);
 
       eventServices.post(event);
 
-      ScaffoldMessenger.of(context).showSnackBar(ExceptionSnackBar(
-        message: "Evento criado com sucesso!",
-      ));
+      mainProvider.fetchEvents(context: context);
+
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        ExceptionSnackBar(
+          message: "Evento criado com sucesso!",
+        ),
+      );
       Navigator.pop(context);
     } catch (e) {
       setState(() {

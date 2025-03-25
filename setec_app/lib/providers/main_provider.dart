@@ -50,14 +50,13 @@ class MainProvider with ChangeNotifier {
     }
   }
 
-  void setEvents({
-    required List<Event> events,
+  void fetchEvents({
     required BuildContext context,
   }) async {
     try {
       final eventProvider = Provider.of<EventProvider>(context, listen: false);
-      await eventProvider.saveEventsToLocal(events);
-      _events = events;
+      await eventProvider.fetchEvents();
+      _events = eventProvider.events;
       notifyListeners();
     } catch (e) {
       logger.e('Erro ao setar eventos: $e');
@@ -77,7 +76,7 @@ class MainProvider with ChangeNotifier {
       final userAppData = await userAppProvider.loadDataFromLocal();
 
       if (userAppData != null) {
-        logger.i("✅ Usuário encontrado: $userAppData");
+        logger.i("✅ Usuário encontrado: ${userAppData.toString()}");
         _user = UserApp.fromJson(userAppData);
       } else {
         logger.i("⚠️ Nenhum usuário encontrado, buscando palestrante...");
@@ -93,18 +92,17 @@ class MainProvider with ChangeNotifier {
       }
 
       logger.i("🔍 Carregando eventos do armazenamento local...");
-      final eventsData = await eventProvider.loadDataFromLocal();
+      final eventsData = await eventProvider.loadEventsFromLocal();
 
-      if (eventsData != null && eventsData.containsKey('events')) {
-        logger.i("✅ Eventos encontrados: ${eventsData['events'].length}");
-        _events = eventsData['events']
-            .map<Event>((eventJson) => Event.fromJson(eventJson))
-            .toList();
+      if (eventsData != null) {
+        _events = eventsData;
+        logger.i("✅ Eventos encontrados: ${eventsData.length}");
+        
       } else {
         logger.w(
             "⚠️ Nenhum evento encontrado no armazenamento local, buscando da API...");
         await eventProvider
-            .fetchEvents(); // ✅ Garante que os eventos são buscados corretamente
+            .fetchEvents();
         _events = eventProvider.events;
       }
 

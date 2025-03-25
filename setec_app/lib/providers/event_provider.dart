@@ -45,4 +45,31 @@ class EventProvider extends BaseProvider<Event> {
       rethrow;
     }
   }
+
+  Future<List<Event>?> loadEventsFromLocal() async {
+    SharedPreferences? sharedPreferences;
+
+    try {
+      sharedPreferences = await SharedPreferences.getInstance();
+      final storedData = sharedPreferences.getString(field);
+
+      if (storedData != null) {
+        final decodedData = jsonDecode(storedData);
+        if (decodedData is List) {
+          final events = decodedData
+              .map((event) => Event.fromJson(event as Map<String, dynamic>))
+              .toList();
+          notifyListeners();
+          return events;
+        }
+      }
+      return null;
+    } catch (error) {
+      sharedPreferences?.remove(field);
+      sharedPreferences?.remove('dataType');
+      rethrow;
+    }
+  }
+
+
 }
