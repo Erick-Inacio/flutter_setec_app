@@ -49,4 +49,31 @@ class EventServices extends BaseService<Event> {
       throw Exception("Failed to get event by user: $e");
     }
   }
+
+  Future<List<Event>> getEventsWithNoAuth() async {
+    final routes = EventRoutes();
+    try {
+      final response = await BaseService.sendRequest(
+        () => http.get(
+          Uri.parse(routes.getAll()),
+          headers: {'Content-Type': 'application/json'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        List<dynamic> responseData = jsonDecode(response.body);
+        return responseData
+            .map((json) => Event.fromJson(
+                  json,
+                ))
+            .toList();
+      } else {
+        throw Exception(
+          "Failed to get event by user: ${response.statusCode} ${response.reasonPhrase}",
+        );
+      }
+    } on Exception catch (e) {
+      throw Exception("Failed to get event by user: $e");
+    }
+  }
 }

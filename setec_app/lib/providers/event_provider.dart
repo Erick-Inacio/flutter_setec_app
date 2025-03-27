@@ -18,7 +18,7 @@ class EventProvider extends BaseProvider<Event> {
 
   Future<void> fetchEvents() async {
     try {
-      events = await service.getAll() as List<Event>;
+      events = await EventServices().getEventsWithNoAuth();
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(
           'event', jsonEncode(events.map((e) => e.toJson()).toList()));

@@ -22,7 +22,7 @@ class _MainAppState extends State<App> {
   @override
   void initState() {
     super.initState();
-    
+
     // ✅ Executa a inicialização APÓS o primeiro frame para evitar erro de `context`
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _initializeApp(context);
@@ -43,6 +43,10 @@ class _MainAppState extends State<App> {
       final currentUser = _authService.currentUser;
       if (currentUser != null) {
         await mainProvider.loadDataFromPreferences(context);
+      }
+
+      if (context.mounted) {
+        mainProvider.fetchEvents(context: context);
       }
     } on Exception catch (error, stackTrace) {
       logger.e('Erro ao buscar dados do usuário: $error, $stackTrace');

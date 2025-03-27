@@ -24,7 +24,6 @@ class CheckingUserStatus {
     final user = _getMainProvider()?.actualUser;
     if (user == null) {
       return null;
-
     }
 
     if (user is Speaker) {
