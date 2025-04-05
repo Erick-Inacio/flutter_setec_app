@@ -57,22 +57,27 @@ class _CreateEventState extends State<CreateEvent> {
 
         await eventServices.post(event);
 
-  if(context.mounted) {
-        await mainProvider.fetchEvents(context: context);}
+        if (context.mounted) {
+          await mainProvider.fetchEvents(context: context);
+        }
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          ExceptionSnackBar(
-            message: "Evento criado com sucesso!",
-          ),
-        );
-        Navigator.pop(context);
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            ExceptionSnackBar(
+              message: "Evento criado com sucesso!",
+            ),
+          );
+          Navigator.pop(context);
+        }
       } catch (e) {
         setState(() => isLoading = false);
-        ScaffoldMessenger.of(context).showSnackBar(
-          ExceptionSnackBar(
-            message: e.toString(),
-          ),
-        );
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            ExceptionSnackBar(
+              message: e.toString(),
+            ),
+          );
+        }
       }
     }
 
