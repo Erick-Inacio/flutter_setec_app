@@ -40,6 +40,42 @@ class _CreateEventState extends State<CreateEvent> {
 
   @override
   Widget build(BuildContext context) {
+    final mainProvider = context.watch<MainProvider>();
+
+    void createEvent() async {
+      setState(() {
+        isLoading = true;
+      });
+      Event event = Event.empty();
+
+      event.description = _descriptionController.text;
+      event.initialDateTime = initialDateTime!;
+      event.finalDateTime = finalDateTime!;
+
+      try {
+        final eventServices = EventServices();
+
+        await eventServices.post(event);
+
+  if(context.mounted) {
+        await mainProvider.fetchEvents(context: context);}
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          ExceptionSnackBar(
+            message: "Evento criado com sucesso!",
+          ),
+        );
+        Navigator.pop(context);
+      } catch (e) {
+        setState(() => isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          ExceptionSnackBar(
+            message: e.toString(),
+          ),
+        );
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -96,60 +132,31 @@ class _CreateEventState extends State<CreateEvent> {
                         backgroundColor: Colors.deepPurple,
                       ),
                       onPressed: () {
+                        setState(() {
+                          isLoading = true;
+                        });
                         if (_globalKey.currentState!.validate()) {
                           setState(() {
                             isLoading = true;
                           });
-                          _createEvent(context);
+                          createEvent();
                         }
                       },
-                      child: Text(
-                        'Criar Evento',
-                        style: GoogleFonts.lato(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
+                      child: isLoading
+                          ? CircularProgressIndicator()
+                          : Text(
+                              'Criar Evento',
+                              style: GoogleFonts.lato(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                     )
                   ],
                 ),
               ),
             ),
     );
-  }
-
-  void _createEvent(BuildContext context) {
-    Event event = Event.empty();
-
-    event.description = _descriptionController.text;
-    event.initialDateTime = initialDateTime!;
-    event.finalDateTime = finalDateTime!;
-
-    try {
-      final eventServices = EventServices();
-      final mainProvider = Provider.of<MainProvider>(context, listen: false);
-
-      eventServices.post(event);
-
-      mainProvider.fetchEvents(context: context);
-
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        ExceptionSnackBar(
-          message: "Evento criado com sucesso!",
-        ),
-      );
-      Navigator.pop(context);
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        ExceptionSnackBar(
-          message: e.toString(),
-        ),
-      );
-    }
   }
 }

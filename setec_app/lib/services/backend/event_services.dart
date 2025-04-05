@@ -67,6 +67,8 @@ class EventServices extends BaseService<Event> {
                   json,
                 ))
             .toList();
+      } else if (response.statusCode == 204) {
+        return [];
       } else {
         throw Exception(
           "Failed to get event by user: ${response.statusCode} ${response.reasonPhrase}",

@@ -37,7 +37,7 @@ class _EventCardState extends State<EventCard> {
                     context: context,
                     builder: (context) => AlertDialog(
                       title: Text(
-                        'Opções para Evento',
+                        'Opções',
                         style: GoogleFonts.lato(),
                       ),
                       actions: <Widget>[
@@ -65,7 +65,7 @@ class _EventCardState extends State<EventCard> {
                               title: const Text('Excluir'),
                               onTap: () async {
                                 final eventServices = EventServices();
-
+                                Logger().i(widget.event.toString());
                                 try {
                                   await eventServices.delete(
                                     widget.event.id as int,
@@ -73,23 +73,22 @@ class _EventCardState extends State<EventCard> {
 
                                   if (context.mounted) {
                                     Navigator.pop(context);
-                                    ScaffoldMessenger.of(
-                                      context
-                                    ).showSnackBar(
+                                    ScaffoldMessenger.of(context).showSnackBar(
                                       ExceptionSnackBar(
                                         message:
-                                            "Evento excluído com sucesso!"
+                                            "Evento excluído com sucesso!",
                                       ),
                                     );
                                   }
-
                                   setState(() {
                                     mainProvider.events
                                         .removeAt(widget.event.id as int);
                                   });
+                                  Logger().i(mainProvider.events.toString());
                                 } catch (e) {
                                   Logger().w(
-                                      "EventCard: erro ao excluit evanto - $e");
+                                    "EventCard: erro ao excluir evento - $e",
+                                  );
                                 }
                               },
                             ),
