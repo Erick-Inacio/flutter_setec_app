@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:setec_app/data/event/service/event_services.dart';
 import 'package:setec_app/providers/session_provider.dart';
-import 'package:setec_app/ui/core/ui/widgets/Text/Field/date_text_field.dart';
-import 'package:setec_app/ui/core/ui/widgets/snackBar/exception_snack_bar.dart';
+import 'package:setec_app/ui/utils/ui/widgets/Text/Field/date_text_field.dart';
+import 'package:setec_app/ui/utils/ui/widgets/snackBar/exception_snack_bar.dart';
 
 class CreateEvent extends StatefulWidget {
   const CreateEvent({super.key});

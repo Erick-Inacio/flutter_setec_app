@@ -35,13 +35,13 @@ class SessionProvider with ChangeNotifier {
     });
   }
 
-  Future<Result<void>> loadSession() async {
-    return handleResult(() async {
-      final user = AuthRepository().currentUser;
-      if (user != null) {
-        await loadDataFromPreferences();
-        await fetchEvents();
-      }
-    });
-  }
+  // Future<Result<void>> loadSession() async {
+  //   return handleResult(() async {
+  //     final user = AuthRepository().currentUser;
+  //     if (user != null) {
+  //       await loadDataFromPreferences();
+  //       await fetchEvents();
+  //     }
+  //   });
+  // }
 }

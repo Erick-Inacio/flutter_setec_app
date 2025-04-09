@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:setec_app/ui/core/ui/widgets/Text/FormField/speaker_form_field.dart';
+import 'package:setec_app/ui/utils/ui/widgets/Text/FormField/speaker_form_field.dart';
 
 class UserScreen extends StatefulWidget {
   final BuildContext? parentContext;

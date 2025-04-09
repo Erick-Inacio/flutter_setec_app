@@ -20,8 +20,8 @@ class UserServices extends BaseService<UserAppDTO> {
   Future<Result<UserAppDTO>> getByUid(String uid) async {
     return handleResult(() async {
       final routes = UserRoutes();
-      final authService = AuthRepository();
-      final token = await authService.getUserToken();
+      final authRepository = AuthRepository();
+      final token = await authRepository.getUserToken();
       Logger().i('UserServices: $token');
 
       final response = await _dio.get(

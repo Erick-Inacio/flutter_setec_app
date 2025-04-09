@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:setec_app/providers/session_provider.dart';
-import 'package:setec_app/ui/core/ui/widgets/cards/event_card.dart';
+import 'package:setec_app/ui/utils/ui/widgets/cards/event_card.dart';
 
 class ManageEvents extends StatefulWidget {
   const ManageEvents({super.key});

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:setec_app/core/classes/checkin_user_status_class.dart';
-import 'package:setec_app/providers/session_provider.dart';
-import 'package:setec_app/ui/core/ui/widgets/drawer/custom_drawer.dart';
-import 'package:setec_app/ui/core/ui/widgets/iconButton/sign_in_icon_button.dart';
-import 'package:setec_app/ui/core/ui/widgets/navBar/bottom_app_bar.dart';
+import 'package:setec_app/ui/utils/ui/widgets/drawer/custom_drawer.dart';
+import 'package:setec_app/ui/utils/ui/widgets/iconButton/sign_in_icon_button.dart';
+import 'package:setec_app/ui/utils/ui/widgets/navBar/bottom_app_bar.dart';
 
 class HomePageNavBar extends StatefulWidget {
   final Widget child;

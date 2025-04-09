@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
-import 'package:setec_app/data/speaker/service/speaker_services.dart';
-import 'package:setec_app/domain/models/speaker.dart';
-import 'package:setec_app/domain/models/user_app.dart';
-import 'package:setec_app/providers/session_provider.dart';
 import 'package:setec_app/data/firebase/auth/auth_repository.dart';
-import 'package:setec_app/core/enums/roles.dart';
-import 'package:setec_app/ui/core/ui/widgets/buttom/mock_users.dart';
-import 'package:setec_app/ui/core/ui/widgets/snackBar/exception_snack_bar.dart';
+import 'package:setec_app/ui/auth/viewModel/auth_view_model.dart';
+import 'package:setec_app/ui/utils/ui/widgets/buttom/mock_users.dart';
 
 class LoginWithEmail extends StatefulWidget {
-  const LoginWithEmail({super.key});
+  const LoginWithEmail({super.key, required this.authViewModel});
+
+  final AuthViewModel authViewModel;
 
   @override
   State<LoginWithEmail> createState() => _LoginWithEmailState();
@@ -26,9 +22,14 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final AuthService _AuthService = AuthService();
-
   bool _isLoading = false;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,157 +42,109 @@ class _LoginWithEmailState extends State<LoginWithEmail> {
           ? Center(
               child: CircularProgressIndicator(),
             )
-          : Form(
-              key: _formKey,
-              child: Center(
-                child: ListView(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(16.0),
-                  children: <Widget>[
-                    TextFormField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Por favor, insira um email válido';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10),
-                    TextFormField(
-                      controller: _passwordController,
-                      keyboardType: TextInputType.visiblePassword,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Por favor, insira uma senha válida';
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 10),
-                    Row(
+          : SafeArea(
+              child: ListenableBuilder(
+                listenable: widget.authViewModel,
+                builder: (context, _) => Form(
+                  key: _formKey,
+                  child: Center(
+                    child: ListView(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(16.0),
                       children: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            context.push('/criarConta');
+                        TextFormField(
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            labelText: 'Email',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor, insira um email válido';
+                            }
+                            return null;
                           },
-                          child: const Text(
-                            'Criar Conta',
-                            style: TextStyle(
-                              color: Colors.deepPurple,
-                              fontSize: 12.0,
+                        ),
+                        SizedBox(height: 10),
+                        TextFormField(
+                          controller: _passwordController,
+                          keyboardType: TextInputType.visiblePassword,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            labelText: 'Password',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Por favor, insira uma senha válida';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          children: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                context.push('/criarConta');
+                              },
+                              child: const Text(
+                                'Criar Conta',
+                                style: TextStyle(
+                                  color: Colors.deepPurple,
+                                  fontSize: 12.0,
+                                ),
+                              ),
                             ),
+                            const Spacer(),
+                            TextButton(
+                              onPressed: () {},
+                              child: const Text(
+                                'Esqueci minha senha',
+                                style: TextStyle(
+                                  color: Colors.deepPurple,
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            minimumSize: Size(double.infinity, 45),
+                          ),
+                          onPressed: () async {
+
+                            
+
+                            widget.authViewModel.navigationTo(
+                              context: context,
+                              formKey: _formKey,
+                              email: _emailController,
+                              password: _passwordController,
+                            );
+                          },
+                          child: Text(
+                            'Login',
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
-                        const Spacer(),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'Esqueci minha senha',
-                            style: TextStyle(
-                              color: Colors.deepPurple,
-                              fontSize: 12.0,
-                            ),
-                          ),
+                        SizedBox(
+                          height: 40,
+                        ),
+                        MockUsers(
+                          emailController: _emailController,
+                          passwordController: _passwordController,
                         ),
                       ],
                     ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepPurple,
-                        minimumSize: Size(double.infinity, 45),
-                      ),
-                      onPressed: () async {
-                        // _navigationTo(context, mainProvider);
-                      },
-                      child: Text(
-                        'Login',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    MockUsers(
-                      emailController: _emailController,
-                      passwordController: _passwordController,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
     );
   }
-
-  // void _navigationTo(BuildContext context, MainProvider mainProvider) async {
-  //   if (_formKey.currentState!.validate()) {
-  //     setState(() {
-  //       _isLoading = true;
-  //     });
-  //     UserApp? userApp;
-
-  //     try {
-  //       userApp = await _AuthService.login(
-  //         _emailController.text,
-  //         _passwordController.text,
-  //       );
-
-  //       if (userApp != null && context.mounted) {
-  //         mainProvider.setUserApp(context, userApp);
-  //       }
-  //     } catch (e) {
-  //       mainProvider.signOut();
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //       if (context.mounted) {
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           ExceptionSnackBar(
-  //             message: e.toString(),
-  //           ),
-  //         );
-  //       }
-  //       logger.e('LoginWithEmail: $e');
-  //     }
-
-  //     if (userApp != null && userApp.role == Roles.speaker && context.mounted) {
-  //       Speaker? speaker;
-  //       try {
-  //         SpeakerServices speakerServices = SpeakerServices();
-  //         // speaker = await speakerServices.getByUser(userApp.id as int);
-  //       } on Exception catch (e) {
-  //         mainProvider.signOut();
-  //         setState(() {
-  //           _isLoading = false;
-  //         });
-  //         logger.e('LoginWithEmail: $e');
-  //       }
-  //       if (speaker != null && context.mounted) {
-  //         mainProvider.setSpeaker(context, speaker);
-  //         setState(() {
-  //           _isLoading = false;
-  //         });
-  //         context.go('/lectures');
-  //       }
-  //     }
-  //     if (userApp != null && context.mounted) {
-  //       logger.i('LoginWithEmail: ${mainProvider.actualUser.toString()}');
-  //       setState(() {
-  //         _isLoading = false;
-  //       });
-  //       context.go('/lectures');
-  //     }
-  //   }
-  // }
 }

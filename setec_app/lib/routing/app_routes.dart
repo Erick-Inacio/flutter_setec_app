@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 import 'package:setec_app/domain/models/user_app.dart';
-import 'package:setec_app/ui/admin/views/admin_user_menager_screen.dart';
 import 'package:setec_app/ui/event/views/create_event_screen.dart';
 import 'package:setec_app/ui/lecture/views/lecture_view.dart';
 import 'package:setec_app/ui/miniCourse/view/mini_course.dart';
@@ -9,7 +8,6 @@ import 'package:setec_app/ui/auth/views/create_account_screen.dart';
 import 'package:setec_app/ui/auth/views/create_user.dart';
 import 'package:setec_app/ui/event/views/event_screen.dart';
 import 'package:setec_app/ui/auth/views/login_options.dart';
-import 'package:setec_app/ui/auth/views/login_with_email.dart';
 
 class AppRouter {
   static GoRouter get router => _router;
@@ -23,14 +21,14 @@ class AppRouter {
         path: '/loginOptions',
         builder: (context, state) => const LoginOptions(),
       ),
-      GoRoute(
-        path: '/adminUser',
-        builder: (context, state) => const AdminUserManager(),
-      ),
-      GoRoute(
-        path: '/loginWithEmail',
-        builder: (context, state) => LoginWithEmail(),
-      ),
+      // GoRoute(
+      //   path: '/adminUser',
+      //   builder: (context, state) => const AdminUserManager(),
+      // ),
+      // GoRoute(
+      //   path: '/loginWithEmail',
+      //   builder: (context, state) => LoginWithEmail(),
+      // ),
       GoRoute(
         path: '/criarConta',
         builder: (context, state) => CreateAccount(),

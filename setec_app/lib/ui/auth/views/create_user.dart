@@ -12,9 +12,9 @@ import 'package:setec_app/providers/session_provider.dart' as auth;
 import 'package:setec_app/data/firebase/auth/auth_repository.dart';
 import 'package:setec_app/core/enums/relationship.dart';
 import 'package:setec_app/core/enums/roles.dart';
-import 'package:setec_app/ui/core/ui/widgets/Text/FormField/speaker_form_field.dart';
-import 'package:setec_app/ui/core/ui/widgets/buttom/custom_buttom.dart';
-import 'package:setec_app/ui/core/ui/widgets/snackBar/exception_snack_bar.dart';
+import 'package:setec_app/ui/utils/ui/widgets/Text/FormField/speaker_form_field.dart';
+import 'package:setec_app/ui/utils/ui/widgets/buttom/custom_buttom.dart';
+import 'package:setec_app/ui/utils/ui/widgets/snackBar/exception_snack_bar.dart';
 
 class CreateUser extends StatefulWidget {
   final UserApp userApp;
@@ -188,12 +188,12 @@ class _CreateUserState extends State<CreateUser> {
 
   //   if (context.mounted) {
   //     try {
-  //       final AuthService = AuthService();
+  //       final AuthRepository = AuthRepository();
   //       final mainProvider =
   //           Provider.of<auth.MainProvider>(context, listen: false);
 
   //       //tenta criar conta no firebase
-  //       UserApp? authenticatedUserApp = await AuthService.registerWithEmail(
+  //       UserApp? authenticatedUserApp = await AuthRepository.registerWithEmail(
   //         widget.userApp.email,
   //         widget.password,
   //       );
@@ -265,7 +265,7 @@ class _CreateUserState extends State<CreateUser> {
   //       }
   //     } on Exception catch (e, stackTrace) {
   //       if (!createdUser) {
-  //         AuthService AuthServices = AuthService();
+  //         AuthRepository AuthServices = AuthRepository();
   //         final user = FirebaseAuth.instance.currentUser;
   //         if (user != null) {
   //           await AuthServices.deleteUser();
