@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:logger/web.dart';
-import 'package:provider/provider.dart';
-import 'package:setec_app/data/event/service/event_services.dart';
 import 'package:setec_app/domain/models/event.dart';
-import 'package:setec_app/providers/session_provider.dart';
-import 'package:setec_app/ui/core/ui/widgets/snackBar/exception_snack_bar.dart';
-import 'package:setec_app/core/classes/checkin_user_status_class.dart';
 import 'package:setec_app/core/formatters/format_date_time.dart';
 
 class EventCard extends StatefulWidget {

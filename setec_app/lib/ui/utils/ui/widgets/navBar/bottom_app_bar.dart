@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:setec_app/ui/core/ui/widgets/iconButton/icon_text_buttom.dart';
+import 'package:setec_app/ui/utils/ui/widgets/iconButton/icon_text_buttom.dart';
 
 class CustomBottomAppBar extends StatelessWidget {
   const CustomBottomAppBar({super.key});

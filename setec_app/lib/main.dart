@@ -1,12 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:setec_app/firebase_options.dart';
-import 'package:setec_app/providers/all_providers.dart';
-import 'package:setec_app/app.dart';
+import 'package:setec_app/initialize/app.dart';
 
 Future<void> main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
   try {
@@ -22,7 +21,7 @@ Future<void> main() async {
   }
 
   runApp(
-    AllProviders(
+    ProviderScope(
       child: App(),
     ),
   );

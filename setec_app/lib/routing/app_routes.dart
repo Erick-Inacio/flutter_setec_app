@@ -3,7 +3,7 @@ import 'package:setec_app/domain/models/user_app.dart';
 import 'package:setec_app/ui/event/views/create_event_screen.dart';
 import 'package:setec_app/ui/lecture/views/lecture_view.dart';
 import 'package:setec_app/ui/miniCourse/view/mini_course.dart';
-import 'package:setec_app/ui/home/views/home_page.dart';
+import 'package:setec_app/ui/home/widgets/custom_home_nav_drawer_widget.dart';
 import 'package:setec_app/ui/auth/views/create_account_screen.dart';
 import 'package:setec_app/ui/auth/views/create_user.dart';
 import 'package:setec_app/ui/event/views/event_screen.dart';
@@ -48,7 +48,7 @@ class AppRouter {
       ),
       ShellRoute(
         builder: (context, state, child) {
-          return HomePageNavBar(child: child);
+          return CustomHomeNavDrawer(child: child);
         },
         routes: <GoRoute>[
           GoRoute(

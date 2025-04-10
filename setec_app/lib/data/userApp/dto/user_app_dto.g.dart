@@ -38,6 +38,6 @@ const _$RelationshipEnumMap = {
 const _$RolesEnumMap = {
   Roles.admin: 'ADMIN',
   Roles.student: 'STUDENT',
-  Roles.comission: 'COMMISSION',
+  Roles.commission: 'COMMISSION',
   Roles.speaker: 'SPEAKER',
 };

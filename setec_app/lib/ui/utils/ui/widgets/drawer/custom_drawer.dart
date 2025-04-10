@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:setec_app/ui/core/ui/widgets/iconButton/sign_out_icon_button.dart';
-import 'package:setec_app/core/classes/checkin_user_status_class.dart';
+import 'package:setec_app/ui/utils/ui/widgets/iconButton/sign_out_icon_button.dart';
 
 class CustomDrawer extends StatelessWidget {
   // final UserApp userApp;

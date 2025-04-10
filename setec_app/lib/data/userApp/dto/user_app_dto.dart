@@ -1,11 +1,13 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:setec_app/core/classes/mappable_class.dart';
 import 'package:setec_app/core/enums/relationship.dart';
 import 'package:setec_app/core/enums/roles.dart';
+import 'package:setec_app/domain/models/user_app.dart';
 
 part 'user_app_dto.g.dart';
 
 @JsonSerializable()
-class UserAppDTO {
+class UserAppDTO implements DTOConvertible<UserApp> {
   int? id;
   late String uid;
   late String name;
@@ -13,7 +15,7 @@ class UserAppDTO {
   late String? ra;
 
   late Roles role;
-  
+
   late Relationship relationship;
 
   UserAppDTO.empty();
@@ -28,8 +30,22 @@ class UserAppDTO {
     required this.ra,
   });
 
-  factory UserAppDTO.fromJson(Map<String, dynamic> json) => _$UserAppDTOFromJson(json);
+  factory UserAppDTO.fromJson(Map<String, dynamic> json) =>
+      _$UserAppDTOFromJson(json);
   Map<String, dynamic> toJson() => _$UserAppDTOToJson(this);
+
+  @override
+  UserApp toDomain() {
+    return UserApp(
+      id: id,
+      uid: uid,
+      name: name,
+      email: email,
+      role: role,
+      ra: ra,
+      relationship: relationship,
+    );
+  }
 
   @override
   String toString() {

@@ -10,7 +10,7 @@ enum Roles {
   student("Estudante"),
 
   @JsonValue('COMMISSION')
-  comission("Comissão"),
+  commission("Comissão"),
 
   @JsonValue('SPEAKER')
   speaker("Palestrante");

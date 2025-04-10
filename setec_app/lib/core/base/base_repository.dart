@@ -72,8 +72,7 @@ abstract class BaseRepository<T> with SharedPrefsMixin {
     });
   }
 
-  Future<Result<D>> create<D, DTO extends DTOConvertible<D>>(
-      D domain) async {
+  Future<Result<D>> create<D, DTO extends DTOConvertible<D>>(D domain) async {
     return handleResult(() async {
       final convertedDto = (domain as dynamic).toDTO();
 
@@ -99,8 +98,7 @@ abstract class BaseRepository<T> with SharedPrefsMixin {
     });
   }
 
-  Future<Result<D>> update<D, DTO extends DTOConvertible<D>>(
-      D domain) async {
+  Future<Result<D>> update<D, DTO extends DTOConvertible<D>>(D domain) async {
     return handleResult(() async {
       final convertedDto = (domain as dynamic).toDTO();
 
@@ -121,8 +119,6 @@ abstract class BaseRepository<T> with SharedPrefsMixin {
         case Error(error: final e):
           throw e;
       }
-    }, onError: (e) {
-      Logger().e('Erro ao atualizar ou salvar localmente: $e');
     });
   }
 
@@ -136,11 +132,48 @@ abstract class BaseRepository<T> with SharedPrefsMixin {
     });
   }
 
+  //SharedPreferences
+  Future<Result<void>> saveObjectLocal(T d) async {
+    return handleResult(() async {
+      await saveObject(key: _storageKey, object: d);
+    });
+  }
+
   Future<Result<void>> saveListLocal(List<dynamic> list, {String? key}) async {
     return handleResult(() async {
       await saveList(key: key ?? _storageKey, list: list);
     }, onError: (e) {
       Logger().e('Erro ao salvar a lista localmente: $e');
+    });
+  }
+
+  Future<Result<Map<String, dynamic>?>> getObjectLocal() async {
+    return handleResult(() async {
+      final result = await getObject(_storageKey);
+      switch (result) {
+        case Ok(value: final value):
+          return value;
+        case Error(error: final e):
+          throw e;
+      }
+    });
+  }
+
+  Future<Result<List<Map<String, dynamic>>?>> getListObject() async {
+    return handleResult(() async {
+      final result = await getList(_storageKey);
+      switch (result) {
+        case Ok(value: final value):
+          return value;
+        case Error(error: final e):
+          throw e;
+      }
+    });
+  }
+
+  Future<Result<void>> removeLocal() async {
+    return handleResult(() async {
+      await remove(_storageKey);
     });
   }
 }

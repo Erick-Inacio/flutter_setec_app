@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/enums/roles.dart';
-import 'package:setec_app/data/firebase/auth/auth_repository.dart';
 import 'package:setec_app/domain/models/speaker.dart';
 import 'package:setec_app/domain/models/user_app.dart';
 
 class SessionProvider with ChangeNotifier {
-  dynamic _user;
+  dynamic _user;  
 
   dynamic get user => _user;
   bool get isAuthenticated => _user != null;
@@ -21,7 +20,7 @@ class SessionProvider with ChangeNotifier {
 
   bool get isAdmin => role == Roles.admin;
   bool get isStudent => role == Roles.student;
-  bool get isCommission => role == Roles.comission;
+  bool get isCommission => role == Roles.commission;
 
   void setUser(dynamic user) {
     _user = user;

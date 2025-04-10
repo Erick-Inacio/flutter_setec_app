@@ -1,29 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:setec_app/ui/utils/ui/widgets/drawer/custom_drawer.dart';
 import 'package:setec_app/ui/utils/ui/widgets/iconButton/sign_in_icon_button.dart';
 import 'package:setec_app/ui/utils/ui/widgets/navBar/bottom_app_bar.dart';
 
-class HomePageNavBar extends StatefulWidget {
+class CustomHomeNavDrawer extends ConsumerWidget {
   final Widget child;
-  const HomePageNavBar({super.key, required this.child});
+  const CustomHomeNavDrawer({super.key, required this.child});
 
   @override
-  State<HomePageNavBar> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePageNavBar> {
-  //Gerenciador de Estado
-  // late MainProvider mainProvider;
-  // UserApp userApp = UserApp.empty();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     // mainProvider = context.watch<MainProvider>();
     String currentRoute = GoRouterState.of(context).uri.toString();
 
@@ -59,7 +46,7 @@ class _HomePageState extends State<HomePageNavBar> {
       bottomNavigationBar: CustomBottomAppBar(),
       // floatingActionButton: _isVisible(currentRoute, context),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
-      body: widget.child,
+      body: child,
     );
   }
 }
