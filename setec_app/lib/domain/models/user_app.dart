@@ -3,6 +3,7 @@ import 'package:setec_app/core/enums/relationship.dart';
 import 'package:setec_app/core/enums/roles.dart';
 
 part 'user_app.freezed.dart';
+part 'user_app.g.dart';
 
 @freezed
 abstract class UserApp with _$UserApp {
@@ -15,4 +16,7 @@ abstract class UserApp with _$UserApp {
     required Roles role,
     required Relationship relationship,
   }) = _UserApp;
+
+  factory UserApp.fromJson(Map<String, dynamic> json) =>
+      _$UserAppFromJson(json);
 }

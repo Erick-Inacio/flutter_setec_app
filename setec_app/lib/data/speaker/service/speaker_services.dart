@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:logger/web.dart';
 import 'package:setec_app/core/base/base_service.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/data/core/endpoints/speaker_routes.dart';
-import 'package:setec_app/data/firebase/auth/auth_repository.dart';
 import 'package:setec_app/data/speaker/dto/speaker_dto.dart';
 
 class SpeakerServices extends BaseService<SpeakerDTO> {
@@ -18,18 +18,21 @@ class SpeakerServices extends BaseService<SpeakerDTO> {
   Future<Result<SpeakerDTO>> getByUser(int userId) async {
     return handleResult(() async {
       final routes = SpeakerRoutes();
-      final token = await AuthRepository().getUserToken();
+      final result = await getAuthHeaders();
 
-      final response = await _dio.get(
-        routes.getByUser(userId),
-        options: Options(headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json'
-        }),
-      );
+      switch (result) {
+        case Ok(value: final header):
+          Logger().i(header);
 
-      final data = response.data as Map<String, dynamic>;
-      return SpeakerDTO.fromJson(data);
+          final response = await _dio.get(
+            routes.getByUser(userId),
+            options: Options(headers: header),
+          );
+          final data = response.data as Map<String, dynamic>;
+          return SpeakerDTO.fromJson(data);
+        case Error(error: final e):
+          throw e;
+      }
     });
   }
 }

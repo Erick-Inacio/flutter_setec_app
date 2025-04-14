@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 // MaterialColor lightColors = MaterialColor(primary, swatch).deepPurple.shade50;
 
-
 final ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
@@ -19,20 +18,6 @@ final ThemeData lightTheme = ThemeData(
     centerTitle: true,
     elevation: 4,
   ),
-
-  // inputDecorationTheme: InputDecorationTheme(
-  //   border: OutlineInputBorder(
-  //     borderRadius: BorderRadius.circular(10.0),
-  //     borderSide: const BorderSide(
-  //       color: Colors.deepPurple,
-  //       width: 2.0,
-  //     ),
-  //   ),
-  //   outlineBorder: BorderSide(
-  //     color: Colors.deepPurple,
-  //     width: 2.0,
-  //   ),
-  // )
 
   //InputDecoration
   inputDecorationTheme: const InputDecorationTheme(
@@ -67,5 +52,16 @@ final ThemeData lightTheme = ThemeData(
   cardTheme: CardTheme(
     color: Colors.deepPurple.shade50,
     elevation: 6,
+  ),
+
+  bottomAppBarTheme: BottomAppBarTheme(
+    // color: Colors.deepPurple.shade100,
+    elevation: 4,
+  ),
+
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    elevation: 4,
+    selectedItemColor: Colors.deepPurple,
+    unselectedItemColor: Colors.deepPurpleAccent,
   ),
 );

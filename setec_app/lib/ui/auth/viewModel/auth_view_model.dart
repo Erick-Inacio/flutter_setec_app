@@ -1,50 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/web.dart';
 import 'package:setec_app/core/classes/app_exception_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/enums/relationship.dart';
 import 'package:setec_app/core/enums/roles.dart';
-import 'package:setec_app/data/firebase/auth/auth_repository.dart';
-import 'package:setec_app/data/speaker/service/speaker_services.dart';
+import 'package:setec_app/core/mixins/validate_form_fields.dart';
+import 'package:setec_app/data/firebase/auth/firebase_email_repository.dart';
+import 'package:setec_app/data/speaker/mapper/speaker_mapper.dart';
+import 'package:setec_app/data/speaker/repository/speaker_repository.dart';
+import 'package:setec_app/data/userApp/mapper/user_app_mapper.dart';
+import 'package:setec_app/data/userApp/repository/user_app_repository.dart';
+import 'package:setec_app/domain/models/speaker.dart';
 import 'package:setec_app/domain/models/user_app.dart';
-import 'package:setec_app/domain/providers/auth_state_notifier.dart';
+import 'package:setec_app/providers/auth_state_notifier.dart';
+import 'package:setec_app/ui/utils/widgets/snackBar/exception_snack_bar.dart';
 
-class AuthAsyncNotifier extends AsyncNotifier<void> {
-  late final AuthRepository authRepository;
-  late final SpeakerServices speakerServices;
+final authAsyncProvider = AsyncNotifierProvider<AuthAsyncNotifier, void>(() {
+  return AuthAsyncNotifier(
+    authRepository: FirebaseEmailReapository(),
+    speakerRepository: SpeakerRepository(),
+    userAppRepository: UserAppRepository(),
+  );
+});
+
+class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields {
+  AuthAsyncNotifier({
+    required FirebaseEmailReapository authRepository,
+    required SpeakerRepository speakerRepository,
+    required UserAppRepository userAppRepository,
+  })  : _authRepository = authRepository,
+        _speakerRepository = speakerRepository,
+        _userAppRepository = userAppRepository;
+
+  late final FirebaseEmailReapository _authRepository;
+  late final SpeakerRepository _speakerRepository;
+  late final UserAppRepository _userAppRepository;
 
   @override
-  Future<void> build() async {
-    authRepository = AuthRepository();
-    speakerServices = SpeakerServices();
-  }
+  Future<void> build() async {}
 
   Future<void> login({
     required GlobalKey<FormState> formKey,
-    required TextEditingController email,
-    required TextEditingController password,
+    required String email,
+    required String password,
     required BuildContext context,
   }) async {
     if (!formKey.currentState!.validate()) return;
-
     state = const AsyncLoading();
+    final authState = ref.read(authProvider);
 
     try {
-      final result = await authRepository.login(email.text, password.text);
+      final result = await _authRepository.login(email, password);
 
       UserApp userApp;
       switch (result) {
         case Ok(value: final user):
           userApp = user;
-        case Error(error: final e):
-          throw e;
-      }
-
-      // Salvar no authProvider global
-      ref.read(authProvider.notifier).login(
+          _setLogin(
             user: userApp,
-            isUserApp: userApp.role == Roles.student,
+            isUserApp: userApp.role != Roles.speaker,
             isSpeaker: userApp.role == Roles.speaker,
             isAdmin: userApp.role == Roles.admin,
             isCommission: userApp.role == Roles.commission,
@@ -52,30 +68,32 @@ class AuthAsyncNotifier extends AsyncNotifier<void> {
             relationship: userApp.relationship,
           );
 
-      // Se for speaker, carrega os dados adicionais
+          _userAppRepository.saveObjectLocal(userApp.toDTO());
+          break;
+        case Error(error: final e):
+          throw e;
+      }
+
       if (userApp.role == Roles.speaker) {
-        final speakerResult = await speakerServices.getByUser(userApp.id!);
+        final speakerResult =
+            await _speakerRepository.getByUserApp(userApp.id!);
 
         switch (speakerResult) {
           case Ok(value: final speaker):
-            ref.read(authProvider.notifier).login(
-                  user: speaker,
-                  isUserApp: false,
-                  isSpeaker: true,
-                  isAdmin: false,
-                  isCommission: false,
-                  isStudant: false,
-                  relationship: speaker.user.relationship,
-                );
-            break;
+            _setLogin(
+              user: speaker,
+              isSpeaker: true,
+              relationship: speaker.user.relationship,
+            );
 
+            _speakerRepository.saveObjectLocal(speaker.toDTO());
+            break;
           case Error(error: final e):
-            ref.read(authProvider.notifier).logout();
+            ref.read(authProvider.notifier).logout(authState.user!);
             throw AppException("Erro ao buscar dados do palestrante: $e");
         }
       }
 
-      // Navegar
       if (context.mounted) context.go('/lectures');
 
       state = const AsyncData(null);
@@ -83,55 +101,165 @@ class AuthAsyncNotifier extends AsyncNotifier<void> {
       state = AsyncError(e, s);
 
       if (context.mounted) {
-        ref.read(authProvider.notifier).logout();
+        ref.read(authProvider.notifier).logout(authState.user!);
+        Logger().e(s);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Erro: ${e.toString()}")),
+          ExceptionSnackBar(
+            message: "Erro: ${e.toString()}",
+          ),
         );
       }
     }
   }
 
-  Future<void> createAccount({
-    required String name,
+  Future<void> createUser({
+    required GlobalKey<FormState> formKey,
     required String email,
     required String password,
-    required Relationship relationship,
     required BuildContext context,
+    required UserApp user,
+    required bool isSpeaker,
+    required String? bio,
+    required String? company,
+    required String? position,
+  }) async {
+    if (!formKey.currentState!.validate()) return;
+
+    final userEntity = isSpeaker
+        ? Speaker(
+            company: company,
+            position: position!,
+            bio: bio!,
+            user: user,
+            socialMedia: null,
+          )
+        : user;
+
+    await _createAccount(
+      formKey: formKey,
+      email: email,
+      password: password,
+      context: context,
+      user: userEntity,
+    );
+  }
+
+  Future<void> _createAccount({
+    required GlobalKey<FormState> formKey,
+    required String email,
+    required String password,
+    required BuildContext context,
+    required dynamic user, // Pode ser UserApp ou Speaker
   }) async {
     state = const AsyncLoading();
 
-    try {
-      // Exemplo mock — substitua com sua lógica real de criação:
-      final createdUser = await authRepository.registerWithEmail(
-        email
-      );
+    if (!formKey.currentState!.validate()) return;
 
-      // Salva no estado global
-      ref.read(authProvider.notifier).login(
-            user: createdUser,
-            isUserApp: true,
-            isSpeaker: false,
-            isAdmin: false,
-            isCommission: false,
-            isStudant: true,
-            relationship: relationship,
+    try {
+      final createdFirebaseUser = await _authRepository.registerWithEmail(
+        email: email,
+        password: password,
+      );
+      Logger().i(user.toString());
+      switch (createdFirebaseUser) {
+        case Ok(value: final createdUser):
+          // Dados base
+          final userApp = UserApp(
+            uid: createdUser.uid,
+            name: user is UserApp ? user.name : user.user.name,
+            email: createdUser.email,
+            role: user is UserApp ? user.role : user.user.role,
+            ra: user is UserApp ? user.ra : user.user.ra,
+            relationship:
+                user is UserApp ? user.relationship : user.user.relationship,
           );
 
-      if (context.mounted) {
-        context.go('/criarUsuario'); // ou outra rota
+          final result = await _userAppRepository.createData(userApp);
+
+          switch (result) {
+            case Ok(value: final savedUserApp):
+              if (user is UserApp) {
+                _setLogin(
+                  user: savedUserApp,
+                  isUserApp: true,
+                  isAdmin: savedUserApp.role == Roles.admin,
+                  isCommission: savedUserApp.role == Roles.commission,
+                  isStudant: savedUserApp.role == Roles.student,
+                  relationship: savedUserApp.relationship,
+                );
+              } else if (user is Speaker) {
+                final speaker = user.copyWith(user: savedUserApp);
+
+                final result = await _speakerRepository.createData(speaker);
+
+                switch (result) {
+                  case Ok(value: final savedSpeaker):
+                    _setLogin(
+                      user: savedSpeaker,
+                      isSpeaker: true,
+                      relationship: savedSpeaker.user.relationship,
+                    );
+                    break;
+                  case Error(error: final e):
+                    throw e;
+                }
+              }
+              break;
+            case Error(error: final e):
+              throw e;
+          }
+          break; //testeaccount@teste.com
+
+        case Error(error: final e):
+          throw e;
       }
 
+      if (context.mounted) context.go('/lectures');
       state = const AsyncData(null);
     } catch (e, s) {
       state = AsyncError(e, s);
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Erro: ${e.toString()}")),
+          ExceptionSnackBar(message: "Erro: ${e.toString()}"),
         );
       }
     }
   }
-}
 
-final authAsyncProvider =
-    AsyncNotifierProvider<AuthAsyncNotifier, void>(() => AuthAsyncNotifier());
+  void _setLogin({
+    required dynamic user,
+    required Relationship relationship,
+    bool isUserApp = false,
+    bool isSpeaker = false,
+    bool isAdmin = false,
+    bool isCommission = false,
+    bool isStudant = false,
+  }) {
+    ref.read(authProvider.notifier).login(
+          user: user,
+          isUserApp: isUserApp,
+          isSpeaker: isSpeaker,
+          isAdmin: isAdmin,
+          isCommission: isCommission,
+          isStudant: isStudant,
+          relationship: relationship,
+        );
+  }
+
+  String? validatePassword(String? value) {
+    Logger().i('entrou');
+    return isValidPassword(value);
+  }
+
+  String? validateEmail(String? value) {
+    return isValidEmail(value);
+  }
+
+  String? validateName(String? value) {
+    return isValidName(value);
+  }
+
+  List<DropdownMenuItem>? items(List<String> list) {
+    return list.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList();
+  }
+}

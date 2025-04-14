@@ -8,9 +8,9 @@ part of 'speaker_dto.dart';
 
 SpeakerDTO _$SpeakerDTOFromJson(Map<String, dynamic> json) => SpeakerDTO(
       id: (json['id'] as num?)?.toInt(),
-      user: json['user'],
+      user: const UserAppConverter().fromJson(json['user']),
       socialMedia: const SocialMediaConverter().fromJson(json['socialMedia']),
-      company: json['company'] as String,
+      company: json['company'] as String?,
       position: json['position'] as String,
       bio: json['bio'] as String,
     );
@@ -21,6 +21,13 @@ Map<String, dynamic> _$SpeakerDTOToJson(SpeakerDTO instance) =>
       'company': instance.company,
       'position': instance.position,
       'bio': instance.bio,
-      'user': instance.user,
-      'socialMedia': const SocialMediaConverter().toJson(instance.socialMedia),
+      'user': const UserAppConverter().toJson(instance.user),
+      'socialMedia': _$JsonConverterToJson<dynamic, Map<SocialMedia, String>>(
+          instance.socialMedia, const SocialMediaConverter().toJson),
     };
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) =>
+    value == null ? null : toJson(value);

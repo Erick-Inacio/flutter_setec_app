@@ -3,7 +3,6 @@ import 'package:logger/web.dart';
 import 'package:setec_app/core/base/base_service.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/data/event/dto/event_dto.dart';
-import 'package:setec_app/data/firebase/auth/auth_repository.dart';
 import 'package:setec_app/data/core/endpoints/event_routes.dart';
 
 class EventServices extends BaseService<EventDTO> {
@@ -18,22 +17,21 @@ class EventServices extends BaseService<EventDTO> {
 
   Future<Result<List<EventDTO>>> getActivitiesByEventId(int userId) async {
     return handleResult(() async {
-      final token = await AuthRepository().getUserToken();
+      final result = await getAuthHeaders();
 
-      final response = await _dio.get(
-        EventRoutes().getActivitiesByEventId(userId),
-        options: Options(
-          headers: {
-            'Authorization': 'Bearer $token',
-            'Content-Type': 'application/json'
-          },
-        ),
-      );
-
-      final data = response.data as List;
-      return data.map((e) => EventDTO.fromJson(e)).toList();
-    }, onError: (e) {
-      Logger().e('Erro ao buscar atividades por evento: $e');
+      switch (result) {
+        case Ok(value: final header):
+          final response = await _dio.get(
+            EventRoutes().getActivitiesByEventId(userId),
+            options: Options(
+              headers: header,
+            ),
+          );
+          final data = response.data as List;
+          return data.map((e) => EventDTO.fromJson(e)).toList();
+        case Error(error: final e):
+          throw e;
+      }
     });
   }
 

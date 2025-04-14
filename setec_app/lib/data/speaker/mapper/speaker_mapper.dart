@@ -1,4 +1,5 @@
 import 'package:setec_app/data/speaker/dto/speaker_dto.dart';
+import 'package:setec_app/data/userApp/mapper/user_app_mapper.dart';
 import 'package:setec_app/domain/models/speaker.dart';
 
 extension SpeakerToDomain on SpeakerDTO {
@@ -9,7 +10,7 @@ extension SpeakerToDomain on SpeakerDTO {
       company: company,
       position: position,
       bio: bio,
-      user: user!.toDomain(),
+      user: user.toDomain(),
     );
   }
 }

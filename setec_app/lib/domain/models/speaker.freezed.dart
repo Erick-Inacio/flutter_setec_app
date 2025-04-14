@@ -16,11 +16,11 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Speaker {
   int? get id;
-  String get company;
+  String? get company;
   String get position;
   String get bio;
-  dynamic get user;
-  Map<SocialMedia, String> get socialMedia;
+  UserApp get user;
+  Map<SocialMedia, String>? get socialMedia;
 
   /// Create a copy of Speaker
   /// with the given fields replaced by the non-null parameter values.
@@ -28,6 +28,9 @@ mixin _$Speaker {
   @pragma('vm:prefer-inline')
   $SpeakerCopyWith<Speaker> get copyWith =>
       _$SpeakerCopyWithImpl<Speaker>(this as Speaker, _$identity);
+
+  /// Serializes this Speaker to a JSON map.
+  Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
@@ -39,19 +42,14 @@ mixin _$Speaker {
             (identical(other.position, position) ||
                 other.position == position) &&
             (identical(other.bio, bio) || other.bio == bio) &&
-            const DeepCollectionEquality().equals(other.user, user) &&
+            (identical(other.user, user) || other.user == user) &&
             const DeepCollectionEquality()
                 .equals(other.socialMedia, socialMedia));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      company,
-      position,
-      bio,
-      const DeepCollectionEquality().hash(user),
+  int get hashCode => Object.hash(runtimeType, id, company, position, bio, user,
       const DeepCollectionEquality().hash(socialMedia));
 
   @override
@@ -67,11 +65,13 @@ abstract mixin class $SpeakerCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
-      String company,
+      String? company,
       String position,
       String bio,
-      dynamic user,
-      Map<SocialMedia, String> socialMedia});
+      UserApp user,
+      Map<SocialMedia, String>? socialMedia});
+
+  $UserAppCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -87,21 +87,21 @@ class _$SpeakerCopyWithImpl<$Res> implements $SpeakerCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
-    Object? company = null,
+    Object? company = freezed,
     Object? position = null,
     Object? bio = null,
-    Object? user = freezed,
-    Object? socialMedia = null,
+    Object? user = null,
+    Object? socialMedia = freezed,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      company: null == company
+      company: freezed == company
           ? _self.company
           : company // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       position: null == position
           ? _self.position
           : position // ignore: cast_nullable_to_non_nullable
@@ -110,20 +110,30 @@ class _$SpeakerCopyWithImpl<$Res> implements $SpeakerCopyWith<$Res> {
           ? _self.bio
           : bio // ignore: cast_nullable_to_non_nullable
               as String,
-      user: freezed == user
+      user: null == user
           ? _self.user
           : user // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      socialMedia: null == socialMedia
+              as UserApp,
+      socialMedia: freezed == socialMedia
           ? _self.socialMedia
           : socialMedia // ignore: cast_nullable_to_non_nullable
-              as Map<SocialMedia, String>,
+              as Map<SocialMedia, String>?,
     ));
+  }
+
+  /// Create a copy of Speaker
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UserAppCopyWith<$Res> get user {
+    return $UserAppCopyWith<$Res>(_self.user, (value) {
+      return _then(_self.copyWith(user: value));
+    });
   }
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _Speaker implements Speaker {
   const _Speaker(
       {this.id,
@@ -131,25 +141,29 @@ class _Speaker implements Speaker {
       required this.position,
       required this.bio,
       required this.user,
-      required final Map<SocialMedia, String> socialMedia})
+      required final Map<SocialMedia, String>? socialMedia})
       : _socialMedia = socialMedia;
+  factory _Speaker.fromJson(Map<String, dynamic> json) =>
+      _$SpeakerFromJson(json);
 
   @override
   final int? id;
   @override
-  final String company;
+  final String? company;
   @override
   final String position;
   @override
   final String bio;
   @override
-  final dynamic user;
-  final Map<SocialMedia, String> _socialMedia;
+  final UserApp user;
+  final Map<SocialMedia, String>? _socialMedia;
   @override
-  Map<SocialMedia, String> get socialMedia {
+  Map<SocialMedia, String>? get socialMedia {
+    final value = _socialMedia;
+    if (value == null) return null;
     if (_socialMedia is EqualUnmodifiableMapView) return _socialMedia;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_socialMedia);
+    return EqualUnmodifiableMapView(value);
   }
 
   /// Create a copy of Speaker
@@ -161,6 +175,13 @@ class _Speaker implements Speaker {
       __$SpeakerCopyWithImpl<_Speaker>(this, _$identity);
 
   @override
+  Map<String, dynamic> toJson() {
+    return _$SpeakerToJson(
+      this,
+    );
+  }
+
+  @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
@@ -170,19 +191,14 @@ class _Speaker implements Speaker {
             (identical(other.position, position) ||
                 other.position == position) &&
             (identical(other.bio, bio) || other.bio == bio) &&
-            const DeepCollectionEquality().equals(other.user, user) &&
+            (identical(other.user, user) || other.user == user) &&
             const DeepCollectionEquality()
                 .equals(other._socialMedia, _socialMedia));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      id,
-      company,
-      position,
-      bio,
-      const DeepCollectionEquality().hash(user),
+  int get hashCode => Object.hash(runtimeType, id, company, position, bio, user,
       const DeepCollectionEquality().hash(_socialMedia));
 
   @override
@@ -199,11 +215,14 @@ abstract mixin class _$SpeakerCopyWith<$Res> implements $SpeakerCopyWith<$Res> {
   @useResult
   $Res call(
       {int? id,
-      String company,
+      String? company,
       String position,
       String bio,
-      dynamic user,
-      Map<SocialMedia, String> socialMedia});
+      UserApp user,
+      Map<SocialMedia, String>? socialMedia});
+
+  @override
+  $UserAppCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -219,21 +238,21 @@ class __$SpeakerCopyWithImpl<$Res> implements _$SpeakerCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   $Res call({
     Object? id = freezed,
-    Object? company = null,
+    Object? company = freezed,
     Object? position = null,
     Object? bio = null,
-    Object? user = freezed,
-    Object? socialMedia = null,
+    Object? user = null,
+    Object? socialMedia = freezed,
   }) {
     return _then(_Speaker(
       id: freezed == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      company: null == company
+      company: freezed == company
           ? _self.company
           : company // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       position: null == position
           ? _self.position
           : position // ignore: cast_nullable_to_non_nullable
@@ -242,15 +261,25 @@ class __$SpeakerCopyWithImpl<$Res> implements _$SpeakerCopyWith<$Res> {
           ? _self.bio
           : bio // ignore: cast_nullable_to_non_nullable
               as String,
-      user: freezed == user
+      user: null == user
           ? _self.user
           : user // ignore: cast_nullable_to_non_nullable
-              as dynamic,
-      socialMedia: null == socialMedia
+              as UserApp,
+      socialMedia: freezed == socialMedia
           ? _self._socialMedia
           : socialMedia // ignore: cast_nullable_to_non_nullable
-              as Map<SocialMedia, String>,
+              as Map<SocialMedia, String>?,
     ));
+  }
+
+  /// Create a copy of Speaker
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $UserAppCopyWith<$Res> get user {
+    return $UserAppCopyWith<$Res>(_self.user, (value) {
+      return _then(_self.copyWith(user: value));
+    });
   }
 }
 

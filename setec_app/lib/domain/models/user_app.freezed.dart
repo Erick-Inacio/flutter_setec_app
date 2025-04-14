@@ -30,6 +30,9 @@ mixin _$UserApp {
   $UserAppCopyWith<UserApp> get copyWith =>
       _$UserAppCopyWithImpl<UserApp>(this as UserApp, _$identity);
 
+  /// Serializes this UserApp to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -45,6 +48,7 @@ mixin _$UserApp {
                 other.relationship == relationship));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, uid, name, email, ra, role, relationship);
@@ -124,7 +128,7 @@ class _$UserAppCopyWithImpl<$Res> implements $UserAppCopyWith<$Res> {
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _UserApp implements UserApp {
   const _UserApp(
       {this.id,
@@ -134,6 +138,8 @@ class _UserApp implements UserApp {
       required this.ra,
       required this.role,
       required this.relationship});
+  factory _UserApp.fromJson(Map<String, dynamic> json) =>
+      _$UserAppFromJson(json);
 
   @override
   final int? id;
@@ -159,6 +165,13 @@ class _UserApp implements UserApp {
       __$UserAppCopyWithImpl<_UserApp>(this, _$identity);
 
   @override
+  Map<String, dynamic> toJson() {
+    return _$UserAppToJson(
+      this,
+    );
+  }
+
+  @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
@@ -173,6 +186,7 @@ class _UserApp implements UserApp {
                 other.relationship == relationship));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, uid, name, email, ra, role, relationship);

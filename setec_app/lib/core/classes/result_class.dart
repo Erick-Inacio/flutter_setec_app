@@ -63,7 +63,7 @@ Future<Result<T>> handleResult<T>(
   try {
     final result = await action();
     return Ok._(result);
-  } catch (e) {
+  } catch (e, s) {
     late final Exception exception;
     // Converte o erro para Exception se não for um
     //e permite que seja tratado no onError
@@ -76,7 +76,7 @@ Future<Result<T>> handleResult<T>(
           'Erro Dio com statusCode: $statusCode\nResponse: ${e.response?.data}');
     } else {
       exception = e is Exception ? e : Exception(e.toString());
-      Logger().e('Erro capturado em handleResult: $exception');
+      Logger().e('Erro capturado em handleResult: $exception, stackTrace: $s');
     }
     onError?.call(exception);
     return Error._(exception);

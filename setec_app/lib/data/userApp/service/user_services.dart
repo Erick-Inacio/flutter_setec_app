@@ -5,7 +5,6 @@ import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/data/userApp/dto/user_app_dto.dart';
 import 'package:setec_app/core/base/base_service.dart';
 import 'package:setec_app/data/core/endpoints/user_routes.dart';
-import 'package:setec_app/data/firebase/auth/auth_repository.dart';
 
 class UserServices extends BaseService<UserAppDTO> {
   UserServices()
@@ -20,24 +19,27 @@ class UserServices extends BaseService<UserAppDTO> {
   Future<Result<UserAppDTO>> getByUid(String uid) async {
     return handleResult(() async {
       final routes = UserRoutes();
-      final authRepository = AuthRepository();
-      final token = await authRepository.getUserToken();
-      Logger().i('UserServices: $token');
+      final result = await getAuthHeaders();
 
-      final response = await _dio.get(
-        routes.getByUid(uid),
-        options: Options(headers: {
-          'Authorization': 'Bearer $token',
-          'Content-Type': 'application/json'
-        }),
-      );
+      switch (result) {
+        case Ok(value: final header):
+          Logger().i('UserServices: $header');
 
-      if (response.statusCode == 404) {
-        throw AppException("Usuário não encontrado", statusCode: 404);
+          final response = await _dio.get(
+            routes.getByUid(uid),
+            options: Options(headers: header),
+          );
+
+          if (response.statusCode == 404) {
+            throw AppException("Usuário não encontrado", statusCode: 404);
+          }
+
+          final data = response.data as Map<String, dynamic>;
+          return UserAppDTO.fromJson(data);
+
+        case Error(error: final e):
+          throw e; // erro de token ausente ou inválido
       }
-
-      final data = response.data as Map<String, dynamic>;
-      return UserAppDTO.fromJson(data);
     });
   }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:setec_app/core/classes/mappable_class.dart';
 import 'package:setec_app/core/enums/relationship.dart';
@@ -10,25 +11,33 @@ part 'user_app_dto.g.dart';
 class UserAppDTO implements DTOConvertible<UserApp> {
   int? id;
   late String uid;
-  late String name;
+  late String? name;
   late String email;
   late String? ra;
 
-  late Roles role;
+  late Roles? role;
 
-  late Relationship relationship;
+  late Relationship? relationship;
 
   UserAppDTO.empty();
 
   UserAppDTO({
     this.id,
     required this.uid,
-    required this.name,
+    this.name,
     required this.email,
-    required this.relationship,
-    required this.role,
-    required this.ra,
+    this.relationship,
+    this.role,
+    this.ra,
   });
+
+  factory UserAppDTO.fromFirebase(User user) {
+    return UserAppDTO(
+      uid: user.uid,
+      email: user.email ?? '',
+      name: user.displayName, // pode vir null
+    );
+  }
 
   factory UserAppDTO.fromJson(Map<String, dynamic> json) =>
       _$UserAppDTOFromJson(json);
@@ -39,11 +48,11 @@ class UserAppDTO implements DTOConvertible<UserApp> {
     return UserApp(
       id: id,
       uid: uid,
-      name: name,
+      name: name!,
       email: email,
-      role: role,
+      role: role!,
       ra: ra,
-      relationship: relationship,
+      relationship: relationship!,
     );
   }
 

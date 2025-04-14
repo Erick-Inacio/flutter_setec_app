@@ -24,7 +24,7 @@ class BaseRoutes {
 
   // Método para adicionar parâmetros dinamicamente na URL
   String _baseUrlWithParams(String path, Map<String, String> params) {
-    final uri = Uri.parse('$_url/$controllerName/$path')
+    final uri = Uri.parse('$_url/api/$controllerName/$path')
         .replace(queryParameters: params);
     return uri.toString();
   }
@@ -38,6 +38,6 @@ class BaseRoutes {
 
   // Método privado para retornar a URL base
   String _baseUrl(String restPath) {
-    return '$_url/$controllerName/$restPath';
+    return '$_url/api/$controllerName/$restPath';
   }
 }

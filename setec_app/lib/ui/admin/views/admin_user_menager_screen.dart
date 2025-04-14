@@ -30,7 +30,7 @@
 //           appBar: AppBar(
 //             title: const Text("Admin"),
 //             actions: <Widget>[
-//               SignOutIconButton(),
+//               SignOutTextButton(),
 //             ],
 //           ),
 //           body: _isLoading

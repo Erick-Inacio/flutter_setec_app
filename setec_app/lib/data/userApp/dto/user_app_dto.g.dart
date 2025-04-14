@@ -9,10 +9,11 @@ part of 'user_app_dto.dart';
 UserAppDTO _$UserAppDTOFromJson(Map<String, dynamic> json) => UserAppDTO(
       id: (json['id'] as num?)?.toInt(),
       uid: json['uid'] as String,
-      name: json['name'] as String,
+      name: json['name'] as String?,
       email: json['email'] as String,
-      relationship: $enumDecode(_$RelationshipEnumMap, json['relationship']),
-      role: $enumDecode(_$RolesEnumMap, json['role']),
+      relationship:
+          $enumDecodeNullable(_$RelationshipEnumMap, json['relationship']),
+      role: $enumDecodeNullable(_$RolesEnumMap, json['role']),
       ra: json['ra'] as String?,
     );
 
@@ -23,8 +24,8 @@ Map<String, dynamic> _$UserAppDTOToJson(UserAppDTO instance) =>
       'name': instance.name,
       'email': instance.email,
       'ra': instance.ra,
-      'role': _$RolesEnumMap[instance.role]!,
-      'relationship': _$RelationshipEnumMap[instance.relationship]!,
+      'role': _$RolesEnumMap[instance.role],
+      'relationship': _$RelationshipEnumMap[instance.relationship],
     };
 
 const _$RelationshipEnumMap = {

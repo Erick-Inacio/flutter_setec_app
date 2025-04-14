@@ -27,6 +27,9 @@ mixin _$Event {
   $EventCopyWith<Event> get copyWith =>
       _$EventCopyWithImpl<Event>(this as Event, _$identity);
 
+  /// Serializes this Event to a JSON map.
+  Map<String, dynamic> toJson();
+
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
@@ -41,6 +44,7 @@ mixin _$Event {
                 other.description == description));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, initialDateTime, finalDateTime, description);
@@ -102,13 +106,14 @@ class _$EventCopyWithImpl<$Res> implements $EventCopyWith<$Res> {
 }
 
 /// @nodoc
-
+@JsonSerializable()
 class _Event implements Event {
   const _Event(
       {this.id,
       required this.initialDateTime,
       required this.finalDateTime,
       required this.description});
+  factory _Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
 
   @override
   final int? id;
@@ -128,6 +133,13 @@ class _Event implements Event {
       __$EventCopyWithImpl<_Event>(this, _$identity);
 
   @override
+  Map<String, dynamic> toJson() {
+    return _$EventToJson(
+      this,
+    );
+  }
+
+  @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
@@ -141,6 +153,7 @@ class _Event implements Event {
                 other.description == description));
   }
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
       Object.hash(runtimeType, id, initialDateTime, finalDateTime, description);

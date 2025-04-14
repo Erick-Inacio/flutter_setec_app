@@ -1,155 +1,89 @@
 import 'package:flutter/material.dart';
-import 'package:logger/web.dart';
 import 'package:setec_app/core/base/base_service.dart';
 import 'package:setec_app/core/classes/mappable_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/mixins/shared_prefs_mixin.dart';
 
-abstract class BaseRepository<T> with SharedPrefsMixin {
+abstract class BaseRepository<DTO> with SharedPrefsMixin {
   BaseRepository({
-    required BaseService<T> service,
+    required BaseService<DTO> service,
     required String storageKey,
   })  : _service = service,
         _storageKey = storageKey;
 
   @protected
-  final BaseService<T> _service;
+  final BaseService<DTO> _service;
 
   @protected
   final String _storageKey;
 
-  Future<Result<List<D>>> getAll<D, DTO extends DTOConvertible<D>>() async {
+  Future<Result<List<Domain>>>
+      getAll<Domain, AsDTO extends DTOConvertible<Domain>>() async {
     return handleResult(() async {
       final result = await _service.getAll();
 
-      switch (result) {
-        case Ok(value: final list):
-          {
-            final domainList = list.map<D>((dto) {
-              return (dto as DTO).toDomain();
-            }).toList();
-
-            await saveList(
-              key: _storageKey,
-              list: domainList,
-            );
-
-            return domainList;
-          }
-        case Error(error: final e):
-          throw e;
-      }
-    }, onError: (e) {
-      Logger().e('Erro ao carregar ou salvar localmente a lista: $e');
+      return _saveToLocalObj(result);
     });
   }
 
-  Future<Result<D>> getById<D, DTO extends DTOConvertible<D>>(
+  Future<Result<Domain>> getById<Domain, AsDTO extends DTOConvertible<Domain>>(
     int id,
   ) {
     return handleResult(() async {
       final result = await _service.getById(id);
 
-      switch (result) {
-        case Ok(value: final dto):
-          {
-            final domainEntity = (dto as DTO).toDomain();
-
-            await saveObject(
-              key: _storageKey,
-              object: domainEntity,
-            );
-
-            return domainEntity;
-          }
-        case Error(error: final e):
-          {
-            throw e;
-          }
-      }
-    }, onError: (e) {
-      Logger().e('Erro ao buscar por id ou salavr localmente: $e');
+      return _saveToLocalObj(result);
     });
   }
 
-  Future<Result<D>> create<D, DTO extends DTOConvertible<D>>(D domain) async {
+  Future<Result<Domain>> create<Domain, AsDTO extends DTOConvertible<Domain>>({
+    required Domain domain,
+    required AsDTO Function(Domain) toDTO,
+  }) async {
     return handleResult(() async {
-      final convertedDto = (domain as dynamic).toDTO();
+      final convertedDto = toDTO(domain);
 
-      final result = await _service.post(convertedDto);
+      final result = await _service.post(convertedDto as DTO);
 
-      switch (result) {
-        case Ok(value: final dto):
-          {
-            final domainEntity = (dto as DTO).toDomain();
-
-            await saveObject(
-              key: _storageKey,
-              object: domainEntity,
-            );
-
-            return domainEntity;
-          }
-        case Error(error: final e):
-          throw e;
-      }
-    }, onError: (e) {
-      Logger().e('Erro ao criar ou salvar localmente: $e');
+      return _saveToLocalObj(result);
     });
   }
 
-  Future<Result<D>> update<D, DTO extends DTOConvertible<D>>(D domain) async {
-    return handleResult(() async {
-      final convertedDto = (domain as dynamic).toDTO();
+  Future<Result<Domain>> update<Domain, AsDTO extends DTOConvertible<Domain>>({
+    required Domain domain,
+    required AsDTO Function(Domain) toDTO,
+  }) async {
+    final convertedDto = toDTO(domain);
 
-      final result = await _service.put(convertedDto);
+    final result = await _service.put(convertedDto as DTO);
 
-      switch (result) {
-        case Ok(value: final dto):
-          {
-            final domainEntity = (dto as DTO).toDomain();
-
-            await saveObject(
-              key: _storageKey,
-              object: domainEntity,
-            );
-
-            return domainEntity;
-          }
-        case Error(error: final e):
-          throw e;
-      }
-    });
+    return _saveToLocalObj(result);
   }
 
   Future<Result<void>> delete(int id) async {
     return handleResult(() async {
       await _service.delete(id);
 
-      await remove(_storageKey);
-    }, onError: (e) {
-      Logger().e('Erro ao deletar ou excluir localmente: $e');
+      await mixinRemove(_storageKey);
     });
   }
 
   //SharedPreferences
-  Future<Result<void>> saveObjectLocal(T d) async {
+  Future<Result<void>> saveObjectLocal(DTO d) async {
     return handleResult(() async {
-      await saveObject(key: _storageKey, object: d);
+      await mixinSaveObject(key: _storageKey, object: d);
     });
   }
 
   Future<Result<void>> saveListLocal(List<dynamic> list, {String? key}) async {
     return handleResult(() async {
-      await saveList(key: key ?? _storageKey, list: list);
-    }, onError: (e) {
-      Logger().e('Erro ao salvar a lista localmente: $e');
+      await mixinSaveList(key: key ?? _storageKey, list: list);
     });
   }
 
   Future<Result<Map<String, dynamic>?>> getObjectLocal() async {
     return handleResult(() async {
-      final result = await getObject(_storageKey);
+      final result = await mixinGetObject(_storageKey);
       switch (result) {
         case Ok(value: final value):
           return value;
@@ -161,7 +95,7 @@ abstract class BaseRepository<T> with SharedPrefsMixin {
 
   Future<Result<List<Map<String, dynamic>>?>> getListObject() async {
     return handleResult(() async {
-      final result = await getList(_storageKey);
+      final result = await mixinGetList(_storageKey);
       switch (result) {
         case Ok(value: final value):
           return value;
@@ -173,7 +107,27 @@ abstract class BaseRepository<T> with SharedPrefsMixin {
 
   Future<Result<void>> removeLocal() async {
     return handleResult(() async {
-      await remove(_storageKey);
+      await mixinRemove(_storageKey);
     });
+  }
+
+  Future<Domain> _saveToLocalObj<Domain, AsDTO>(Result result) async {
+    switch (result) {
+      case Ok(value: final dto):
+        {
+          final domainEntity = dto.toDomain();
+
+          final result = await saveObjectLocal(dto);
+
+          switch (result) {
+            case Ok():
+              return domainEntity;
+            case Error(error: final e):
+              throw e;
+          }
+        }
+      case Error(error: final e):
+        throw e;
+    }
   }
 }

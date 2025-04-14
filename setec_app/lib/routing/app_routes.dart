@@ -1,97 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:setec_app/domain/models/user_app.dart';
+import 'package:setec_app/providers/auth_state_notifier.dart';
+import 'package:setec_app/ui/auth/views/login_view.dart';
+import 'package:setec_app/ui/_lecture/views/lecture_view.dart';
+import 'package:setec_app/ui/_miniCourse/view/mini_course.dart';
 import 'package:setec_app/ui/event/views/create_event_screen.dart';
-import 'package:setec_app/ui/lecture/views/lecture_view.dart';
-import 'package:setec_app/ui/miniCourse/view/mini_course.dart';
-import 'package:setec_app/ui/home/widgets/custom_home_nav_drawer_widget.dart';
-import 'package:setec_app/ui/auth/views/create_account_screen.dart';
-import 'package:setec_app/ui/auth/views/create_user.dart';
-import 'package:setec_app/ui/event/views/event_screen.dart';
-import 'package:setec_app/ui/auth/views/login_options.dart';
+import 'package:setec_app/ui/home/views/home_nav_drawer_view.dart';
+import 'package:setec_app/ui/auth/views/create_account_view.dart';
+import 'package:setec_app/ui/event/views/event_view.dart';
 
-class AppRouter {
-  static GoRouter get router => _router;
+final appRouterProvider = Provider<GoRouter>(
+  (ref) {
+    final authNotifier = ref.watch(authListenableProvider);
 
-  static final GoRouter _router = GoRouter(
-    initialLocation: '/lectures',
-    // refreshListenable: MainProvider(),
-    debugLogDiagnostics: true,
-    routes: [
-      GoRoute(
-        path: '/loginOptions',
-        builder: (context, state) => const LoginOptions(),
-      ),
-      // GoRoute(
-      //   path: '/adminUser',
-      //   builder: (context, state) => const AdminUserManager(),
-      // ),
-      // GoRoute(
-      //   path: '/loginWithEmail',
-      //   builder: (context, state) => LoginWithEmail(),
-      // ),
-      GoRoute(
-        path: '/criarConta',
-        builder: (context, state) => CreateAccount(),
-      ),
-      GoRoute(
-        path: '/createUser',
-        builder: (context, state) {
-          final map = state.extra as Map<String, dynamic>;
-          final userApp = map['user'] as UserApp;
-          final password = map['password'] as String;
-          return CreateUser(userApp: userApp, password: password);
-        },
-      ),
-      GoRoute(
-        path: '/createEvent',
-        builder: (context, state) => const CreateEvent(),
-      ),
-      ShellRoute(
-        builder: (context, state, child) {
-          return CustomHomeNavDrawer(child: child);
-        },
-        routes: <GoRoute>[
-          GoRoute(
-            path: '/lectures',
-            builder: (context, state) {
-              return const LectureView();
-            },
+    return GoRouter(
+      debugLogDiagnostics: true,
+      navigatorKey: GlobalKey<NavigatorState>(),
+      initialLocation: '/home',
+      refreshListenable: authNotifier,
+      routes: [
+        GoRoute(
+          path: '/home',
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: const HomeNavDrawer(),
           ),
-          GoRoute(
-            path: '/miniCourses',
-            builder: (context, state) {
-              return const MiniCourse();
-            },
+          routes: [
+            GoRoute(
+              path: '/lectures',
+              pageBuilder: (context, state) => MaterialPage(
+                key: state.pageKey,
+                child: const LecturePage(),
+              ),
+            ),
+            GoRoute(
+              path: '/miniCourses',
+              pageBuilder: (context, state) => MaterialPage(
+                key: state.pageKey,
+                child: const MiniCoursePage(),
+              ),
+            ),
+            GoRoute(
+              path: '/events',
+              pageBuilder: (context, state) => MaterialPage(
+                key: state.pageKey,
+                child: EventView(),
+              ),
+            ),
+          ],
+        ),
+        GoRoute(
+          path: '/login',
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: const LoginWithEmail(),
           ),
-          GoRoute(
-            path: '/events',
-            builder: (context, child) {
-              return ManageEvents();
-            },
+        ),
+        GoRoute(
+          path: '/createAccount',
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: const CreateAccount(),
           ),
-
-          // GoRoute(
-          //   path: '/user',
-          //   builder: (context, state) {
-          //     final map = state.extra as Map<String, dynamic>;
-          //     Logger().i(map);
-          //     BuildContext? context = map['context'] as BuildContext?;
-          //     dynamic user = map['user'] as dynamic;
-          //     return UserScreen(
-          //       user: user,
-          //       parentContext: context,
-          //     );
-          //   },
-          // ),
-
-          // GoRoute(
-          //   path: '/adminMenu',
-          //   builder: (context, state) {
-          //     return const AdminUserManager();
-          //   },
-          // )
-        ],
-      ),
-    ],
-  );
-}
+        ),
+        GoRoute(
+          path: '/createEvent',
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: const CreateEvent(),
+          ),
+        ),
+      ],
+    );
+  },
+);

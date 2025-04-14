@@ -17,12 +17,12 @@ T _$identity<T>(T value) => value;
 mixin _$AuthState {
   bool get isAuthenticated;
   dynamic get user;
-  bool? get isUserApp;
-  bool? get isSpeaker;
-  bool? get isAdmin;
-  bool? get isCommission;
-  bool? get isStudant;
-  Relationship? get relationship;
+  bool get isUserApp;
+  bool get isSpeaker;
+  bool get isAdmin;
+  bool get isCommission;
+  bool get isStudant;
+  Relationship get relationship;
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -78,12 +78,12 @@ abstract mixin class $AuthStateCopyWith<$Res> {
   $Res call(
       {bool isAuthenticated,
       dynamic user,
-      bool? isUserApp,
-      bool? isSpeaker,
-      bool? isAdmin,
-      bool? isCommission,
-      bool? isStudant,
-      Relationship? relationship});
+      bool isUserApp,
+      bool isSpeaker,
+      bool isAdmin,
+      bool isCommission,
+      bool isStudant,
+      Relationship relationship});
 }
 
 /// @nodoc
@@ -100,12 +100,12 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
   $Res call({
     Object? isAuthenticated = null,
     Object? user = freezed,
-    Object? isUserApp = freezed,
-    Object? isSpeaker = freezed,
-    Object? isAdmin = freezed,
-    Object? isCommission = freezed,
-    Object? isStudant = freezed,
-    Object? relationship = freezed,
+    Object? isUserApp = null,
+    Object? isSpeaker = null,
+    Object? isAdmin = null,
+    Object? isCommission = null,
+    Object? isStudant = null,
+    Object? relationship = null,
   }) {
     return _then(_self.copyWith(
       isAuthenticated: null == isAuthenticated
@@ -116,30 +116,30 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
           ? _self.user
           : user // ignore: cast_nullable_to_non_nullable
               as dynamic,
-      isUserApp: freezed == isUserApp
+      isUserApp: null == isUserApp
           ? _self.isUserApp
           : isUserApp // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      isSpeaker: freezed == isSpeaker
+              as bool,
+      isSpeaker: null == isSpeaker
           ? _self.isSpeaker
           : isSpeaker // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      isAdmin: freezed == isAdmin
+              as bool,
+      isAdmin: null == isAdmin
           ? _self.isAdmin
           : isAdmin // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      isCommission: freezed == isCommission
+              as bool,
+      isCommission: null == isCommission
           ? _self.isCommission
           : isCommission // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      isStudant: freezed == isStudant
+              as bool,
+      isStudant: null == isStudant
           ? _self.isStudant
           : isStudant // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      relationship: freezed == relationship
+              as bool,
+      relationship: null == relationship
           ? _self.relationship
           : relationship // ignore: cast_nullable_to_non_nullable
-              as Relationship?,
+              as Relationship,
     ));
   }
 }
@@ -149,30 +149,30 @@ class _$AuthStateCopyWithImpl<$Res> implements $AuthStateCopyWith<$Res> {
 class _AuthState implements AuthState {
   const _AuthState(
       {required this.isAuthenticated,
-      this.user,
-      this.isUserApp,
-      this.isSpeaker,
-      this.isAdmin,
-      this.isCommission,
-      this.isStudant,
-      this.relationship});
+      required this.user,
+      required this.isUserApp,
+      required this.isSpeaker,
+      required this.isAdmin,
+      required this.isCommission,
+      required this.isStudant,
+      required this.relationship});
 
   @override
   final bool isAuthenticated;
   @override
   final dynamic user;
   @override
-  final bool? isUserApp;
+  final bool isUserApp;
   @override
-  final bool? isSpeaker;
+  final bool isSpeaker;
   @override
-  final bool? isAdmin;
+  final bool isAdmin;
   @override
-  final bool? isCommission;
+  final bool isCommission;
   @override
-  final bool? isStudant;
+  final bool isStudant;
   @override
-  final Relationship? relationship;
+  final Relationship relationship;
 
   /// Create a copy of AuthState
   /// with the given fields replaced by the non-null parameter values.
@@ -232,12 +232,12 @@ abstract mixin class _$AuthStateCopyWith<$Res>
   $Res call(
       {bool isAuthenticated,
       dynamic user,
-      bool? isUserApp,
-      bool? isSpeaker,
-      bool? isAdmin,
-      bool? isCommission,
-      bool? isStudant,
-      Relationship? relationship});
+      bool isUserApp,
+      bool isSpeaker,
+      bool isAdmin,
+      bool isCommission,
+      bool isStudant,
+      Relationship relationship});
 }
 
 /// @nodoc
@@ -254,12 +254,12 @@ class __$AuthStateCopyWithImpl<$Res> implements _$AuthStateCopyWith<$Res> {
   $Res call({
     Object? isAuthenticated = null,
     Object? user = freezed,
-    Object? isUserApp = freezed,
-    Object? isSpeaker = freezed,
-    Object? isAdmin = freezed,
-    Object? isCommission = freezed,
-    Object? isStudant = freezed,
-    Object? relationship = freezed,
+    Object? isUserApp = null,
+    Object? isSpeaker = null,
+    Object? isAdmin = null,
+    Object? isCommission = null,
+    Object? isStudant = null,
+    Object? relationship = null,
   }) {
     return _then(_AuthState(
       isAuthenticated: null == isAuthenticated
@@ -270,30 +270,30 @@ class __$AuthStateCopyWithImpl<$Res> implements _$AuthStateCopyWith<$Res> {
           ? _self.user
           : user // ignore: cast_nullable_to_non_nullable
               as dynamic,
-      isUserApp: freezed == isUserApp
+      isUserApp: null == isUserApp
           ? _self.isUserApp
           : isUserApp // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      isSpeaker: freezed == isSpeaker
+              as bool,
+      isSpeaker: null == isSpeaker
           ? _self.isSpeaker
           : isSpeaker // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      isAdmin: freezed == isAdmin
+              as bool,
+      isAdmin: null == isAdmin
           ? _self.isAdmin
           : isAdmin // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      isCommission: freezed == isCommission
+              as bool,
+      isCommission: null == isCommission
           ? _self.isCommission
           : isCommission // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      isStudant: freezed == isStudant
+              as bool,
+      isStudant: null == isStudant
           ? _self.isStudant
           : isStudant // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      relationship: freezed == relationship
+              as bool,
+      relationship: null == relationship
           ? _self.relationship
           : relationship // ignore: cast_nullable_to_non_nullable
-              as Relationship?,
+              as Relationship,
     ));
   }
 }
