@@ -8,8 +8,7 @@ import 'package:setec_app/domain/models/auth_state.dart';
 import 'package:setec_app/domain/models/speaker.dart';
 import 'package:setec_app/domain/models/user_app.dart';
 
-class AuthStateNotifier extends StateNotifier<AuthState>
-    with SharedPrefsMixin {
+class AuthStateNotifier extends StateNotifier<AuthState> with SharedPrefsMixin {
   AuthStateNotifier()
       : super(const AuthState(
             isAuthenticated: false,
@@ -20,8 +19,6 @@ class AuthStateNotifier extends StateNotifier<AuthState>
             isCommission: false,
             isStudant: false,
             relationship: Relationship.semrelacao));
-
-            //FIXME: Verificar pq a role é perdida no reload da aplicação
 
   void login({
     dynamic user,
@@ -45,6 +42,18 @@ class AuthStateNotifier extends StateNotifier<AuthState>
   }
 
   Future<void> logout(dynamic user) async {
+    final response = await FirebaseEmailReapository().logout();
+
+    if (response is Error) throw response.error;
+
+    if (user is UserApp) {
+      final result = await mixinRemove('userApp') as Result;
+      if (result is Error) throw result.error;
+    } else if (user is Speaker) {
+      final result = await mixinRemove('speaker') as Result;
+      if (result is Error) throw result.error;
+    }
+
     state = const AuthState(
         isAuthenticated: false,
         user: null,
@@ -54,27 +63,6 @@ class AuthStateNotifier extends StateNotifier<AuthState>
         isCommission: false,
         isStudant: false,
         relationship: Relationship.semrelacao);
-    final response = await FirebaseEmailReapository().logout();
-
-    switch (response) {
-      case Ok():
-        dynamic result;
-        if (user is UserApp) {
-          result = await mixinRemove('userApp');
-        } else if (user is Speaker) {
-          result = await mixinRemove('speaker');
-        }
-
-        switch (result) {
-          case Ok():
-            break;
-          case Error(error: final e):
-            throw e;
-        }
-        break;
-      case Error(error: final e):
-        throw e;
-    }
   }
 }
 

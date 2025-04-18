@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:setec_app/core/base/base_repository.dart';
 import 'package:setec_app/core/classes/app_exception_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
@@ -6,6 +7,8 @@ import 'package:setec_app/data/userApp/dto/user_app_dto.dart';
 import 'package:setec_app/data/userApp/mapper/user_app_mapper.dart';
 import 'package:setec_app/data/userApp/service/user_services.dart';
 import 'package:setec_app/domain/models/user_app.dart';
+
+  final userAppRepository = Provider<UserAppRepository>((ref) => UserAppRepository());
 
 class UserAppRepository extends BaseRepository<UserAppDTO>
     implements BasicRepositoryCRUD<UserApp> {

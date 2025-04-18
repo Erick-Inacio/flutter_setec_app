@@ -72,6 +72,7 @@ abstract class BaseService<T> {
       switch (result) {
         case Ok(value: final header):
           Logger().i(toJson(t));
+          Logger().i(header["Authorization"]);
           final response = await _dio.post(
             apiRoute.post(),
             options: Options(

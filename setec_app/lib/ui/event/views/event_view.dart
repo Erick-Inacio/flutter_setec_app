@@ -18,14 +18,19 @@ class _EventView extends ConsumerState<EventView> {
 
     return 
     Scaffold(
-      body: ListView.builder(
-        shrinkWrap: true,
-        itemCount: events.length,
-        itemBuilder: (context, index) {
-          return (index == events.length - 1)
-              ? EventCard(event: events[index], isFinalEvent: true)
-              : EventCard(event: events[index]);
-        },
+      body: Column(
+        children: [
+          Text('Event'),
+          ListView.builder(
+            shrinkWrap: true,
+            itemCount: events.length,
+            itemBuilder: (context, index) {
+              return (index == events.length - 1)
+                  ? EventCard(event: events[index], isFinalEvent: true)
+                  : EventCard(event: events[index]);
+            },
+          ),
+        ],
       ),
     );
   }

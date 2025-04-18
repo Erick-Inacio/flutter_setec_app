@@ -26,11 +26,11 @@ class ExceptionSnackBar extends SnackBar {
                 )
               : null,
           backgroundColor: const Color.fromARGB(255, 255, 252, 86),
-          behavior: SnackBarBehavior.floating,
+          behavior: SnackBarBehavior.fixed,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
-          margin: const EdgeInsets.all(8),
+          // margin: const EdgeInsets.all(8),
           duration: const Duration(seconds: 3),
         );
 }

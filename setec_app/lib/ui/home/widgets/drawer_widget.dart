@@ -15,7 +15,7 @@ class DrawerWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //Providers
-    final authState = ref.read(authProvider);
+    final authState = ref.watch(authProvider);
 
     //Screen sizes
     double width = MediaQuery.sizeOf(context).width;

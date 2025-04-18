@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:setec_app/ui/home/providers/home_provider.dart';
 
 class BottomNavBarWidget extends ConsumerWidget {
-  final int currentIndex;
-  final Function(int) onTap;
-
-  const BottomNavBarWidget({
-    super.key,
-    required this.currentIndex,
-    required this.onTap,
-  });
+  const BottomNavBarWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final currentIndex = ref.watch(navControllerProvider);
+    final navNotifier = ref.read(navControllerProvider.notifier);
+
     return BottomNavigationBar(
       backgroundColor: Colors.deepPurple[50],
       currentIndex: currentIndex,
-      onTap: onTap,
+      onTap: (index) => navNotifier.navigate(index, context),
       items: [
         BottomNavigationBarItem(
           backgroundColor: Colors.deepPurple[50],

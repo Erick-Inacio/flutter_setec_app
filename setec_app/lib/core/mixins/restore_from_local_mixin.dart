@@ -15,10 +15,10 @@ mixin RestoreDataFromLocal {
       _restoreEvent(ref),
     ]);
   }
-  
+
   Future<void> _restoreFromLocal(WidgetRef ref) async {
-    final userAppRep = UserAppRepository();
-    final speakerRep = SpeakerRepository();
+    final userAppRep = ref.read(userAppRepository);
+    final speakerRep = ref.read(speakerRepository);
 
     final result = await userAppRep.getObjectLocal();
 
@@ -27,33 +27,23 @@ mixin RestoreDataFromLocal {
         if (value == null) return;
 
         final roleStr = value['role'] as String;
-        if (roleStr == 'SPEAKER') {
+
+        final role = Roles.fromString(roleStr);
+
+        if (role == Roles.speaker) {
           final resultSpeaker = await speakerRep.getObjectLocal();
 
-          switch (resultSpeaker) {
-            case Ok(value: final value):
-              if (value == null) return;
-              final speakerDTO = SpeakerDTO.fromJson(value);
-              final user = speakerDTO.toDomain();
-              _login(ref, user, Roles.speaker);
-              return;
+          final speaker = switch (resultSpeaker) {
+            Ok(value: final v) =>
+              v != null ? SpeakerDTO.fromJson(v).toDomain() : null,
+            Error(error: final e) => throw e,
+          };
 
-            case Error(error: final e):
-              throw e;
-          }
+          if (speaker != null) _login(ref, speaker, role);
         } else {
-          final userAppDTO = UserAppDTO.fromJson(value);
-          final user = userAppDTO.toDomain();
-
-          // mapeia a role dinamicamente
-          final roleEnum = Roles.values.firstWhere(
-            (e) => e.name == roleStr,
-            orElse: () => Roles.student,
-          );
-
-          _login(ref, user, roleEnum);
+          final user = UserAppDTO.fromJson(value).toDomain();
+          _login(ref, user, role);
         }
-        return;
       case Error(error: final e):
         throw e;
     }
@@ -72,14 +62,14 @@ mixin RestoreDataFromLocal {
               : user.relationship,
         );
   }
-  
-  Future<void>_restoreEvent(WidgetRef ref) async {
+
+  Future<void> _restoreEvent(WidgetRef ref) async {
     final result = await ref.read(eventNotifier.notifier).restoreFromLocal();
 
     switch (result) {
       case Ok(value: final value):
-        if(value.isNotEmpty) return;
-        
+        if (value.isNotEmpty) return;
+
         final getEvents = await ref.read(eventNotifier.notifier).fetchEvents();
 
         switch (getEvents) {

@@ -13,12 +13,14 @@ class SignOutTextButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.read(authProvider.notifier);
     final authState = ref.read(authProvider);
+
     return TextButton(
       onPressed: () async {
         try {
           await auth.logout(authState.user!);
 
           if (context.mounted) {
+            context.pop();
             context.go('/home/lectures');
           }
         } catch (e) {

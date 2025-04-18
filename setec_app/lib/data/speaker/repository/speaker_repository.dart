@@ -1,3 +1,4 @@
+import 'package:riverpod/riverpod.dart';
 import 'package:setec_app/core/base/base_repository.dart';
 import 'package:setec_app/core/classes/app_exception_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
@@ -6,6 +7,9 @@ import 'package:setec_app/data/speaker/dto/speaker_dto.dart';
 import 'package:setec_app/data/speaker/mapper/speaker_mapper.dart';
 import 'package:setec_app/data/speaker/service/speaker_services.dart';
 import 'package:setec_app/domain/models/speaker.dart';
+
+final speakerRepository =
+    Provider<SpeakerRepository>((ref) => SpeakerRepository());
 
 class SpeakerRepository extends BaseRepository<SpeakerDTO>
     implements BasicRepositoryCRUD<Speaker> {
@@ -27,12 +31,14 @@ class SpeakerRepository extends BaseRepository<SpeakerDTO>
 
   @override
   Future<Result<Speaker>> createData(Speaker speaker) {
-    return create<Speaker, SpeakerDTO>(domain: speaker, toDTO: (d) => d.toDTO());
+    return create<Speaker, SpeakerDTO>(
+        domain: speaker, toDTO: (d) => d.toDTO());
   }
 
   @override
   Future<Result<Speaker>> updateData(Speaker speaker) {
-    return update<Speaker, SpeakerDTO>(domain: speaker, toDTO: (d) => d.toDTO());
+    return update<Speaker, SpeakerDTO>(
+        domain: speaker, toDTO: (d) => d.toDTO());
   }
 
   @override

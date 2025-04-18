@@ -149,17 +149,17 @@ class _CreateAccountState extends ConsumerState<CreateAccount> {
                     : const Text('Criar Conta',
                         style: TextStyle(color: Colors.white)),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  nameController.text = "Teste Speaker";
-                  emailController.text = "testespeaker1@speaker.com";
-                  passwordController.text = "123456";
-                  companyController.text = "FATEC";
-                  positionController.text = "Desenvolvedor Flutter";
-                  bioController.text = "Desenvolvedor Flutter";
-                },
-                child: Text('Mock Speaker'),
-              ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     nameController.text = "Teste Speaker";
+              //     emailController.text = "testespeaker1@speaker.com";
+              //     passwordController.text = "123456";
+              //     companyController.text = "FATEC";
+              //     positionController.text = "Desenvolvedor Flutter";
+              //     bioController.text = "Desenvolvedor Flutter";
+              //   },
+              //   child: Text('Mock Speaker'),
+              // ),
             ],
           ),
         ),

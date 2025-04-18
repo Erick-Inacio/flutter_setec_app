@@ -94,13 +94,19 @@ class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields {
         }
       }
 
-      if (context.mounted) context.go('/lectures');
+      if (context.mounted) context.go('/home/lectures');
+
+      // Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
+      //   '/home/lectures',
+      //   (route) => false,
+      // );
 
       state = const AsyncData(null);
     } catch (e, s) {
       state = AsyncError(e, s);
 
       if (context.mounted) {
+        //FIXME: tratar o erro caso a api esteja offline
         ref.read(authProvider.notifier).logout(authState.user!);
         Logger().e(s);
         ScaffoldMessenger.of(context).showSnackBar(
@@ -136,12 +142,12 @@ class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields {
         : user;
 
     await _createAccount(
-      formKey: formKey,
-      email: email,
-      password: password,
-      context: context,
-      user: userEntity,
-    );
+        formKey: formKey,
+        email: email,
+        password: password,
+        context: context,
+        user: userEntity,
+        isSpeaker: isSpeaker);
   }
 
   Future<void> _createAccount({
@@ -150,26 +156,33 @@ class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields {
     required String password,
     required BuildContext context,
     required dynamic user, // Pode ser UserApp ou Speaker
+    required bool isSpeaker,
   }) async {
     state = const AsyncLoading();
-
-    if (!formKey.currentState!.validate()) return;
 
     try {
       final createdFirebaseUser = await _authRepository.registerWithEmail(
         email: email,
         password: password,
       );
-      Logger().i(user.toString());
+      // Logger().i(user.toString());
       switch (createdFirebaseUser) {
         case Ok(value: final createdUser):
+          String? ra;
+
+          if (isSpeaker) {
+            ra = user.user.ra == '' ? null : user.user.ra;
+          } else {
+            ra = user.ra == '' ? null : user.ra;
+          }
+
           // Dados base
           final userApp = UserApp(
             uid: createdUser.uid,
             name: user is UserApp ? user.name : user.user.name,
             email: createdUser.email,
             role: user is UserApp ? user.role : user.user.role,
-            ra: user is UserApp ? user.ra : user.user.ra,
+            ra: ra,
             relationship:
                 user is UserApp ? user.relationship : user.user.relationship,
           );

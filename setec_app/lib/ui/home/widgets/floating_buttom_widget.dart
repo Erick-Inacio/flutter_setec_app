@@ -9,15 +9,16 @@ class FloatingButtomWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentIndex = ref.watch(currentIndexProvider);
+    final currentIndex = ref.watch(navControllerProvider);
     return _hasPermission(ref)
         ? FloatingActionButton(
             backgroundColor: Colors.deepPurpleAccent,
             child: const Icon(Icons.add_rounded, color: Colors.white),
             onPressed: () async {
-              if (currentIndex == 0 || _hasPermission(ref)) {
+              if (currentIndex == 2 && _hasPermission(ref)) {
                 context.push('/createEvent');
               }
+              
             },
           )
         : Container();
@@ -25,7 +26,7 @@ class FloatingButtomWidget extends ConsumerWidget {
 
   bool _hasPermission(WidgetRef ref) {
     final authState = ref.watch(authProvider);
-    final index = ref.watch(currentIndexProvider);
+    final index = ref.watch(navControllerProvider);
 
     if (!authState.isAuthenticated) return false;
 

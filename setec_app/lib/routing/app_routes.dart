@@ -1,56 +1,60 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:setec_app/providers/auth_state_notifier.dart';
-import 'package:setec_app/ui/auth/views/login_view.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:setec_app/ui/_lecture/views/lecture_view.dart';
 import 'package:setec_app/ui/_miniCourse/view/mini_course.dart';
-import 'package:setec_app/ui/event/views/create_event_screen.dart';
-import 'package:setec_app/ui/home/views/home_nav_drawer_view.dart';
 import 'package:setec_app/ui/auth/views/create_account_view.dart';
+import 'package:setec_app/ui/auth/views/login_view.dart';
+import 'package:setec_app/ui/event/views/create_event_screen.dart';
 import 'package:setec_app/ui/event/views/event_view.dart';
+import 'package:setec_app/ui/home/providers/home_provider.dart';
+import 'package:setec_app/ui/home/views/home_nav_drawer_view.dart';
 
-final appRouterProvider = Provider<GoRouter>(
-  (ref) {
-    final authNotifier = ref.watch(authListenableProvider);
-
-    return GoRouter(
-      debugLogDiagnostics: true,
-      navigatorKey: GlobalKey<NavigatorState>(),
-      initialLocation: '/home',
-      refreshListenable: authNotifier,
-      routes: [
-        GoRoute(
-          path: '/home',
-          pageBuilder: (context, state) => MaterialPage(
-            key: state.pageKey,
-            child: const HomeNavDrawer(),
-          ),
-          routes: [
+final appRouterProvider = Provider<GoRouter>((ref) {
+  return GoRouter(
+    initialLocation: '/home/lectures',
+    routes: [
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          // Schedule the index update for after build
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            final index = switch (state.uri.toString()) {
+              '/home/lectures' => 0,
+              '/home/miniCourses' => 1,
+              '/home/events' => 2,
+              _ => 0,
+            };
+            ref.read(navControllerProvider.notifier).safeUpdateIndex(index);
+          });
+          
+          return HomeNavDrawer(child: navigationShell);
+        },
+        branches: [
+          StatefulShellBranch(routes: [
             GoRoute(
-              path: '/lectures',
-              pageBuilder: (context, state) => MaterialPage(
-                key: state.pageKey,
-                child: const LecturePage(),
+              path: '/home/lectures',
+              builder: (context, state) => const LecturePage(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/home/miniCourses',
+              pageBuilder: (context, state) => const NoTransitionPage(
+                child: MiniCoursePage(),
               ),
             ),
+          ]),
+          StatefulShellBranch(routes: [
             GoRoute(
-              path: '/miniCourses',
-              pageBuilder: (context, state) => MaterialPage(
-                key: state.pageKey,
-                child: const MiniCoursePage(),
-              ),
-            ),
-            GoRoute(
-              path: '/events',
-              pageBuilder: (context, state) => MaterialPage(
-                key: state.pageKey,
+              path: '/home/events',
+              pageBuilder: (context, state) => const NoTransitionPage(
                 child: EventView(),
               ),
             ),
-          ],
-        ),
-        GoRoute(
+          ]),
+        ],
+      ),
+      GoRoute(
           path: '/login',
           pageBuilder: (context, state) => MaterialPage(
             key: state.pageKey,
@@ -71,7 +75,6 @@ final appRouterProvider = Provider<GoRouter>(
             child: const CreateEvent(),
           ),
         ),
-      ],
-    );
-  },
-);
+    ],
+  );
+});

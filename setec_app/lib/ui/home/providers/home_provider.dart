@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:setec_app/ui/event/views/event_view.dart';
-import 'package:setec_app/ui/_lecture/views/lecture_view.dart';
-import 'package:setec_app/ui/_miniCourse/view/mini_course.dart';
+import 'package:go_router/go_router.dart';
 
-final currentIndexProvider = StateProvider<int>((ref) => 0);
+// final navControllerProvider = StateProvider<int>((ref) => 0);
 
 final appBarTitlesProvider = Provider<List<String>>(
   (ref) => [
@@ -14,12 +12,35 @@ final appBarTitlesProvider = Provider<List<String>>(
   ],
 );
 
-final viewsProvider = Provider<List<Widget>>(
-  (ref) => [
-    const LecturePage(),
-    const MiniCoursePage(),
-    const EventView(),
-  ],
-);
+// final viewsProvider = Provider<List<Widget>>(
+//   (ref) => [
+//     const LecturePage(),
+//     const MiniCoursePage(),
+//     const EventView(),
+//   ],
+// );
+final navControllerProvider = StateNotifierProvider<NavController, int>((ref) {
+  return NavController();
+});
+
+class NavController extends StateNotifier<int> {
+  NavController() : super(0);
+
+  // Safe method to update state
+  void safeUpdateIndex(int newIndex) {
+    if (state != newIndex) {
+      state = newIndex;
+    }
+  }
+
+  void navigate(int index, BuildContext context) {
+    safeUpdateIndex(index);
+    switch (index) {
+      case 0: context.go('/home/lectures'); break;
+      case 1: context.go('/home/miniCourses'); break;
+      case 2: context.go('/home/events'); break;
+    }
+  }
+}
 
 

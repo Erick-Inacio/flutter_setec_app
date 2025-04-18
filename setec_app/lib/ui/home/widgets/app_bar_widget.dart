@@ -9,13 +9,13 @@ class AppBarWidget extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentIndex = ref.watch(currentIndexProvider);
+    final currentIndex = ref.watch(navControllerProvider);
     final title = ref.watch(appBarTitlesProvider);
 
     return AppBar(
       title: Text(title[currentIndex]),
       actions: <Widget>[
-        if (!ref.read(authProvider).isAuthenticated)
+        if (!ref.watch(authProvider).isAuthenticated)
           SignInTextButton(parentContext: context),
       ],
     );

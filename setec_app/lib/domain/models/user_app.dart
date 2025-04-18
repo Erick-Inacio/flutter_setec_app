@@ -16,7 +16,7 @@ abstract class UserApp with _$UserApp {
     required Roles role,
     required Relationship relationship,
   }) = _UserApp;
-
+  
   factory UserApp.fromJson(Map<String, dynamic> json) =>
       _$UserAppFromJson(json);
 }

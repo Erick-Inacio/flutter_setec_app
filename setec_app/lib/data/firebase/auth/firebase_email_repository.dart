@@ -8,8 +8,6 @@ import 'package:setec_app/data/userApp/service/user_services.dart';
 import 'package:setec_app/domain/models/user_app.dart';
 
 class FirebaseEmailReapository {
-  
-
   //Cria uma instancia de AuthEmailFirebase
   final _authEmail = AuthEmailFirebase();
   final _userServices = UserServices();
