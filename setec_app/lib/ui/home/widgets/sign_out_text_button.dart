@@ -21,7 +21,7 @@ class SignOutTextButton extends ConsumerWidget {
 
           if (context.mounted) {
             context.pop();
-            context.go('/home/lectures');
+            context.go('/lectures');
           }
         } catch (e) {
           throw Exception("Failed to sign out: $e");

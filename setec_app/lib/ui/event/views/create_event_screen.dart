@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:setec_app/domain/models/event.dart';
+import 'package:setec_app/model/models/event.dart';
 import 'package:setec_app/ui/event/viewModel/event_view_model.dart';
 import 'package:setec_app/ui/utils/widgets/Text/Field/date_text_field.dart';
 

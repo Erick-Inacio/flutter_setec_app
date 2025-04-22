@@ -11,16 +11,12 @@ class EventView extends ConsumerStatefulWidget {
 }
 
 class _EventView extends ConsumerState<EventView> {
-
   @override
   Widget build(BuildContext context) {
-  final events = ref.watch(eventNotifier);
-
-    return 
-    Scaffold(
+    final events = ref.watch(eventNotifier);
+    return Scaffold(
       body: Column(
-        children: [
-          Text('Event'),
+        children: <Widget>[
           ListView.builder(
             shrinkWrap: true,
             itemCount: events.length,

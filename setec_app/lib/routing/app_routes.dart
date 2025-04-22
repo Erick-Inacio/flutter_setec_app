@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:setec_app/ui/_lecture/views/lecture_view.dart';
 import 'package:setec_app/ui/_miniCourse/view/mini_course.dart';
 import 'package:setec_app/ui/auth/views/create_account_view.dart';
@@ -9,52 +9,55 @@ import 'package:setec_app/ui/event/views/create_event_screen.dart';
 import 'package:setec_app/ui/event/views/event_view.dart';
 import 'package:setec_app/ui/home/providers/home_provider.dart';
 import 'package:setec_app/ui/home/views/home_nav_drawer_view.dart';
+import 'package:setec_app/ui/speaker/views/speaker_view.dart';
+import 'package:setec_app/ui/speaker/views/speakers_view.dart';
 
-final appRouterProvider = Provider<GoRouter>((ref) {
-  return GoRouter(
-    initialLocation: '/home/lectures',
-    routes: [
-      StatefulShellRoute.indexedStack(
-        builder: (context, state, navigationShell) {
-          // Schedule the index update for after build
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            final index = switch (state.uri.toString()) {
-              '/home/lectures' => 0,
-              '/home/miniCourses' => 1,
-              '/home/events' => 2,
-              _ => 0,
-            };
-            ref.read(navControllerProvider.notifier).safeUpdateIndex(index);
-          });
-          
-          return HomeNavDrawer(child: navigationShell);
-        },
-        branches: [
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/home/lectures',
-              builder: (context, state) => const LecturePage(),
-            ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/home/miniCourses',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: MiniCoursePage(),
+final appRouterProvider = Provider<GoRouter>(
+  (ref) {
+    return GoRouter(
+      initialLocation: '/lectures',
+      routes: [
+        StatefulShellRoute.indexedStack(
+          builder: (context, state, navigationShell) {
+            // Schedule the index update for after build
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              final index = switch (state.uri.toString()) {
+                '/lectures' => 0,
+                '/miniCourses' => 1,
+                '/events' => 2,
+                _ => 0,
+              };
+              ref.read(navControllerProvider.notifier).safeUpdateIndex(index);
+            });
+
+            return HomeNavDrawer(child: navigationShell);
+          },
+          branches: [
+            StatefulShellBranch(routes: [
+              GoRoute(
+                path: '/lectures',
+                builder: (context, state) => const LecturePage(),
               ),
-            ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/home/events',
-              pageBuilder: (context, state) => const NoTransitionPage(
-                child: EventView(),
+            ]),
+            StatefulShellBranch(routes: [
+              GoRoute(
+                path: '/miniCourses',
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: MiniCoursePage(),
+                ),
               ),
-            ),
-          ]),
-        ],
-      ),
-      GoRoute(
+            ]),
+            StatefulShellBranch(routes: [
+              GoRoute(
+                path: '/events',
+                pageBuilder: (context, state) => const NoTransitionPage(
+                  child: EventView(),
+                ),
+              ),
+            ]),
+          ],
+        ),
+        GoRoute(
           path: '/login',
           pageBuilder: (context, state) => MaterialPage(
             key: state.pageKey,
@@ -75,6 +78,26 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             child: const CreateEvent(),
           ),
         ),
-    ],
-  );
-});
+        GoRoute(
+          path: '/speakerProfile',
+          pageBuilder: (context, state) {
+            final user = state.extra as dynamic;
+            return MaterialPage(
+              key: state.pageKey,
+              child: SpeakerProfileView(
+                user: user,
+              ),
+            );
+          },
+        ),
+        GoRoute(
+          path: '/speakers',
+          pageBuilder: (context, state) => MaterialPage(
+            key: state.pageKey,
+            child: const SpeakersView(),
+          ),
+        )
+      ],
+    );
+  },
+);

@@ -4,9 +4,9 @@ import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/enums/relationship.dart';
 import 'package:setec_app/core/mixins/shared_prefs_mixin.dart';
 import 'package:setec_app/data/firebase/auth/firebase_email_repository.dart';
-import 'package:setec_app/domain/models/auth_state.dart';
-import 'package:setec_app/domain/models/speaker.dart';
-import 'package:setec_app/domain/models/user_app.dart';
+import 'package:setec_app/model/models/auth_state.dart';
+import 'package:setec_app/model/models/speaker.dart';
+import 'package:setec_app/model/models/user_app.dart';
 
 class AuthStateNotifier extends StateNotifier<AuthState> with SharedPrefsMixin {
   AuthStateNotifier()

@@ -20,6 +20,8 @@ mixin _$Speaker {
   String get position;
   String get bio;
   UserApp get user;
+  String? get adminApproved;
+  bool? get isApproved;
   Map<SocialMedia, String>? get socialMedia;
 
   /// Create a copy of Speaker
@@ -43,18 +45,30 @@ mixin _$Speaker {
                 other.position == position) &&
             (identical(other.bio, bio) || other.bio == bio) &&
             (identical(other.user, user) || other.user == user) &&
+            (identical(other.adminApproved, adminApproved) ||
+                other.adminApproved == adminApproved) &&
+            (identical(other.isApproved, isApproved) ||
+                other.isApproved == isApproved) &&
             const DeepCollectionEquality()
                 .equals(other.socialMedia, socialMedia));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, company, position, bio, user,
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      company,
+      position,
+      bio,
+      user,
+      adminApproved,
+      isApproved,
       const DeepCollectionEquality().hash(socialMedia));
 
   @override
   String toString() {
-    return 'Speaker(id: $id, company: $company, position: $position, bio: $bio, user: $user, socialMedia: $socialMedia)';
+    return 'Speaker(id: $id, company: $company, position: $position, bio: $bio, user: $user, adminApproved: $adminApproved, isApproved: $isApproved, socialMedia: $socialMedia)';
   }
 }
 
@@ -69,6 +83,8 @@ abstract mixin class $SpeakerCopyWith<$Res> {
       String position,
       String bio,
       UserApp user,
+      String? adminApproved,
+      bool? isApproved,
       Map<SocialMedia, String>? socialMedia});
 
   $UserAppCopyWith<$Res> get user;
@@ -91,6 +107,8 @@ class _$SpeakerCopyWithImpl<$Res> implements $SpeakerCopyWith<$Res> {
     Object? position = null,
     Object? bio = null,
     Object? user = null,
+    Object? adminApproved = freezed,
+    Object? isApproved = freezed,
     Object? socialMedia = freezed,
   }) {
     return _then(_self.copyWith(
@@ -114,6 +132,14 @@ class _$SpeakerCopyWithImpl<$Res> implements $SpeakerCopyWith<$Res> {
           ? _self.user
           : user // ignore: cast_nullable_to_non_nullable
               as UserApp,
+      adminApproved: freezed == adminApproved
+          ? _self.adminApproved
+          : adminApproved // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isApproved: freezed == isApproved
+          ? _self.isApproved
+          : isApproved // ignore: cast_nullable_to_non_nullable
+              as bool?,
       socialMedia: freezed == socialMedia
           ? _self.socialMedia
           : socialMedia // ignore: cast_nullable_to_non_nullable
@@ -135,12 +161,14 @@ class _$SpeakerCopyWithImpl<$Res> implements $SpeakerCopyWith<$Res> {
 /// @nodoc
 @JsonSerializable()
 class _Speaker implements Speaker {
-  const _Speaker(
+  _Speaker(
       {this.id,
       required this.company,
       required this.position,
       required this.bio,
       required this.user,
+      this.adminApproved,
+      this.isApproved,
       required final Map<SocialMedia, String>? socialMedia})
       : _socialMedia = socialMedia;
   factory _Speaker.fromJson(Map<String, dynamic> json) =>
@@ -156,6 +184,10 @@ class _Speaker implements Speaker {
   final String bio;
   @override
   final UserApp user;
+  @override
+  final String? adminApproved;
+  @override
+  final bool? isApproved;
   final Map<SocialMedia, String>? _socialMedia;
   @override
   Map<SocialMedia, String>? get socialMedia {
@@ -192,18 +224,30 @@ class _Speaker implements Speaker {
                 other.position == position) &&
             (identical(other.bio, bio) || other.bio == bio) &&
             (identical(other.user, user) || other.user == user) &&
+            (identical(other.adminApproved, adminApproved) ||
+                other.adminApproved == adminApproved) &&
+            (identical(other.isApproved, isApproved) ||
+                other.isApproved == isApproved) &&
             const DeepCollectionEquality()
                 .equals(other._socialMedia, _socialMedia));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, id, company, position, bio, user,
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      company,
+      position,
+      bio,
+      user,
+      adminApproved,
+      isApproved,
       const DeepCollectionEquality().hash(_socialMedia));
 
   @override
   String toString() {
-    return 'Speaker(id: $id, company: $company, position: $position, bio: $bio, user: $user, socialMedia: $socialMedia)';
+    return 'Speaker(id: $id, company: $company, position: $position, bio: $bio, user: $user, adminApproved: $adminApproved, isApproved: $isApproved, socialMedia: $socialMedia)';
   }
 }
 
@@ -219,6 +263,8 @@ abstract mixin class _$SpeakerCopyWith<$Res> implements $SpeakerCopyWith<$Res> {
       String position,
       String bio,
       UserApp user,
+      String? adminApproved,
+      bool? isApproved,
       Map<SocialMedia, String>? socialMedia});
 
   @override
@@ -242,6 +288,8 @@ class __$SpeakerCopyWithImpl<$Res> implements _$SpeakerCopyWith<$Res> {
     Object? position = null,
     Object? bio = null,
     Object? user = null,
+    Object? adminApproved = freezed,
+    Object? isApproved = freezed,
     Object? socialMedia = freezed,
   }) {
     return _then(_Speaker(
@@ -265,6 +313,14 @@ class __$SpeakerCopyWithImpl<$Res> implements _$SpeakerCopyWith<$Res> {
           ? _self.user
           : user // ignore: cast_nullable_to_non_nullable
               as UserApp,
+      adminApproved: freezed == adminApproved
+          ? _self.adminApproved
+          : adminApproved // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isApproved: freezed == isApproved
+          ? _self.isApproved
+          : isApproved // ignore: cast_nullable_to_non_nullable
+              as bool?,
       socialMedia: freezed == socialMedia
           ? _self._socialMedia
           : socialMedia // ignore: cast_nullable_to_non_nullable

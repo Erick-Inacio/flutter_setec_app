@@ -1,6 +1,6 @@
 import 'package:setec_app/data/speaker/dto/speaker_dto.dart';
 import 'package:setec_app/data/userApp/mapper/user_app_mapper.dart';
-import 'package:setec_app/domain/models/speaker.dart';
+import 'package:setec_app/model/models/speaker.dart';
 
 extension SpeakerToDomain on SpeakerDTO {
   Speaker toDomain() {
@@ -11,6 +11,8 @@ extension SpeakerToDomain on SpeakerDTO {
       position: position,
       bio: bio,
       user: user.toDomain(),
+      adminApproved: adminApproved,
+      isApproved: adminApproved != null,
     );
   }
 }
@@ -24,6 +26,7 @@ extension SpeakerToDTO on Speaker {
       position: position,
       bio: bio,
       user: user.toDTO(),
+      adminApproved: adminApproved,
     );
   }
 }

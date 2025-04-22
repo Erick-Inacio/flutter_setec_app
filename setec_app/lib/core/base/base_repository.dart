@@ -21,14 +21,13 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
       getAll<Domain, AsDTO extends DTOConvertible<Domain>>() async {
     return handleResult(() async {
       final result = await _service.getAll();
-
-      return _saveToLocalObj(result);
+      return _saveToLocalObjList(result);
     });
   }
 
   Future<Result<Domain>> getById<Domain, AsDTO extends DTOConvertible<Domain>>(
     int id,
-  ) {
+  ) async {
     return handleResult(() async {
       final result = await _service.getById(id);
 
@@ -120,6 +119,31 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
           final result = await saveObjectLocal(dto);
 
           switch (result) {
+            case Ok():
+              return domainEntity;
+            case Error(error: final e):
+              throw e;
+          }
+        }
+      case Error(error: final e):
+        throw e;
+    }
+  }
+
+  Future<List<Domain>>
+      _saveToLocalObjList<Domain, AsDTO extends DTOConvertible<Domain>>(
+    Result result,
+  ) async {
+    switch (result) {
+      case Ok(value: final listDto):
+        {
+          // Cast seguro
+          final domainEntity =
+              (listDto as List<AsDTO>).map((e) => e.toDomain()).toList();
+
+          final saveResult = await saveListLocal(listDto);
+
+          switch (saveResult) {
             case Ok():
               return domainEntity;
             case Error(error: final e):

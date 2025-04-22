@@ -36,11 +36,15 @@ class NavController extends StateNotifier<int> {
   void navigate(int index, BuildContext context) {
     safeUpdateIndex(index);
     switch (index) {
-      case 0: context.go('/home/lectures'); break;
-      case 1: context.go('/home/miniCourses'); break;
-      case 2: context.go('/home/events'); break;
+      case 0:
+        context.go('/lectures');
+        break;
+      case 1:
+        context.go('/miniCourses');
+        break;
+      case 2:
+        context.go('/events');
+        break;
     }
   }
 }
-
-

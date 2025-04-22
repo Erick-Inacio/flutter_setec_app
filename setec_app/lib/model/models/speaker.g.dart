@@ -12,6 +12,8 @@ _Speaker _$SpeakerFromJson(Map<String, dynamic> json) => _Speaker(
       position: json['position'] as String,
       bio: json['bio'] as String,
       user: UserApp.fromJson(json['user'] as Map<String, dynamic>),
+      adminApproved: json['adminApproved'] as String?,
+      isApproved: json['isApproved'] as bool?,
       socialMedia: (json['socialMedia'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry($enumDecode(_$SocialMediaEnumMap, k), e as String),
       ),
@@ -23,6 +25,8 @@ Map<String, dynamic> _$SpeakerToJson(_Speaker instance) => <String, dynamic>{
       'position': instance.position,
       'bio': instance.bio,
       'user': instance.user,
+      'adminApproved': instance.adminApproved,
+      'isApproved': instance.isApproved,
       'socialMedia': instance.socialMedia
           ?.map((k, e) => MapEntry(_$SocialMediaEnumMap[k]!, e)),
     };

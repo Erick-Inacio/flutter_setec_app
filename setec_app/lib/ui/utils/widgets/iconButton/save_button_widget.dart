@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-class SaveButtom extends StatelessWidget {
-  final BuildContext parentContext;
-
-  final Function? onPressed;
-
-  const SaveButtom({
+class SaveButtonWidget extends StatelessWidget {
+  const SaveButtonWidget({
     super.key,
     required this.parentContext,
     this.onPressed,
   });
+
+  final BuildContext parentContext;
+
+  final Function? onPressed;
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 import 'package:setec_app/providers/auth_state_notifier.dart';
+import 'package:setec_app/ui/home/widgets/divider_widget.dart';
+import 'package:setec_app/ui/home/widgets/list_tile_widget.dart';
 import 'package:setec_app/ui/home/widgets/sign_out_text_button.dart';
 
 class DrawerWidget extends ConsumerWidget {
@@ -21,7 +23,6 @@ class DrawerWidget extends ConsumerWidget {
     double width = MediaQuery.sizeOf(context).width;
     double height = MediaQuery.sizeOf(context).height;
     return Drawer(
-      
       backgroundColor: Colors.deepPurple.shade50,
       child: ListView(
         padding: EdgeInsets.fromLTRB(16, 50, 16, 16),
@@ -48,52 +49,59 @@ class DrawerWidget extends ConsumerWidget {
               ],
             ),
           ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.person, color: Colors.deepPurple),
-            title: Text(
-              'Meu Perfil',
-              style: GoogleFonts.lato(
-                color: Colors.deepPurple,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+          DividerWidget(),
+          ListTileWidget(
+            icon: Icons.person,
+            title: 'Meu Perfil',
             onTap: () {},
           ),
-          // isAdmin
-          //     ?
-          ListTile(
-            leading: Icon(
-              Icons.festival,
-              color: Colors.deepPurple,
-            ),
-            title: Text(
-              'Gerenciar Eventos',
-              style: GoogleFonts.lato(
-                color: Colors.deepPurple,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          // : Container(),
-          ListTile(
-            leading: Icon(
-              Icons.settings,
-              color: Colors.deepPurple,
-            ),
-            title: Text(
-              'Configurações',
-              style: GoogleFonts.lato(
-                color: Colors.deepPurple,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+          authState.isAdmin
+              ? Column(
+                  children: <Widget>[
+                    DividerWidget(),
+                    ListTileWidget(
+                      title: 'Alunos',
+                      icon: Icons.person_pin,
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTileWidget(
+                      icon: Icons.speaker_group,
+                      title: 'Palestrantes',
+                      onTap: () {
+                        context.pop();
+                        parentContext.push('/speakers');
+                      },
+                    ),
+                    ListTileWidget(
+                      icon: Icons.calendar_month,
+                      title: 'Palestras',
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTileWidget(
+                      icon: Icons.school_rounded,
+                      title: 'Mini Cursos',
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTileWidget(
+                      icon: Icons.festival,
+                      title: 'Setecs',
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                )
+              : Container(),
+          DividerWidget(),
+          ListTileWidget(
+            icon: Icons.settings,
+            title: 'Configurações',
             onTap: () {},
           )
         ],

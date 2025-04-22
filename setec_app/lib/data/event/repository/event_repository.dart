@@ -3,8 +3,8 @@ import 'package:setec_app/core/base/base_repository.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/data/event/dto/event_dto.dart';
 import 'package:setec_app/data/event/service/event_services.dart';
-import 'package:setec_app/domain/extensions/event_extension.dart';
-import 'package:setec_app/domain/models/event.dart';
+import 'package:setec_app/model/extensions/event_extension.dart';
+import 'package:setec_app/model/models/event.dart';
 
 class EventRepository extends BaseRepository<EventDTO> {
   EventRepository()

@@ -6,7 +6,7 @@ import 'package:setec_app/core/interface/basic_repository_crud.dart';
 import 'package:setec_app/data/speaker/dto/speaker_dto.dart';
 import 'package:setec_app/data/speaker/mapper/speaker_mapper.dart';
 import 'package:setec_app/data/speaker/service/speaker_services.dart';
-import 'package:setec_app/domain/models/speaker.dart';
+import 'package:setec_app/model/models/speaker.dart';
 
 final speakerRepository =
     Provider<SpeakerRepository>((ref) => SpeakerRepository());
@@ -59,5 +59,15 @@ class SpeakerRepository extends BaseRepository<SpeakerDTO>
               : AppException("Erro ao buscar palestrante: $e", statusCode: 500);
       }
     });
+  }
+
+  Future<Result<void>> approveSpeaker(Speaker speaker) async {
+    return handleResult(
+      () async {
+        final updatedSpeaker = await SpeakerServices().put(speaker.toDTO());
+
+        if (updatedSpeaker case Error(error: final e)) throw e;
+      },
+    );
   }
 }

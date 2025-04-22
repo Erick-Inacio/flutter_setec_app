@@ -1,6 +1,6 @@
 import 'package:setec_app/data/speaker/dto/speaker_dto.dart';
 import 'package:setec_app/data/userApp/mapper/user_app_mapper.dart';
-import 'package:setec_app/domain/models/speaker.dart';
+import 'package:setec_app/model/models/speaker.dart';
 
 extension SpeakerMapperToDTO on Speaker {
   SpeakerDTO toDTO() => SpeakerDTO(
@@ -9,6 +9,7 @@ extension SpeakerMapperToDTO on Speaker {
         id: id,
         position: position,
         socialMedia: socialMedia,
+        adminApproved: adminApproved,
         user: user.toDTO(),
       );
 }

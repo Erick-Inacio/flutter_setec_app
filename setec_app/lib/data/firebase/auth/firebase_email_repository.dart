@@ -5,7 +5,7 @@ import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/data/userApp/dto/user_app_dto.dart';
 import 'package:setec_app/data/firebase/auth/firebase_services.dart';
 import 'package:setec_app/data/userApp/service/user_services.dart';
-import 'package:setec_app/domain/models/user_app.dart';
+import 'package:setec_app/model/models/user_app.dart';
 
 class FirebaseEmailReapository {
   //Cria uma instancia de AuthEmailFirebase

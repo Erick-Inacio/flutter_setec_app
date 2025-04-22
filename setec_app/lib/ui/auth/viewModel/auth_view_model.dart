@@ -6,14 +6,15 @@ import 'package:setec_app/core/classes/app_exception_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/enums/relationship.dart';
 import 'package:setec_app/core/enums/roles.dart';
+import 'package:setec_app/core/mixins/enum_lists.dart';
 import 'package:setec_app/core/mixins/validate_form_fields.dart';
 import 'package:setec_app/data/firebase/auth/firebase_email_repository.dart';
 import 'package:setec_app/data/speaker/mapper/speaker_mapper.dart';
 import 'package:setec_app/data/speaker/repository/speaker_repository.dart';
 import 'package:setec_app/data/userApp/mapper/user_app_mapper.dart';
 import 'package:setec_app/data/userApp/repository/user_app_repository.dart';
-import 'package:setec_app/domain/models/speaker.dart';
-import 'package:setec_app/domain/models/user_app.dart';
+import 'package:setec_app/model/models/speaker.dart';
+import 'package:setec_app/model/models/user_app.dart';
 import 'package:setec_app/providers/auth_state_notifier.dart';
 import 'package:setec_app/ui/utils/widgets/snackBar/exception_snack_bar.dart';
 
@@ -25,7 +26,7 @@ final authAsyncProvider = AsyncNotifierProvider<AuthAsyncNotifier, void>(() {
   );
 });
 
-class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields {
+class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields, EnumLists {
   AuthAsyncNotifier({
     required FirebaseEmailReapository authRepository,
     required SpeakerRepository speakerRepository,
@@ -94,10 +95,10 @@ class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields {
         }
       }
 
-      if (context.mounted) context.go('/home/lectures');
+      if (context.mounted) context.go('/lectures');
 
       // Navigator.of(context, rootNavigator: true).pushNamedAndRemoveUntil(
-      //   '/home/lectures',
+      //   '/lectures',
       //   (route) => false,
       // );
 
@@ -138,6 +139,7 @@ class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields {
             bio: bio!,
             user: user,
             socialMedia: null,
+            isApproved: false
           )
         : user;
 
@@ -272,7 +274,7 @@ class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields {
     return isValidName(value);
   }
 
-  List<DropdownMenuItem>? items(List<String> list) {
-    return list.map((e) => DropdownMenuItem(value: e, child: Text(e))).toList();
+  List<DropdownMenuItem> relationShipItems() {
+    return listRelationship();
   }
 }
