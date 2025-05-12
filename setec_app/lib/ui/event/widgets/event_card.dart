@@ -105,7 +105,7 @@ class EventCard extends ConsumerWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      event.name,
+                      event.name ?? '',
                       style: GoogleFonts.lato(),
                     ),
                   ),
@@ -122,7 +122,7 @@ class EventCard extends ConsumerWidget {
                           SizedBox(height: 8),
                           Text(
                             FormatDateTime.formatDate(
-                              event.initialDateTime,
+                              event.initialDateTime ?? DateTime.now(),
                             ),
                           ),
                         ],
@@ -134,7 +134,7 @@ class EventCard extends ConsumerWidget {
                           SizedBox(height: 8),
                           Text(
                             FormatDateTime.formatDate(
-                              event.finalDateTime,
+                              event.finalDateTime ?? DateTime.now(),
                             ),
                           ),
                         ],

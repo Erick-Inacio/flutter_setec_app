@@ -7,17 +7,17 @@ part 'event_dto.g.dart';
 @JsonSerializable()
 class EventDTO implements DTOConvertible<Event> {
   int? id;
-  late DateTime initialDateTime;
-  late DateTime finalDateTime;
-  late String name;
+  late DateTime? initialDateTime;
+  late DateTime? finalDateTime;
+  late String? name;
 
   EventDTO.empty();
 
   EventDTO({
     this.id,
-    required this.initialDateTime,
-    required this.finalDateTime,
-    required this.name,
+    this.initialDateTime,
+    this.finalDateTime,
+    this.name,
   });
 
   factory EventDTO.fromJson(Map<String, dynamic> json) =>

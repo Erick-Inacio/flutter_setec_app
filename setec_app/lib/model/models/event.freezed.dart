@@ -16,9 +16,9 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Event {
   int? get id;
-  DateTime get initialDateTime;
-  DateTime get finalDateTime;
-  String get name;
+  DateTime? get initialDateTime;
+  DateTime? get finalDateTime;
+  String? get name;
 
   /// Create a copy of Event
   /// with the given fields replaced by the non-null parameter values.
@@ -60,7 +60,10 @@ abstract mixin class $EventCopyWith<$Res> {
       _$EventCopyWithImpl;
   @useResult
   $Res call(
-      {int? id, DateTime initialDateTime, DateTime finalDateTime, String name});
+      {int? id,
+      DateTime? initialDateTime,
+      DateTime? finalDateTime,
+      String? name});
 }
 
 /// @nodoc
@@ -76,27 +79,27 @@ class _$EventCopyWithImpl<$Res> implements $EventCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
-    Object? initialDateTime = null,
-    Object? finalDateTime = null,
-    Object? name = null,
+    Object? initialDateTime = freezed,
+    Object? finalDateTime = freezed,
+    Object? name = freezed,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      initialDateTime: null == initialDateTime
+      initialDateTime: freezed == initialDateTime
           ? _self.initialDateTime
           : initialDateTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      finalDateTime: null == finalDateTime
+              as DateTime?,
+      finalDateTime: freezed == finalDateTime
           ? _self.finalDateTime
           : finalDateTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      name: null == name
+              as DateTime?,
+      name: freezed == name
           ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -104,21 +107,17 @@ class _$EventCopyWithImpl<$Res> implements $EventCopyWith<$Res> {
 /// @nodoc
 @JsonSerializable()
 class _Event implements Event {
-  const _Event(
-      {this.id,
-      required this.initialDateTime,
-      required this.finalDateTime,
-      required this.name});
+  const _Event({this.id, this.initialDateTime, this.finalDateTime, this.name});
   factory _Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
 
   @override
   final int? id;
   @override
-  final DateTime initialDateTime;
+  final DateTime? initialDateTime;
   @override
-  final DateTime finalDateTime;
+  final DateTime? finalDateTime;
   @override
-  final String name;
+  final String? name;
 
   /// Create a copy of Event
   /// with the given fields replaced by the non-null parameter values.
@@ -166,7 +165,10 @@ abstract mixin class _$EventCopyWith<$Res> implements $EventCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int? id, DateTime initialDateTime, DateTime finalDateTime, String name});
+      {int? id,
+      DateTime? initialDateTime,
+      DateTime? finalDateTime,
+      String? name});
 }
 
 /// @nodoc
@@ -182,27 +184,27 @@ class __$EventCopyWithImpl<$Res> implements _$EventCopyWith<$Res> {
   @pragma('vm:prefer-inline')
   $Res call({
     Object? id = freezed,
-    Object? initialDateTime = null,
-    Object? finalDateTime = null,
-    Object? name = null,
+    Object? initialDateTime = freezed,
+    Object? finalDateTime = freezed,
+    Object? name = freezed,
   }) {
     return _then(_Event(
       id: freezed == id
           ? _self.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
-      initialDateTime: null == initialDateTime
+      initialDateTime: freezed == initialDateTime
           ? _self.initialDateTime
           : initialDateTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      finalDateTime: null == finalDateTime
+              as DateTime?,
+      finalDateTime: freezed == finalDateTime
           ? _self.finalDateTime
           : finalDateTime // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      name: null == name
+              as DateTime?,
+      name: freezed == name
           ? _self.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }

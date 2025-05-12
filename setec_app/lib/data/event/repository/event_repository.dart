@@ -35,18 +35,18 @@ class EventRepository extends BaseRepository<EventDTO> {
     return delete(id);
   }
 
-  Future<Result<List<Event>>> getEventsSemAuth() {
-    return handleResult(() async {
-      final result = await EventServices().getEventsWithNoAuth();
+  // Future<Result<List<Event>>> getEventsSemAuth() {
+  //   return handleResult(() async {
+  //     final result = await EventServices().getEventsWithNoAuth();
 
-      switch (result) {
-        case Ok(value: final events):
-          return events.map((e) => e.toDomain()).toList();
-        case Error(error: final e):
-          throw e;
-      }
-    });
-  }
+  //     switch (result) {
+  //       case Ok(value: final events):
+  //         return events.map((e) => e.toDomain()).toList();
+  //       case Error(error: final e):
+  //         throw e;
+  //     }
+  //   });
+  // }
 }
 
 final eventRepoProvider = Provider<EventRepository>((ref) {

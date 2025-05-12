@@ -15,7 +15,7 @@ class EventNotifier extends Notifier<List<Event>> with SharedPrefsMixin {
 
   Future<Result<void>> fetchEvents() async {
     return handleResult(() async {
-      final result = await _repository.getEventsSemAuth();
+      final result = await _repository.getallpaged();
 
       switch (result) {
         case Ok(value: final events):
