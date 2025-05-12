@@ -90,7 +90,7 @@ class _CreateEventState extends ConsumerState<CreateEvent> {
                     eventVM.createEvent(
                         context,
                         Event(
-                          description: _descriptionController.text,
+                          name: _descriptionController.text,
                           initialDateTime: initialDateTime!,
                           finalDateTime: finalDateTime!,
                         ));

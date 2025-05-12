@@ -25,7 +25,27 @@ class FirebaseEmailReapository {
         throw AppException("Usuário não encontrado", statusCode: 404);
       }
 
-      final result = await _userServices.getByUid(user.uid);
+      final idTokenResult = await user.getIdTokenResult();
+      final claims = idTokenResult.claims;
+
+      if (claims == null || !claims.containsKey('userId')) {
+        throw AppException("Token inválido", statusCode: 401);
+      }
+
+      final userIdRaw = claims['userId'];
+
+      final userId = switch (userIdRaw) {
+        int() => userIdRaw,
+        String() => int.tryParse(userIdRaw),
+        double() => userIdRaw.toInt(),
+        _ => null,
+      };
+
+      if (userId == null) {
+        throw AppException("Token inválido", statusCode: 401);
+      }
+
+      final result = await _userServices.getById(userId);
 
       switch (result) {
         case Ok(value: final userAppDTODTO):
@@ -33,7 +53,7 @@ class FirebaseEmailReapository {
         case Error(error: final e):
           throw e is AppException
               ? e
-              : AppException("Erro ao buscar usuário: $e", statusCode: 500);
+              : AppException("Erro ao buscar usuário: $e", statusCode: 500);
       }
     });
   }

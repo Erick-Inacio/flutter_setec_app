@@ -9,7 +9,7 @@ class EventDTO implements DTOConvertible<Event> {
   int? id;
   late DateTime initialDateTime;
   late DateTime finalDateTime;
-  late String description;
+  late String name;
 
   EventDTO.empty();
 
@@ -17,7 +17,7 @@ class EventDTO implements DTOConvertible<Event> {
     this.id,
     required this.initialDateTime,
     required this.finalDateTime,
-    required this.description,
+    required this.name,
   });
 
   factory EventDTO.fromJson(Map<String, dynamic> json) =>
@@ -30,11 +30,11 @@ class EventDTO implements DTOConvertible<Event> {
       id: id,
       initialDateTime: initialDateTime,
       finalDateTime: finalDateTime,
-      description: description,
+      name: name,
     );
   }
 
   @override
   String toString() => 'Event{id: $id, initialDateTime: $initialDateTime, '
-      'finalDateTime: $finalDateTime, description: $description}';
+      'finalDateTime: $finalDateTime, description: $name}';
 }

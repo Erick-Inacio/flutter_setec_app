@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:setec_app/core/base/base_repository.dart';
-import 'package:setec_app/core/classes/app_exception_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/interface/basic_repository_crud.dart';
 import 'package:setec_app/data/userApp/dto/user_app_dto.dart';
@@ -43,25 +42,25 @@ class UserAppRepository extends BaseRepository<UserAppDTO>
     return update<UserApp, UserAppDTO>(domain: data, toDTO: (data) => data.toDTO());
   }
 
-  Future<Result<UserApp>> findByUid(String uid) {
-    return handleResult(() async {
-      final result = await UserServices().getByUid(uid);
+  // Future<Result<UserApp>> findByUid(String uid) {
+  //   return handleResult(() async {
+  //     final result = await UserServices().getByUid(uid);
 
-      switch (result) {
-        case Ok(value: final userAppDTO):
-          final userApp = userAppDTO.toDomain();
+  //     switch (result) {
+  //       case Ok(value: final userAppDTO):
+  //         final userApp = userAppDTO.toDomain();
 
-          await mixinSaveObject(
-            key: 'userApp',
-            object: userApp,
-          );
+  //         await mixinSaveObject(
+  //           key: 'userApp',
+  //           object: userApp,
+  //         );
 
-          return userAppDTO.toDomain();
-        case Error(error: final e):
-          throw e is AppException
-              ? e
-              : AppException("Erro ao buscar usuário: $e", statusCode: 500);
-      }
-    });
-  }
+  //         return userAppDTO.toDomain();
+  //       case Error(error: final e):
+  //         throw e is AppException
+  //             ? e
+  //             : AppException("Erro ao buscar usuário: $e", statusCode: 500);
+  //     }
+  //   });
+  // }
 }

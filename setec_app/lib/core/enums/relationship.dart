@@ -3,19 +3,19 @@ import 'package:logger/logger.dart';
 
 @JsonEnum()
 enum Relationship {
-  @JsonValue('EXALUNO')
+  @JsonValue('exAluno')
   exaluno('Ex-aluno'),
 
-  @JsonValue('ALUNO')
+  @JsonValue('aluno')
   aluno('Aluno'),
 
-  @JsonValue('PROFESSOR')
+  @JsonValue('professor')
   professor('Professor'),
 
-  @JsonValue('COORDENADOR')
+  @JsonValue('coordenador')
   coordenador('Coordenador'),
 
-  @JsonValue('SEMRELACAO')
+  @JsonValue('semRelacao')
   semrelacao('Sem relação');
 
   final String displayName;

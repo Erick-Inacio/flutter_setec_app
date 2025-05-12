@@ -7,11 +7,11 @@ class BaseRoutes {
   BaseRoutes({required this.controllerName});
 
   // get all
-  String getAll() => _baseUrl('getAll');
+  String getAllPaged() => _baseUrl('getallpaged');
 
   // get by id
   String getById(int id) =>
-      _baseUrlWithParams('getById', {'id': id.toString()});
+      _baseUrlWithParams('getbyid', {'id': id.toString()});
 
   // post
   String post() => _baseUrl('post');
@@ -24,7 +24,7 @@ class BaseRoutes {
 
   // Método para adicionar parâmetros dinamicamente na URL
   String _baseUrlWithParams(String path, Map<String, String> params) {
-    final uri = Uri.parse('$_url/api/$controllerName/$path')
+    final uri = Uri.parse('$_url/api/$controllerName/v1/$path')
         .replace(queryParameters: params);
     return uri.toString();
   }

@@ -3,16 +3,16 @@ import 'package:logger/logger.dart';
 
 @JsonEnum()
 enum Roles {
-  @JsonValue('ADMIN')
+  @JsonValue('admin')
   admin("Administrador"),
 
-  @JsonValue('STUDENT')
+  @JsonValue('student')
   student("Estudante"),
 
-  @JsonValue('COMMISSION')
-  commission("Comissão"),
+  @JsonValue('commission')
+  commission("Comissão"), 
 
-  @JsonValue('SPEAKER')
+  @JsonValue('speaker')
   speaker("Palestrante");
 
   final String displayName;

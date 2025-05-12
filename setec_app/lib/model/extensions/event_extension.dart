@@ -7,7 +7,7 @@ extension  EventExtension on Event {
       id: id,
       initialDateTime: initialDateTime,
       finalDateTime: finalDateTime,
-      description: description,
+      name: name,
     );
   }
 }

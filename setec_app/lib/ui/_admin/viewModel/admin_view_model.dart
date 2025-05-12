@@ -9,7 +9,7 @@
 //       UserServices userServices = UserServices();
 //       Logger logger = Logger();
 //       try {
-//         users = await userServices.getAll();
+//         users = await userServices.getAllPaged();
 //         logger.i('AdminPage: Usuários buscados com sucesso: ${users?.length}');
 //         setState(() {
 //           _isLoading = false;

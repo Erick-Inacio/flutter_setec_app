@@ -22,14 +22,14 @@ abstract class BaseService<T> {
 
   //Métodos https genéricos
   //Get all
-  Future<Result<List<T>>> getAll() async {
+  Future<Result<List<T>>> getAllPaged() async {
     return handleResult(() async {
       final result = await getAuthHeaders();
 
       switch (result) {
         case Ok(value: final header):
           final response = await _dio.get(
-            apiRoute.getAll(),
+            apiRoute.getAllPaged(),
             options: Options(
               headers: header,
             ),

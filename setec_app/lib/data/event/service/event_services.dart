@@ -36,9 +36,11 @@ class EventServices extends BaseService<EventDTO> {
   }
 
   Future<Result<List<EventDTO>>> getEventsWithNoAuth() async {
+    //FIXME: corrigir pois deve enviar um token anonimo e n acessar enpoint publico
+    
     return handleResult(() async {
       final response = await _dio.get(
-        EventRoutes().getAll(),
+        EventRoutes().getAllPaged(),
         options: Options(
           headers: {'Content-Type': 'application/json'},
         ),

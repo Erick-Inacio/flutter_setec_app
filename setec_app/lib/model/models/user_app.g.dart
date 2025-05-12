@@ -27,16 +27,16 @@ Map<String, dynamic> _$UserAppToJson(_UserApp instance) => <String, dynamic>{
     };
 
 const _$RolesEnumMap = {
-  Roles.admin: 'ADMIN',
-  Roles.student: 'STUDENT',
-  Roles.commission: 'COMMISSION',
-  Roles.speaker: 'SPEAKER',
+  Roles.admin: 'admin',
+  Roles.student: 'student',
+  Roles.commission: 'commission',
+  Roles.speaker: 'speaker',
 };
 
 const _$RelationshipEnumMap = {
-  Relationship.exaluno: 'EXALUNO',
-  Relationship.aluno: 'ALUNO',
-  Relationship.professor: 'PROFESSOR',
-  Relationship.coordenador: 'COORDENADOR',
-  Relationship.semrelacao: 'SEMRELACAO',
+  Relationship.exaluno: 'exAluno',
+  Relationship.aluno: 'aluno',
+  Relationship.professor: 'professor',
+  Relationship.coordenador: 'coordenador',
+  Relationship.semrelacao: 'semRelacao',
 };

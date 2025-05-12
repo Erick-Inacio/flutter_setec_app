@@ -20,7 +20,7 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
   Future<Result<List<Domain>>>
       getAll<Domain, AsDTO extends DTOConvertible<Domain>>() async {
     return handleResult(() async {
-      final result = await _service.getAll();
+      final result = await _service.getAllPaged();
       return _saveToLocalObjList(result);
     });
   }

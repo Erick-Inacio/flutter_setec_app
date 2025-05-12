@@ -9,7 +9,7 @@ abstract class Event with _$Event {
     int? id,
     required DateTime initialDateTime,
     required DateTime finalDateTime,
-    required String description,
+    required String name,
   }) = _Event;
 
   factory Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);

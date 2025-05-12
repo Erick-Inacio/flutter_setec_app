@@ -18,7 +18,7 @@ mixin _$Event {
   int? get id;
   DateTime get initialDateTime;
   DateTime get finalDateTime;
-  String get description;
+  String get name;
 
   /// Create a copy of Event
   /// with the given fields replaced by the non-null parameter values.
@@ -40,18 +40,17 @@ mixin _$Event {
                 other.initialDateTime == initialDateTime) &&
             (identical(other.finalDateTime, finalDateTime) ||
                 other.finalDateTime == finalDateTime) &&
-            (identical(other.description, description) ||
-                other.description == description));
+            (identical(other.name, name) || other.name == name));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, initialDateTime, finalDateTime, description);
+      Object.hash(runtimeType, id, initialDateTime, finalDateTime, name);
 
   @override
   String toString() {
-    return 'Event(id: $id, initialDateTime: $initialDateTime, finalDateTime: $finalDateTime, description: $description)';
+    return 'Event(id: $id, initialDateTime: $initialDateTime, finalDateTime: $finalDateTime, name: $name)';
   }
 }
 
@@ -61,10 +60,7 @@ abstract mixin class $EventCopyWith<$Res> {
       _$EventCopyWithImpl;
   @useResult
   $Res call(
-      {int? id,
-      DateTime initialDateTime,
-      DateTime finalDateTime,
-      String description});
+      {int? id, DateTime initialDateTime, DateTime finalDateTime, String name});
 }
 
 /// @nodoc
@@ -82,7 +78,7 @@ class _$EventCopyWithImpl<$Res> implements $EventCopyWith<$Res> {
     Object? id = freezed,
     Object? initialDateTime = null,
     Object? finalDateTime = null,
-    Object? description = null,
+    Object? name = null,
   }) {
     return _then(_self.copyWith(
       id: freezed == id
@@ -97,9 +93,9 @@ class _$EventCopyWithImpl<$Res> implements $EventCopyWith<$Res> {
           ? _self.finalDateTime
           : finalDateTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      description: null == description
-          ? _self.description
-          : description // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -112,7 +108,7 @@ class _Event implements Event {
       {this.id,
       required this.initialDateTime,
       required this.finalDateTime,
-      required this.description});
+      required this.name});
   factory _Event.fromJson(Map<String, dynamic> json) => _$EventFromJson(json);
 
   @override
@@ -122,7 +118,7 @@ class _Event implements Event {
   @override
   final DateTime finalDateTime;
   @override
-  final String description;
+  final String name;
 
   /// Create a copy of Event
   /// with the given fields replaced by the non-null parameter values.
@@ -149,18 +145,17 @@ class _Event implements Event {
                 other.initialDateTime == initialDateTime) &&
             (identical(other.finalDateTime, finalDateTime) ||
                 other.finalDateTime == finalDateTime) &&
-            (identical(other.description, description) ||
-                other.description == description));
+            (identical(other.name, name) || other.name == name));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, initialDateTime, finalDateTime, description);
+      Object.hash(runtimeType, id, initialDateTime, finalDateTime, name);
 
   @override
   String toString() {
-    return 'Event(id: $id, initialDateTime: $initialDateTime, finalDateTime: $finalDateTime, description: $description)';
+    return 'Event(id: $id, initialDateTime: $initialDateTime, finalDateTime: $finalDateTime, name: $name)';
   }
 }
 
@@ -171,10 +166,7 @@ abstract mixin class _$EventCopyWith<$Res> implements $EventCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int? id,
-      DateTime initialDateTime,
-      DateTime finalDateTime,
-      String description});
+      {int? id, DateTime initialDateTime, DateTime finalDateTime, String name});
 }
 
 /// @nodoc
@@ -192,7 +184,7 @@ class __$EventCopyWithImpl<$Res> implements _$EventCopyWith<$Res> {
     Object? id = freezed,
     Object? initialDateTime = null,
     Object? finalDateTime = null,
-    Object? description = null,
+    Object? name = null,
   }) {
     return _then(_Event(
       id: freezed == id
@@ -207,9 +199,9 @@ class __$EventCopyWithImpl<$Res> implements _$EventCopyWith<$Res> {
           ? _self.finalDateTime
           : finalDateTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      description: null == description
-          ? _self.description
-          : description // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _self.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }

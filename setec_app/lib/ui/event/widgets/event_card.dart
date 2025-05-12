@@ -105,7 +105,7 @@ class EventCard extends ConsumerWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      event.description,
+                      event.name,
                       style: GoogleFonts.lato(),
                     ),
                   ),

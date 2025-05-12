@@ -8,12 +8,12 @@ part of 'speaker_dto.dart';
 
 SpeakerDTO _$SpeakerDTOFromJson(Map<String, dynamic> json) => SpeakerDTO(
       id: (json['id'] as num?)?.toInt(),
-      user: const UserAppConverter().fromJson(json['user']),
-      socialMedia: const SocialMediaConverter().fromJson(json['socialMedia']),
       company: json['company'] as String?,
       position: json['position'] as String,
       bio: json['bio'] as String,
+      user: const UserAppConverter().fromJson(json['user']),
       adminApproved: json['adminApproved'] as String?,
+      socialMedia: const SocialMediaConverter().fromJson(json['socialMedia']),
     );
 
 Map<String, dynamic> _$SpeakerDTOToJson(SpeakerDTO instance) =>
