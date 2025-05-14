@@ -3,3 +3,4 @@ TODO: entender pq o back recusou o token de autenticação quando
 reinicio o app
 TODO: terminar os testes de integração
 TODO: descobrir como obter token de user anonimo
+FIXME: entender pq memso selecionando ex-aluno na hora do create account as speaker, no back chega como aluno em relationship

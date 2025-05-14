@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:logger/logger.dart';
 import 'package:setec_app/core/classes/app_exception_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
