@@ -33,13 +33,18 @@ class UserAppRepository extends BaseRepository<UserAppDTO>
   }
 
   @override
-  Future<Result<UserApp>> getByDataId(int id) {
+  Future<Result<UserApp>> findByDataId(int id) {
     return getById<UserApp, UserAppDTO>(id);
   }
 
   @override
   Future<Result<UserApp>> updateData(UserApp data) {
     return update<UserApp, UserAppDTO>(domain: data, toDTO: (data) => data.toDTO());
+  }
+  
+  @override
+  Future<Result<List<UserApp>>> findAllDataPaged({int lastId = 1, int size = 10}) {
+    return getAllPaged<UserApp, UserAppDTO>(lastId: lastId, size: size);
   }
 
   // Future<Result<UserApp>> findByUid(String uid) {

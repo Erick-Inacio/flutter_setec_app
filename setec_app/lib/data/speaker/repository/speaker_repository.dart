@@ -25,7 +25,13 @@ class SpeakerRepository extends BaseRepository<SpeakerDTO>
   }
 
   @override
-  Future<Result<Speaker>> getByDataId(int id) {
+  Future<Result<List<Speaker>>> findAllDataPaged(
+      {int lastId = 1, int size = 10}) {
+    return getAllPaged<Speaker, SpeakerDTO>(lastId: lastId, size: size);
+  }
+
+  @override
+  Future<Result<Speaker>> findByDataId(int id) {
     return getById<Speaker, SpeakerDTO>(id);
   }
 

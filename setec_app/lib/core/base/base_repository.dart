@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:setec_app/core/base/base_service.dart';
+import 'package:setec_app/core/classes/app_exception_class.dart';
 import 'package:setec_app/core/classes/mappable_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/mixins/shared_prefs_mixin.dart';
@@ -20,7 +21,17 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
   Future<Result<List<Domain>>>
       getAll<Domain, AsDTO extends DTOConvertible<Domain>>() async {
     return handleResult(() async {
-      final result = await _service.getAllPaged();
+      final result = await _service.getAll();
+      if(result is Error) throw AppException("erro ao buscar dados de eventos");  
+      return _saveToLocalObjList(result);
+    });
+  }
+
+  Future<Result<List<Domain>>>
+      getAllPaged<Domain, AsDTO extends DTOConvertible<Domain>>(
+          {int lastId = 1, int size = 10}) async {
+    return handleResult(() async {
+      final result = await _service.getAllPaged(lastId: lastId, size: size);
       return _saveToLocalObjList(result);
     });
   }
@@ -30,7 +41,6 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
   ) async {
     return handleResult(() async {
       final result = await _service.getById(id);
-
       return _saveToLocalObj(result);
     });
   }

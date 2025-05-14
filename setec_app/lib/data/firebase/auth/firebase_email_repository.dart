@@ -81,8 +81,15 @@ class FirebaseEmailReapository {
   //Obten o token do usuario do firebase
   Future<Result<String?>> getUserToken() async {
     return handleResult(() async {
-      final user = FirebaseAuth.instance.currentUser;
-      await Future.delayed(Duration(milliseconds: 300));
+      var user = FirebaseAuth.instance.currentUser;
+
+      UserCredential? userAnonymous;
+      if (user == null) {
+        final auth = FirebaseAuth.instance;
+        userAnonymous = await auth.signInAnonymously();
+        user = userAnonymous.user;
+      }
+      // await Future.delayed(Duration(milliseconds: 300));
       final token = await user?.getIdToken(true);
       if (token == null) {
         throw AppException('Usuário não autenticado', statusCode: 401);

@@ -1,3 +1,0 @@
-TODO: entender pq o back recusou o token de autenticação quando 
-reinicio o app
-TODO: terminar os testes de integração

@@ -8,6 +8,7 @@ class BaseRoutes {
 
   // get all
   String getAllPaged() => _baseUrl('getallpaged');
+  String getAll() => _baseUrl('getall');
 
   // get by id
   String getById(int id) =>
@@ -38,6 +39,6 @@ class BaseRoutes {
 
   // Método privado para retornar a URL base
   String _baseUrl(String restPath) {
-    return '$_url/api/$controllerName/$restPath';
+    return '$_url/api/$controllerName/v1/$restPath';
   }
 }

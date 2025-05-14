@@ -15,11 +15,12 @@ class EventNotifier extends Notifier<List<Event>> with SharedPrefsMixin {
 
   Future<Result<void>> fetchEvents() async {
     return handleResult(() async {
-      final result = await _repository.getallpaged();
+      final result = await _repository.getAll();
 
       switch (result) {
         case Ok(value: final events):
-          state = events;
+          final list = events.map((e) => Event.fromJson(e)).toList();
+          state = list;
           final saveResult = await mixinSaveList(
             key: 'events',
             list: events,
@@ -34,7 +35,7 @@ class EventNotifier extends Notifier<List<Event>> with SharedPrefsMixin {
 
   Future<Result<Event>> addEvent(Event event) async {
     return handleResult(() async {
-      final result = await _repository.criarEvent(event);
+      final result = await _repository.createData(event);
       switch (result) {
         case Ok(value: final createdEvent):
           state = [...state, createdEvent];
@@ -52,7 +53,7 @@ class EventNotifier extends Notifier<List<Event>> with SharedPrefsMixin {
 
   Future<Result<void>> deleteEvent(int id) async {
     return handleResult(() async {
-      final result = await _repository.deletarEvent(id);
+      final result = await _repository.deleteData(id);
       switch (result) {
         case Ok():
           state = state.where((e) => e.id != id).toList();
@@ -68,7 +69,7 @@ class EventNotifier extends Notifier<List<Event>> with SharedPrefsMixin {
 
   Future<Result<Event>> updateEvent(Event event) async {
     return handleResult(() async {
-      final result = await _repository.atualizarEvent(event);
+      final result = await _repository.updateData(event);
       switch (result) {
         case Ok(value: final updated):
           state = state.map((e) => e.id == updated.id ? updated : e).toList();

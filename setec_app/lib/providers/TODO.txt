@@ -1,1 +1,0 @@
-TODO: corrigir os get all transformando em getallpaged

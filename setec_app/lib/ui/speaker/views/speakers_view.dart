@@ -5,9 +5,7 @@ import 'package:setec_app/ui/speaker/widgets/speaker_card_widget.dart';
 import 'package:setec_app/ui/utils/widgets/iconButton/reload_widget.dart';
 
 class SpeakersView extends ConsumerStatefulWidget {
-  const SpeakersView({
-    super.key,
-  });
+  const SpeakersView({super.key});
 
   @override
   ConsumerState<SpeakersView> createState() => _SpeakersView();

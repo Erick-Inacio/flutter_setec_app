@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:logger/logger.dart';
 import 'package:setec_app/core/classes/app_exception_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
@@ -22,6 +23,26 @@ abstract class BaseService<T> {
 
   //Métodos https genéricos
   //Get all
+  Future<Result<List<T>>> getAll() async {
+    return handleResult(() async {
+      final result = await getAuthHeaders();
+
+      switch (result) {
+        case Ok(value: final header):
+          final response = await _dio.get(
+            apiRoute.getAll(),
+            options: Options(
+              headers: header,
+            ),
+          );
+        final data = response.data as List;
+          if(data.isEmpty || data == []) return [];
+          return data.map((e) => fromJson(e)).toList();
+        case Error(error: final e):
+          throw e;
+      }
+    });
+  }
   Future<Result<List<T>>> getAllPaged({int lastId = 1, int size = 10}) async {
     return handleResult(() async {
       final result = await getAuthHeaders();
@@ -146,7 +167,6 @@ abstract class BaseService<T> {
   Future<Result<Map<String, String>>> getAuthHeaders() async {
     return handleResult(() async {
       final result = await FirebaseEmailReapository().getUserToken();
-
       switch (result) {
         case Ok(value: final token):
           return {

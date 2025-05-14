@@ -55,6 +55,7 @@ mixin SharedPrefsMixin {
       final data = prefs.getString(key);
       if (data == null) return null;
       final decoded = jsonDecode(data);
+      if (decoded is! Map) return null;
       if (decoded is Map<String, dynamic>) return decoded;
       throw Exception('Objeto local mal formatado');
     });

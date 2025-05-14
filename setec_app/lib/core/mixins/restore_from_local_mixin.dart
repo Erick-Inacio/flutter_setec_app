@@ -72,12 +72,7 @@ mixin RestoreDataFromLocal {
 
         final getEvents = await ref.read(eventNotifier.notifier).fetchEvents();
 
-        switch (getEvents) {
-          case Ok():
-            return;
-          case Error(error: final e):
-            throw e;
-        }
+        if(getEvents is Error) throw getEvents.error;
       case Error(error: final e):
         throw e;
     }
