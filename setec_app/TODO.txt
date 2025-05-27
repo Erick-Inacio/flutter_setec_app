@@ -6,3 +6,4 @@ TODO: descobrir como obter token de user anonimo
 FIXME: entender pq memso selecionando ex-aluno na hora do create account as speaker, no back chega como aluno em relationship
 TODO: terminar de implementar o update do bool do speaker
 TODO: implementar na atualização da role via adm, pra atualizar no firebase a claim
+DONE: Conectar ao Jira
