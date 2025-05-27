@@ -12,8 +12,9 @@ SpeakerDTO _$SpeakerDTOFromJson(Map<String, dynamic> json) => SpeakerDTO(
       position: json['position'] as String,
       bio: json['bio'] as String,
       user: const UserAppConverter().fromJson(json['user']),
-      adminApproved: json['adminApproved'] as String?,
+      adminUid: json['adminUid'] as String?,
       socialMedia: const SocialMediaConverter().fromJson(json['socialMedia']),
+      isApproved: json['isApproved'] as bool?,
     );
 
 Map<String, dynamic> _$SpeakerDTOToJson(SpeakerDTO instance) =>
@@ -22,7 +23,8 @@ Map<String, dynamic> _$SpeakerDTOToJson(SpeakerDTO instance) =>
       'company': instance.company,
       'position': instance.position,
       'bio': instance.bio,
-      'adminApproved': instance.adminApproved,
+      'adminUid': instance.adminUid,
+      'isApproved': instance.isApproved,
       'user': const UserAppConverter().toJson(instance.user),
       'socialMedia': _$JsonConverterToJson<dynamic, Map<SocialMedia, String>>(
           instance.socialMedia, const SocialMediaConverter().toJson),

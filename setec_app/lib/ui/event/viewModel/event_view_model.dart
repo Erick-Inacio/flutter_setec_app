@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/mixins/validate_form_fields.dart';
-import 'package:setec_app/model/models/event.dart';
+import 'package:setec_app/model/models/event/event.dart';
 import 'package:setec_app/providers/event_provider.dart';
 
 final eventViewModel = AsyncNotifierProvider<EventViewModel, void>(() {

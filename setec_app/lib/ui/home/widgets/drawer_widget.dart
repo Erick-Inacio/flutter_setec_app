@@ -53,7 +53,10 @@ class DrawerWidget extends ConsumerWidget {
           ListTileWidget(
             icon: Icons.person,
             title: 'Meu Perfil',
-            onTap: () {},
+            onTap: () {
+              context.pop();
+              context.push('/userProfile');
+            },
           ),
           authState.isAdmin
               ? Column(

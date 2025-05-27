@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:setec_app/core/classes/mappable_class.dart';
 import 'package:setec_app/core/enums/relationship.dart';
 import 'package:setec_app/core/enums/roles.dart';
-import 'package:setec_app/model/models/user_app.dart';
+import 'package:setec_app/model/models/user/user_app.dart';
 
 part 'user_app_dto.g.dart';
 

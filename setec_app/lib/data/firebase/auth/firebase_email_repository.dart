@@ -5,9 +5,9 @@ import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/data/userApp/dto/user_app_dto.dart';
 import 'package:setec_app/data/firebase/auth/firebase_services.dart';
 import 'package:setec_app/data/userApp/service/user_services.dart';
-import 'package:setec_app/model/models/user_app.dart';
+import 'package:setec_app/model/models/user/user_app.dart';
 
-class FirebaseEmailReapository {
+class FirebaseEmailRepository {
   //Cria uma instancia de AuthEmailFirebase
   final _authEmail = AuthEmailFirebase();
   final _userServices = UserServices();
@@ -25,11 +25,12 @@ class FirebaseEmailReapository {
         throw AppException("Usuário não encontrado", statusCode: 404);
       }
 
+      // await FirebaseAuth.instance.currentUser?.getIdToken(true);
       final idTokenResult = await user.getIdTokenResult();
       final claims = idTokenResult.claims;
 
       if (claims == null || !claims.containsKey('userId')) {
-        throw AppException("Token inválido", statusCode: 401);
+        throw AppException("N possui userId", statusCode: 401);
       }
 
       final userIdRaw = claims['userId'];
@@ -42,7 +43,7 @@ class FirebaseEmailReapository {
       };
 
       if (userId == null) {
-        throw AppException("Token inválido", statusCode: 401);
+        throw AppException("userId ivalido", statusCode: 400);
       }
 
       final result = await _userServices.getById(userId);

@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logger/web.dart';
 import 'package:setec_app/core/enums/relationship.dart';
 import 'package:setec_app/core/enums/roles.dart';
-import 'package:setec_app/model/models/user_app.dart';
+import 'package:setec_app/model/models/user/user_app.dart';
 import 'package:setec_app/ui/auth/providers/auth_provider.dart';
 import 'package:setec_app/ui/auth/viewModel/auth_view_model.dart';
 import 'package:setec_app/ui/utils/widgets/switch/switch_field_widget.dart';

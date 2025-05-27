@@ -4,7 +4,6 @@ class SpeakerRoutes extends BaseRoutes {
   SpeakerRoutes() : super(controllerName: 'speaker');
 
   String getByUser(int userId) => custom(
-        endpoint: 'getByUser',
-        params: {'userId': userId.toString()},
+        endpoint: 'findbyuserid/$userId',
       );
 }

@@ -14,6 +14,12 @@ class SpeakersView extends ConsumerStatefulWidget {
 
 class _SpeakersView extends ConsumerState<SpeakersView> {
   @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => ref.read(speakerViewModel.notifier,).fetchSpeaker());
+  }
+
+  @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final speakerVM = ref.watch(speakerViewModel);

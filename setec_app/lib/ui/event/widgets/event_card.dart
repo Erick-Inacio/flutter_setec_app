@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:setec_app/core/classes/result_class.dart';
-import 'package:setec_app/model/models/event.dart';
+import 'package:setec_app/model/models/event/event.dart';
 import 'package:setec_app/core/formatters/format_date_time.dart';
 import 'package:setec_app/providers/auth_state_notifier.dart';
 import 'package:setec_app/providers/event_provider.dart';

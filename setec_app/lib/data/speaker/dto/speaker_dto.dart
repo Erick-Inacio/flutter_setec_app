@@ -4,7 +4,7 @@ import 'package:setec_app/core/converters/social_media_converter.dart';
 import 'package:setec_app/core/converters/user_app_converter.dart';
 import 'package:setec_app/core/enums/social_media_enum.dart';
 import 'package:setec_app/data/userApp/dto/user_app_dto.dart';
-import 'package:setec_app/model/models/speaker.dart';
+import 'package:setec_app/model/models/speaker/speaker.dart';
 
 part 'speaker_dto.g.dart';
 
@@ -14,7 +14,8 @@ class SpeakerDTO implements DTOConvertible<Speaker> {
   String? company;
   String position;
   String bio;
-  String? adminApproved;
+  String? adminUid;
+  bool? isApproved;
 
   @UserAppConverter()
   UserAppDTO user;
@@ -28,10 +29,11 @@ class SpeakerDTO implements DTOConvertible<Speaker> {
     required this.position,
     required this.bio,
     required this.user,
-    this.adminApproved,
+    this.adminUid,
     required this.socialMedia,
+    this.isApproved,
   }) {
-    _userFromMap();
+    // _userFromMap();
   }
 
   //converte o map recebido em obj UserApp
@@ -58,8 +60,8 @@ class SpeakerDTO implements DTOConvertible<Speaker> {
       company: company,
       position: position,
       bio: bio,
-      adminApproved: adminApproved,
-      isApproved: adminApproved != null,
+      adminUid: adminUid,
+      isApproved: isApproved,
       user: user.toDomain(),
     );
   }

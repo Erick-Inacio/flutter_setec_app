@@ -17,7 +17,7 @@ abstract class BaseService<T> {
   final T Function(Map<String, dynamic>) fromJson;
   final Map<String, dynamic> Function(T) toJson;
 
-  // final auth = FirebaseEmailReapository();
+  // final auth = FirebaseEmailRepository();
 
   final Dio _dio = Dio();
 
@@ -166,7 +166,7 @@ abstract class BaseService<T> {
 
   Future<Result<Map<String, String>>> getAuthHeaders() async {
     return handleResult(() async {
-      final result = await FirebaseEmailReapository().getUserToken();
+      final result = await FirebaseEmailRepository().getUserToken();
       switch (result) {
         case Ok(value: final token):
           return {

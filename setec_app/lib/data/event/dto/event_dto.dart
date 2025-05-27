@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:setec_app/core/classes/mappable_class.dart';
-import 'package:setec_app/model/models/event.dart';
+import 'package:setec_app/model/models/event/event.dart';
 
 part 'event_dto.g.dart';
 

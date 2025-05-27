@@ -31,6 +31,11 @@ sealed class Result<T> {
 
   /// Creates an error [Result], completed with the specified [error].
   const factory Result.error(Exception error) = Error._;
+
+  Result<U> map<U>(U Function(T value) transform) => switch (this) {
+        Ok(value: final v) => Ok._(transform(v!)),
+        Error(error: final e) => Error._(e),
+      };
 }
 
 /// A successful [Result] with a returned [value].
@@ -81,4 +86,11 @@ Future<Result<T>> handleResult<T>(
     onError?.call(exception);
     return Error._(exception);
   }
+}
+
+extension ResultErrorGetter<T> on Result<T> {
+  Exception? get errorOrNull => switch (this) {
+    Error<T>(:final error) => error,
+    _ => null,
+  };
 }

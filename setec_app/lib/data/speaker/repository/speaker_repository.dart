@@ -4,9 +4,9 @@ import 'package:setec_app/core/classes/app_exception_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/interface/basic_repository_crud.dart';
 import 'package:setec_app/data/speaker/dto/speaker_dto.dart';
-import 'package:setec_app/data/speaker/mapper/speaker_mapper.dart';
+import 'package:setec_app/data/speaker/mapping/speaker_mapper.dart';
 import 'package:setec_app/data/speaker/service/speaker_services.dart';
-import 'package:setec_app/model/models/speaker.dart';
+import 'package:setec_app/model/models/speaker/speaker.dart';
 
 final speakerRepository =
     Provider<SpeakerRepository>((ref) => SpeakerRepository());

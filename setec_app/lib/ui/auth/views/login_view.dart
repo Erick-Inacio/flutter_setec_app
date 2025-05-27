@@ -84,7 +84,7 @@ class _LoginWithEmailState extends ConsumerState<LoginWithEmail> {
                     minimumSize: const Size(double.infinity, 50),
                   ),
                   onPressed: authState is AsyncLoading
-                      ? null
+                      ? null 
                       : () async {
                           if (_formKey.currentState!.validate()) {
                             await authVM.login(

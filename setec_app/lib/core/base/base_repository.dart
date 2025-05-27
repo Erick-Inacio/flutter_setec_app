@@ -22,7 +22,9 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
       getAll<Domain, AsDTO extends DTOConvertible<Domain>>() async {
     return handleResult(() async {
       final result = await _service.getAll();
-      if(result is Error) throw AppException("erro ao buscar dados de eventos");  
+      if (result is Error) {
+        throw AppException("erro ao buscar dados de eventos");
+      }
       return _saveToLocalObjList(result);
     });
   }
@@ -45,7 +47,7 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
     });
   }
 
-  Future<Result<Domain>> create<Domain, AsDTO extends DTOConvertible<Domain>>({
+  Future<Result<Domain>> create<Domain, AsDTO>({
     required Domain domain,
     required AsDTO Function(Domain) toDTO,
   }) async {
@@ -58,15 +60,17 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
     });
   }
 
-  Future<Result<Domain>> update<Domain, AsDTO extends DTOConvertible<Domain>>({
+  Future<Result<Domain>> update<Domain, AsDTO>({
     required Domain domain,
     required AsDTO Function(Domain) toDTO,
-  }) async {
-    final convertedDto = toDTO(domain);
+  }) {
+    return handleResult(() async {
+      final convertedDto = toDTO(domain);
 
-    final result = await _service.put(convertedDto as DTO);
+      final result = await _service.put(convertedDto as DTO);
 
-    return _saveToLocalObj(result);
+      return _saveToLocalObj(result);
+    });
   }
 
   Future<Result<void>> delete(int id) async {
@@ -120,7 +124,8 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
     });
   }
 
-  Future<Domain> _saveToLocalObj<Domain, AsDTO>(Result result) async {
+  Future<Domain> _saveToLocalObj<Domain, AsDTO extends DTOConvertible<Domain>>(
+      Result result) async {
     switch (result) {
       case Ok(value: final dto):
         {
@@ -128,12 +133,9 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
 
           final result = await saveObjectLocal(dto);
 
-          switch (result) {
-            case Ok():
-              return domainEntity;
-            case Error(error: final e):
-              throw e;
-          }
+          if (result is Error) throw AppException(result.error.toString());
+
+          return domainEntity;
         }
       case Error(error: final e):
         throw e;

@@ -1,6 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/enums/roles.dart';
+import 'package:setec_app/core/interface/user_wrapper_interface.dart';
 import 'package:setec_app/data/speaker/dto/speaker_dto.dart';
 import 'package:setec_app/data/speaker/repository/speaker_repository.dart';
 import 'package:setec_app/data/userApp/dto/user_app_dto.dart';
@@ -42,14 +43,14 @@ mixin RestoreDataFromLocal {
           if (speaker != null) _login(ref, speaker, role);
         } else {
           final user = UserAppDTO.fromJson(value).toDomain();
-          _login(ref, user, role);
+          _login(ref, UserAppWrapper(user), role);
         }
       case Error(error: final e):
         throw e;
     }
   }
 
-  void _login(WidgetRef ref, var user, Roles role) {
+  void _login(WidgetRef ref, UserWrapper user, Roles role) {
     ref.read(authProvider.notifier).login(
           user: user,
           isAdmin: role == Roles.admin,
@@ -59,7 +60,7 @@ mixin RestoreDataFromLocal {
           isStudant: role == Roles.student,
           relationship: role == Roles.speaker
               ? user.user.relationship
-              : user.relationship,
+              : user.user.relationship,
         );
   }
 
@@ -68,7 +69,7 @@ mixin RestoreDataFromLocal {
 
     switch (result) {
       case Ok(value: final value):
-        if (value.isNotEmpty) return;
+        if (value.isEmpty) return;
 
         final getEvents = await ref.read(eventNotifier.notifier).fetchEvents();
 

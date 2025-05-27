@@ -5,7 +5,7 @@ import 'package:setec_app/core/interface/basic_repository_crud.dart';
 import 'package:setec_app/data/userApp/dto/user_app_dto.dart';
 import 'package:setec_app/data/userApp/mapper/user_app_mapper.dart';
 import 'package:setec_app/data/userApp/service/user_services.dart';
-import 'package:setec_app/model/models/user_app.dart';
+import 'package:setec_app/model/models/user/user_app.dart';
 
   final userAppRepository = Provider<UserAppRepository>((ref) => UserAppRepository());
 

@@ -6,21 +6,22 @@ import 'package:setec_app/core/classes/app_exception_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/enums/relationship.dart';
 import 'package:setec_app/core/enums/roles.dart';
+import 'package:setec_app/core/interface/user_wrapper_interface.dart';
 import 'package:setec_app/core/mixins/enum_lists.dart';
 import 'package:setec_app/core/mixins/validate_form_fields.dart';
 import 'package:setec_app/data/firebase/auth/firebase_email_repository.dart';
-import 'package:setec_app/data/speaker/mapper/speaker_mapper.dart';
+import 'package:setec_app/data/speaker/mapping/speaker_mapper.dart';
 import 'package:setec_app/data/speaker/repository/speaker_repository.dart';
 import 'package:setec_app/data/userApp/mapper/user_app_mapper.dart';
 import 'package:setec_app/data/userApp/repository/user_app_repository.dart';
-import 'package:setec_app/model/models/speaker.dart';
-import 'package:setec_app/model/models/user_app.dart';
+import 'package:setec_app/model/models/speaker/speaker.dart';
+import 'package:setec_app/model/models/user/user_app.dart';
 import 'package:setec_app/providers/auth_state_notifier.dart';
 import 'package:setec_app/ui/utils/widgets/snackBar/exception_snack_bar.dart';
 
 final authAsyncProvider = AsyncNotifierProvider<AuthAsyncNotifier, void>(() {
   return AuthAsyncNotifier(
-    authRepository: FirebaseEmailReapository(),
+    authRepository: FirebaseEmailRepository(),
     speakerRepository: SpeakerRepository(),
     userAppRepository: UserAppRepository(),
   );
@@ -28,14 +29,14 @@ final authAsyncProvider = AsyncNotifierProvider<AuthAsyncNotifier, void>(() {
 
 class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields, EnumLists {
   AuthAsyncNotifier({
-    required FirebaseEmailReapository authRepository,
+    required FirebaseEmailRepository authRepository,
     required SpeakerRepository speakerRepository,
     required UserAppRepository userAppRepository,
   })  : _authRepository = authRepository,
         _speakerRepository = speakerRepository,
         _userAppRepository = userAppRepository;
 
-  late final FirebaseEmailReapository _authRepository;
+  late final FirebaseEmailRepository _authRepository;
   late final SpeakerRepository _speakerRepository;
   late final UserAppRepository _userAppRepository;
 
@@ -60,7 +61,7 @@ class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields, Enu
         case Ok(value: final user):
           userApp = user;
           _setLogin(
-            user: userApp,
+            user: UserAppWrapper(userApp),
             isUserApp: userApp.role != Roles.speaker,
             isSpeaker: userApp.role == Roles.speaker,
             isAdmin: userApp.role == Roles.admin,
@@ -108,7 +109,7 @@ class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields, Enu
 
       if (context.mounted) {
         //FIXME: tratar o erro caso a api esteja offline
-        ref.read(authProvider.notifier).logout(authState.user!);
+        // ref.read(authProvider.notifier).logout(authState.user!);
         Logger().e(s);
         ScaffoldMessenger.of(context).showSnackBar(
           ExceptionSnackBar(
@@ -195,7 +196,7 @@ class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields, Enu
             case Ok(value: final savedUserApp):
               if (user is UserApp) {
                 _setLogin(
-                  user: savedUserApp,
+                  user: UserAppWrapper(savedUserApp),
                   isUserApp: true,
                   isAdmin: savedUserApp.role == Roles.admin,
                   isCommission: savedUserApp.role == Roles.commission,
@@ -242,7 +243,7 @@ class AuthAsyncNotifier extends AsyncNotifier<void> with ValidateFormFields, Enu
   }
 
   void _setLogin({
-    required dynamic user,
+    required UserWrapper user,
     required Relationship relationship,
     bool isUserApp = false,
     bool isSpeaker = false,

@@ -49,7 +49,7 @@ final ThemeData lightTheme = ThemeData(
   ),
 
   //Card
-  cardTheme: CardTheme(
+  cardTheme: CardThemeData(
     color: Colors.deepPurple.shade50,
     elevation: 6,
   ),

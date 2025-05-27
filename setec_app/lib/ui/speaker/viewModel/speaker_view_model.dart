@@ -1,9 +1,10 @@
 import 'dart:async';
-
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:setec_app/core/classes/app_exception_class.dart';
 import 'package:setec_app/core/classes/result_class.dart';
+import 'package:setec_app/core/interface/user_wrapper_interface.dart';
 import 'package:setec_app/data/speaker/repository/speaker_repository.dart';
-import 'package:setec_app/model/models/speaker.dart';
+import 'package:setec_app/model/models/speaker/speaker.dart';
 
 final speakerViewModel = AsyncNotifierProvider<SpeakerViewModel, List<Speaker>>(
   () => SpeakerViewModel(),
@@ -13,38 +14,44 @@ class SpeakerViewModel extends AsyncNotifier<List<Speaker>> {
   late final SpeakerRepository _repository;
 
   @override
-  List<Speaker> build() {
+  Future<List<Speaker>> build() async{
     _repository = ref.read(speakerRepository);
-    fetchSpeaker();
-    return [];
+    return await fetchSpeaker();
   }
 
-  Future<void> fetchSpeaker() async {
-    state = const AsyncLoading();
-    final result = await _repository.findAllData();
+  Future<List<Speaker>> fetchSpeaker() async {
+    state = await AsyncValue.guard(() async {
+      final result = await _repository.findAllData();
 
-    switch (result) {
-      case Ok(value: final speakers):
-        state = AsyncData(speakers);
-        break;
-      case Error(error: final e):
-        state = AsyncError(e, StackTrace.current);
-        break;
-    }
+      return switch (result) {
+        Ok(value: final value) => value,
+        Error(error: final e) => throw e,
+      };
+    });
+    return state.value ?? [];
   }
 
-  Future<void> approveSpeaker(Speaker speaker, String adminUid) async {
-    state = const AsyncLoading();
+  Future<void> updateProfile({required UserWrapper user}) async {
+    state = await AsyncValue.guard(() async {
+      if (user is! Speaker) {
+        throw AppException(
+          'Tipo de usuário não reconhecido',
+        );
+      }
 
-    final result = await _repository.approveSpeaker(
-      speaker.copyWith(adminApproved: adminUid),
-    );
+      final result = await _repository.updateData(user);
 
-    if (result is Error) {
-      state = AsyncError(result.error, StackTrace.current);
-      return;
-    }
+      final updatedUser = switch (result) {
+        Ok(value: final value) => value,
+        Error(error: final e) => throw e,
+      };
 
-    await fetchSpeaker();
+      final current = state.valueOrNull ?? [];
+
+      return [
+        for (final s in current)
+          if (s.id == updatedUser.id) updatedUser else s
+      ];
+    });
   }
 }

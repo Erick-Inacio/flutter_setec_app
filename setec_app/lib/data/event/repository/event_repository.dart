@@ -5,7 +5,7 @@ import 'package:setec_app/core/interface/basic_repository_crud.dart';
 import 'package:setec_app/data/event/dto/event_dto.dart';
 import 'package:setec_app/data/event/service/event_services.dart';
 import 'package:setec_app/model/extensions/event_extension.dart';
-import 'package:setec_app/model/models/event.dart';
+import 'package:setec_app/model/models/event/event.dart';
 
 class EventRepository extends BaseRepository<EventDTO>
   implements BasicRepositoryCRUD<Event> {

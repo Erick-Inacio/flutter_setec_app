@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:setec_app/core/classes/result_class.dart';
 import 'package:setec_app/core/mixins/shared_prefs_mixin.dart';
 import 'package:setec_app/data/event/repository/event_repository.dart';
-import 'package:setec_app/model/models/event.dart';
+import 'package:setec_app/model/models/event/event.dart';
 
 class EventNotifier extends Notifier<List<Event>> with SharedPrefsMixin {
   late final EventRepository _repository;
@@ -19,8 +19,8 @@ class EventNotifier extends Notifier<List<Event>> with SharedPrefsMixin {
 
       switch (result) {
         case Ok(value: final events):
-          final list = events.map((e) => Event.fromJson(e)).toList();
-          state = list;
+          final castedList = (events).cast<Event>();
+          state = castedList;
           final saveResult = await mixinSaveList(
             key: 'events',
             list: events,
