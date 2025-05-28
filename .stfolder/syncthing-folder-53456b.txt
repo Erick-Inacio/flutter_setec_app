@@ -1,0 +1,5 @@
+# This directory is a Syncthing folder marker.
+# Do not delete.
+
+folderID: vmpdk-kuh4r
+created: 2025-05-22T21:30:10-03:00

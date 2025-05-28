@@ -1,0 +1,1 @@
+A:\flutter_setec_app\setec_app\build\app\intermediates\cxx\RelWithDebInfo\1c2d404o\obj\armeabi-v7a
