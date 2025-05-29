@@ -12,7 +12,7 @@ extension TypeActivityMapperToDTO on TypeActivity {
 }
 
 extension TypeActivityMapperToDomain on TypeActivityDTO {
-  TypeActivity toModel() {
+  TypeActivity toModelo() {
     return TypeActivity(
       id: id,
       name: name,
