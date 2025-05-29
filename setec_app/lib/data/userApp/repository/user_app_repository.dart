@@ -53,14 +53,14 @@ class UserAppRepository extends BaseRepository<UserAppDTO>
 
   //     switch (result) {
   //       case Ok(value: final userAppDTO):
-  //         final userApp = userAppDTO.toDomain();
+  //         final userApp = userAppDTO.toModel();
 
   //         await mixinSaveObject(
   //           key: 'userApp',
   //           object: userApp,
   //         );
 
-  //         return userAppDTO.toDomain();
+  //         return userAppDTO.toModel();
   //       case Error(error: final e):
   //         throw e is AppException
   //             ? e

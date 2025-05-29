@@ -44,7 +44,7 @@ class UserAppDTO implements DTOConvertible<UserApp> {
   Map<String, dynamic> toJson() => _$UserAppDTOToJson(this);
 
   @override
-  UserApp toDomain() {
+  UserApp toModel() {
     return UserApp(
       id: id,
       uid: uid,

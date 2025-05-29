@@ -3,14 +3,14 @@ import 'package:setec_app/data/userApp/mapper/user_app_mapper.dart';
 import 'package:setec_app/model/models/speaker/speaker.dart';
 
 extension SpeakerToDomain on SpeakerDTO {
-  Speaker toDomain() {
+  Speaker toModel() {
     return Speaker(
       id: id,
       socialMedia: socialMedia,
       company: company,
       position: position,
       bio: bio,
-      user: user.toDomain(),
+      user: user.toModel(),
       adminUid: adminUid,
       isApproved: adminUid != null,
     );

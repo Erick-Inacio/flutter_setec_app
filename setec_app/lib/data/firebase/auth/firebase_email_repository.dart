@@ -50,7 +50,7 @@ class FirebaseEmailRepository {
 
       switch (result) {
         case Ok(value: final userAppDTODTO):
-          return userAppDTODTO.toDomain();
+          return userAppDTODTO.toModel();
         case Error(error: final e):
           throw e is AppException
               ? e
@@ -67,7 +67,7 @@ class FirebaseEmailRepository {
     return handleResult(() async {
       final userAppDTO = await _authEmail.register(email, password);
 
-      // final userAppDTO = userAppDTODTO?.toDomain();
+      // final userAppDTO = userAppDTODTO?.toModel();
 
       if (userAppDTO == null || userAppDTO.uid.isEmpty) {
         throw AppException("Erro ao cadastrar usuário no backend",

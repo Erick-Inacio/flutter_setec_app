@@ -3,5 +3,5 @@ abstract class Mappable<DTO> {
 }
 
 abstract class DTOConvertible<D> {
-  D toDomain();
+  D toModel();
 }

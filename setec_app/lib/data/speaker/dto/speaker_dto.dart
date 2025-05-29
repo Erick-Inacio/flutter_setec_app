@@ -53,7 +53,7 @@ class SpeakerDTO implements DTOConvertible<Speaker> {
   }
 
   @override
-  Speaker toDomain() {
+  Speaker toModel() {
     return Speaker(
       id: id,
       socialMedia: socialMedia,
@@ -62,7 +62,7 @@ class SpeakerDTO implements DTOConvertible<Speaker> {
       bio: bio,
       adminUid: adminUid,
       isApproved: isApproved,
-      user: user.toDomain(),
+      user: user.toModel(),
     );
   }
 

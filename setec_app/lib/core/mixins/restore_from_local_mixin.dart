@@ -36,13 +36,13 @@ mixin RestoreDataFromLocal {
 
           final speaker = switch (resultSpeaker) {
             Ok(value: final v) =>
-              v != null ? SpeakerDTO.fromJson(v).toDomain() : null,
+              v != null ? SpeakerDTO.fromJson(v).toModel() : null,
             Error(error: final e) => throw e,
           };
 
           if (speaker != null) _login(ref, speaker, role);
         } else {
-          final user = UserAppDTO.fromJson(value).toDomain();
+          final user = UserAppDTO.fromJson(value).toModel();
           _login(ref, UserAppWrapper(user), role);
         }
       case Error(error: final e):

@@ -58,7 +58,7 @@ class SpeakerRepository extends BaseRepository<SpeakerDTO>
 
       switch (response) {
         case Ok(value: final speakerDTO):
-          return speakerDTO.toDomain();
+          return speakerDTO.toModel();
         case Error(error: final e):
           throw e is AppException
               ? e

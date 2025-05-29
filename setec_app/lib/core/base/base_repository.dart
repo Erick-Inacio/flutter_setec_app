@@ -129,7 +129,7 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
     switch (result) {
       case Ok(value: final dto):
         {
-          final domainEntity = dto.toDomain();
+          final domainEntity = dto.toModel();
 
           final result = await saveObjectLocal(dto);
 
@@ -151,7 +151,7 @@ abstract class BaseRepository<DTO> with SharedPrefsMixin {
         {
           // Cast seguro
           final domainEntity =
-              (listDto as List<AsDTO>).map((e) => e.toDomain()).toList();
+              (listDto as List<AsDTO>).map((e) => e.toModel()).toList();
 
           final saveResult = await saveListLocal(listDto);
 

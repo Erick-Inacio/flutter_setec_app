@@ -25,7 +25,7 @@ class EventDTO implements DTOConvertible<Event> {
   Map<String, dynamic> toJson() => _$EventDTOToJson(this);
 
   @override
-  Event toDomain() {
+  Event toModel() {
     return Event(
       id: id,
       initialDateTime: initialDateTime,

@@ -7,6 +7,10 @@ import 'package:setec_app/data/event/service/event_services.dart';
 import 'package:setec_app/model/extensions/event_extension.dart';
 import 'package:setec_app/model/models/event/event.dart';
 
+final eventRepoProvider = Provider<EventRepository>((ref) {
+  return EventRepository(); // classe com métodos utilitários, sem estado
+});
+
 class EventRepository extends BaseRepository<EventDTO>
   implements BasicRepositoryCRUD<Event> {
   EventRepository()
@@ -54,14 +58,10 @@ class EventRepository extends BaseRepository<EventDTO>
 
   //     switch (result) {
   //       case Ok(value: final events):
-  //         return events.map((e) => e.toDomain()).toList();
+  //         return events.map((e) => e.toModel()).toList();
   //       case Error(error: final e):
   //         throw e;
   //     }
   //   });
   // }
 }
-
-final eventRepoProvider = Provider<EventRepository>((ref) {
-  return EventRepository(); // classe com métodos utilitários, sem estado
-});
